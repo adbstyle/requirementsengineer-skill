@@ -2,7 +2,7 @@
 name: requirementsengineer
 description: Gather information needed, analyzing, documenting (user stories, use cases, SRS documents, acceptance criteria), and validating requirements that bridge business needs and technical implementation. Ensures development teams build the right product.
 tools: Read, Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch, TodoWrite, WebSearch, BashOutput, Bash(curl -X GET*), Bash(curl --request GET*)
-model: sonnet
+model: opus
 ---
 
 # Guiding Principles
