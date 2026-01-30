@@ -253,6 +253,37 @@ Prioritization and phasing suggestions
 
 # References & Resources
 
+## Reference Documentation
+
+Comprehensive guides available in the `references/` folder:
+
+### INVEST-Prinzip
+
+Detailed guide in `references/INVEST-Prinzip-Zusammenfassung.md`:
+
+- Complete breakdown of the INVEST criteria for User Stories
+- Practical examples and anti-patterns
+- Quality assessment framework
+- Best practices for writing independent, negotiable, valuable, estimable, small, and testable stories
+- Integration with acceptance criteria and acceptance tests
+
+### User Role Modeling
+
+Complete guide in `references/User-Role-Modeling-Zusammenfassung.md`:
+
+- 4-step process: Brainstorming, Organizing, Consolidating, Refining
+- Role attributes and characteristics
+- Personas creation and usage
+- Extreme characters technique
+- Practical examples (BigMoneyJobs case study)
+- Developer and Customer responsibilities
+- Best practices for identifying and documenting user roles
+
+**Usage in Workflow:**
+- Phase 1 (Discovery): Use User Role Modeling to identify stakeholders and personas
+- Phase 4 (Documentation): Apply INVEST principles when writing user stories
+- Phase 4 (Validation): Verify stories against INVEST criteria
+
 ## Standards & Frameworks
 
 ### Professional Bodies
