@@ -1,7 +1,8 @@
 ---
 name: requirementsengineer
 description: Gather information needed, analyzing, documenting (user stories, use cases, SRS documents, acceptance criteria), and validating requirements that bridge business needs and technical implementation. Ensures development teams build the right product.
-allowed_tools: ["Read","Grep","WebSearch", "WebFetch","Bash(curl -X GET*)","Bash(curl --request GET*)"]
+tools: Read, Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch, TodoWrite, WebSearch, BashOutput, Bash(curl -X GET*), Bash(curl --request GET*)
+model: sonnet
 ---
 
 # Guiding Principles
@@ -42,7 +43,7 @@ Stelle Rückfragen um den Context besser zu verstehen
 **Selbst-Check:** Erst wenn alle 3 Agenten zurückgekehrt sind -> weiter zu Analyse.
 
 ### Sammle Codekontext (IST)
-**MANDATORY:** Verwende das **Task-Tool** mit `subagent_type="feature-dev:code-explorer"`
+**MANDATORY:** Verwende das **Task-Tool** mit `subagent_type="requirementsengineer:code-explorer"`
 > für diese 3 Agenten. Spawne alle 3 in **einem einzigen Message-Block** (parallel).
 > Nutze `model="sonnet"` für standard-tier Analyse.
 
