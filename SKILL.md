@@ -40,10 +40,10 @@ Als Requirements Engineer fokussierst du auf:
 
 **Ask about**:
 Stelle Rückfragen um den Context besser zu verstehen
-- Who are the users? (personas)
-- What problem are we solving? und Warum? Rekursives Fragen zur Aufdeckung der Zielhierarchie
+- Who are the users? Which user role?
+- What problem are we solving? Warum? Rekursives Fragen zur Aufdeckung der Zielhierarchie
 - What does success look like?
-- What are the constraints (time, budget, tech)?
+- What are the constraints?
 
 ## Phase 2: Analysis
 ### Sammle Anforderungskontext (SOLL)
@@ -81,8 +81,9 @@ Liste von WAS-Fragen, die aus Erkenntnissen entstehen, z.B.:
 - Dependency map
 - Risk assessment
 
-## Phase 4: Documentation
+## Phase 3: Documentation
 - Write detailed requirements
+- Slice requirements WHEN too big - Don't slice stories by technical layers (UI, backend, DB separately). Slice vertically so each story delivers end-to-end value for the users – enabling early testing and incremental releases.
 - Create supporting models/diagrams
 - Define acceptance criteria
 
@@ -103,39 +104,35 @@ So that [benefit/value]
 
 **Preconditions**
 1. [What must be / is given]
-2. [What must be / is given]
-3. [What must be / is given]
-
-Examples Preconditions
+Examples:
 - "Der USER zeigt eine Meldung im Detail an."
 - "Das SYSTEM kennt mindesten 1 weitere Meldung, welche mit der Organisation des USERs geteilt ist UND das Arzneimittel mindesten ein gleicher Wirkstoff aufweist"
+- "Der USER ist berechtigt Patienten zu erstellen"
 
 **Acceptance Criteria**
 1. [action of a user role or a system actor]
-2. [action of a user role or a system actor]
-3. [action of a user role or a system actor]
-
-IMPORTANT: Write acceptance criteria in natural, readable language using simple numbered lists.
-❌ AVOID GIVEN-WHEN-THEN notation or Gherkin syntax
-✅ GOOD (Natural language):
+Examples:
 - "Der USER wird auf der HMP dabei angeleitet, wie er seinen .csv File Upload durchführen muss."
 - "Der USER kann eine Benachrichtigung für neue Pflichtlagerbefreiungsanträge abonnieren."
 - "Der USER kann zu den angezeigten ähnlichen Meldungen navigieren"
 - "Das SYSTEM kann das File mit tägliche Lager- und Absatzdaten von Perioden bis zu 732 Tage verarbeiten"
 
-**Postcondition**
-1. [expected result]
-2. [expected result]
-3. [expected result]
+IMPORTANT: Write acceptance criteria in natural, readable language using simple numbered lists.
+❌ AVOID GIVEN-WHEN-THEN notation or Gherkin syntax
+✅ GOOD (Natural language):
 
-Examples Postcondition:
+**Postcondition** 
+1. [expected result]
+Examples:
 - "Das SYSTEM entfernt das PDF endgültig WENN der USER die Löschaktion bestätigt"
 - Der USER erkennt die Erstell- und Löschaktion im Änderungsprotokoll
+- Das SYSTEM speichert die Vorgangserstellung WENN der USER die Erstellung bestätigt UND alle Eingaben valide sind
 
 **Out of Scope**
-1. [requirement or possible solution that is explicitely not part of this story]
-2. [requirement or possible solution that is explicitely not part of this story]
-3. [requirement or possible solution that is explicitely not part of this story]
+1. [requirement or possible solution that is explicitely not part of] 
+Examples:
+- Die hinzugefügten / korrigierten Werte werden nicht sogleich im Diagramm reflektiert. Die Werte müssen zuerst gespeichert werden
+- Automatische Fehlerkorrektur - das SYSTEM korrigiert keine Daten
 
 **Offene Fragen (Open Questions)**
 1. [WAS-Frage an Stakeholder, die geklärt werden muss]
@@ -329,11 +326,3 @@ Complete guide in `references/User-Role-Modeling-Zusammenfassung.md`:
 - Phase 1 (Discovery): Use User Role Modeling to identify stakeholders and personas
 - Phase 4 (Documentation): Apply INVEST principles when writing user stories
 - Phase 4 (Validation): Verify stories against INVEST criteria
-
-## Standards & Frameworks
-
-### Professional Bodies
-- **IREB** (International Requirements Engineering Board) — CPRE Certification
-  - Foundation Level: Core RE competencies
-  - Advanced Level: Elicitation, Modeling, Management modules
-  - Website: https://www.ireb.org
