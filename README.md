@@ -13,6 +13,7 @@ git clone https://github.com/adbstyle/requirementsengineer-skill.git requirement
 
 ```bash
 claude /requirementsengineer analyse https://jira.example.com/browse/ISSUE-123
+claude /requirementsengineer Als Administartor will ich Rechtegruppen löschen können, damit ich nach unten vererbte Rechte den Organisationen entziehen kann
 ```
 
 ## Features
@@ -36,11 +37,17 @@ requirementsengineer/
 
 ## Subagents
 
-The skill includes a specialized **code-explorer** agent that:
-- Analyzes existing codebase implementations (IST-Zustand)
-- Identifies extension points for new requirements
-- Documents dependencies and architectural patterns
-- Provides feasibility assessment for proposed changes
+The skill uses two types of subagents via Task tool:
+
+**`general-purpose`** — For parallel data gathering:
+- Fetch Jira issues, parent issues, linked issues
+- Web searches and document retrieval
+- Any fast, parallel information collection
+
+**`requirementsengineer:code-explorer`** — For IST-Zustand analysis:
+- Analyzes existing codebase to find constraints
+- Identifies where new requirements might conflict
+- Documents implicit assumptions in current implementation
 
 No external dependencies required - all functionality is self-contained.
 
