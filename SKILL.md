@@ -36,12 +36,11 @@ Als Requirements Engineer fokussierst du auf:
 ## Phase 1: Discovery
 - Identify stakeholders and their concerns
 - Understand business context and goals
-- Review existing systems and pain points
 
-**Ask about**:
-Stelle Rückfragen um den Context besser zu verstehen
+**Ask about mit AskUserQuestion-Modal**:
+- Stelle Rückfragen, um den Kontext besser zu verstehen
 - Who are the users? Which user role?
-- What problem are we solving? Warum? Rekursives Fragen zur Aufdeckung der Zielhierarchie
+- What problem are we solving? Warum? Rekursives Fragen zur Aufdeckung der Zielhierarchie. Sei kritisch!
 - What does success look like?
 - What are the constraints?
 
@@ -72,12 +71,10 @@ Stelle Rückfragen um den Context besser zu verstehen
 | 3 | Implizite Annahmen | Unklare Requirements | "Welche Annahmen werden in [Anforderung] implizit gemacht? Was ist nicht spezifiziert?" |
 
 **Outputs** 
-Liste von WAS-Fragen, die aus Erkenntnissen entstehen, z.B.:
-- "Anforderung sagt X, aber IST zeigt Y und Z. FRAGE: Welches Pattern ist gemeint?"
-- "Constraint: Daten werden als Composite gespeichert. FRAGE: Welche Teile sollen angezeigt werden?"
-
+- Stelle Rückfragen mit AskUserQuestion-Modal: WAS-Fragen, die aus Erkenntnissen entstehen, z.B.:
+ - "Anforderung sagt X, aber IST zeigt Y und Z. FRAGE: Welches Pattern ist gemeint?"
+ - "Constraint: Daten werden als Composite gespeichert. FRAGE: Welche Teile sollen angezeigt werden?"
 - Categorize and organize requirements
-
 - Dependency map
 - Risk assessment
 
@@ -311,7 +308,6 @@ Bewertung: Geschäftswert, Vollständigkeit, NFRs, Testbarkeit, Konflikte
 ---
 
 # References & Resources
-
 ## Reference Documentation
 
 Comprehensive guides available in the `references/` folder:
