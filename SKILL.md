@@ -118,7 +118,12 @@ IMPORTANT: Write acceptance criteria in natural, readable language using simple 
 ❌ AVOID GIVEN-WHEN-THEN notation or Gherkin syntax
 ✅ GOOD (Natural language):
 
-**Postcondition** 
+**Abgrenzung: Acceptance Criteria vs. Postconditions**
+- **Acceptance Criteria** beschreiben die **Interaktion** zwischen User und System — was der User tun kann, was das System während der Interaktion anzeigt, anbietet oder validiert.
+- **Postconditions** beschreiben den **Zustand oder das Ergebnis**, das das System produziert oder der USER hat/kann, **nachdem** der User seine Aktionen abgeschlossen hat.
+- **Faustregel:** Geschieht es WÄHREND der User-Interaktion → Acceptance Criterion. Beschreibt es, was NACH Abschluss der Interaktion existiert oder resultiert → Postcondition.
+
+**Postcondition**
 1. [expected result]
 Examples:
 - "Das SYSTEM entfernt das PDF endgültig WENN der USER die Löschaktion bestätigt"
