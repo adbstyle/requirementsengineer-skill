@@ -95,9 +95,9 @@ Als Requirements Engineer fokussierst du auf:
 ```
 [Short descriptive name]
 
-As a [user role/persona]
-I want [goal/desire]
-So that [benefit/value]
+As a [user role/persona]   ← NIEMALS "Als SYSTEM" — das System hat keine Bedürfnisse.
+I want [goal/desire]         Frage: "Wer profitiert?" → diese Rolle ist der Akteur.
+So that [benefit/value]      Unklar wer profitiert? → Stakeholder erfragen.
 
 **Preconditions**
 1. [What must be / is given]
