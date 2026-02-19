@@ -137,14 +137,22 @@ Examples:
 - Automatische Fehlerkorrektur - das SYSTEM korrigiert keine Daten
 
 **Offene Fragen (Open Questions)**
-1. [WAS-Frage an Stakeholder, die geklärt werden muss]
-2. [Anforderungs-Konflikt, der aufgelöst werden muss]
-3. [Implizite Annahme, die validiert werden muss]
+Nur offene, ungelöste Fragen. Beantwortete Fragen entfernen.
+
+| # | Prio | Frage | Verantwortlich |
+|---|------|-------|----------------|
+| Q1 | 🔴 | [WAS-Frage an Stakeholder, die geklärt werden muss] | [Rolle] |
+| Q2 | 🟡 | [Anforderungs-Konflikt, der aufgelöst werden muss] | [Rolle] |
+| Q3 | 🟢 | [Implizite Annahme, die validiert werden muss] | [Rolle] |
+
+Prio: 🔴 KRITISCH (blockiert Umsetzung) · 🟡 WICHTIG (beeinflusst Scope) · 🟢 OPTIONAL (Nice-to-know)
 
 Examples:
-- "Was bedeutet 'lesbare Form' konkret? Beispiel erwünscht?"
-- "Sollen Änderungen für alle Packungen oder nur eine angezeigt werden?"
-- "Wie soll das System reagieren, wenn keine Änderungen vorhanden sind?"
+| # | Prio | Frage | Verantwortlich |
+|---|------|-------|----------------|
+| Q1 | 🔴 | Was bedeutet 'lesbare Form' konkret? Beispiel erwünscht? | Product Owner |
+| Q2 | 🟡 | Sollen Änderungen für alle Packungen oder nur eine angezeigt werden? | Fachexperte |
+| Q3 | 🟢 | Wie soll das System reagieren, wenn keine Änderungen vorhanden sind? | UX Designer |
 
 **Constraints & Randbedingungen** — Einschränkungen für die Lösungsumsetzung: Was muss das Dev-Team beachten?
 1. [Architektur-Einschränkung, Permission, Abhängigkeit]
