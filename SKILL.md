@@ -99,8 +99,8 @@ As a [user role/persona]   ← NIEMALS "Als SYSTEM" — das System hat keine Bed
 I want [goal/desire]         Frage: "Wer profitiert?" → diese Rolle ist der Akteur.
 So that [benefit/value]      Unklar wer profitiert? → Stakeholder erfragen.
 
-**Preconditions**
-1. [What must be / is given]
+**Preconditions** — Ausgangslage: Was muss VOR Start der Interaktion gegeben sein? (User-Zustand, Daten-Zustand)
+1. [Zustand von User oder Daten vor der Interaktion]
 Examples:
 - "Der USER zeigt eine Meldung im Detail an."
 - "Das SYSTEM kennt mindesten 1 weitere Meldung, welche mit der Organisation des USERs geteilt ist UND das Arzneimittel mindesten ein gleicher Wirkstoff aufweist"
@@ -146,9 +146,9 @@ Examples:
 - "Sollen Änderungen für alle Packungen oder nur eine angezeigt werden?"
 - "Wie soll das System reagieren, wenn keine Änderungen vorhanden sind?"
 
-**Constraints & Randbedingungen**
-1. [Technische/organisatorische Einschränkung, die die Lösung beeinflussen wird]
-2. [Abhängigkeit zu anderen Features/Systemen]
+**Constraints & Randbedingungen** — Einschränkungen für die Lösungsumsetzung: Was muss das Dev-Team beachten?
+1. [Architektur-Einschränkung, Permission, Abhängigkeit]
+NICHT duplizieren was bereits in Preconditions steht.
 
 Examples:
 - "Bestehende Architektur speichert Daten als Composite (nicht einzeln filterbar)"
