@@ -74,6 +74,9 @@ Als Requirements Engineer fokussierst du auf:
 - Stelle Rückfragen mit AskUserQuestion-Modal: WAS-Fragen, die aus Erkenntnissen entstehen, z.B.:
  - "Anforderung sagt X, aber IST zeigt Y und Z. FRAGE: Welches Pattern ist gemeint?"
  - "Constraint: Daten werden als Composite gespeichert. FRAGE: Welche Teile sollen angezeigt werden?"
+
+WARNUNG: Die Codebase-Analyse liefert technische Details (Spaltennamen, Algorithmen, Service-Namen, Technologien). Diese gehören in "Constraints & Randbedingungen", NICHT in Acceptance Criteria. Vor dem Schreiben von AKs: Technische Erkenntnisse bewusst filtern.
+
 - Categorize and organize requirements
 - Dependency map
 - Risk assessment
@@ -121,8 +124,29 @@ Anti-Patterns in Acceptance Criteria & Stories:
 ❌ KEINE Titel-Präfixe vor AKs wie "**Create:** Das SYSTEM..." oder "**Delete:** Das SYSTEM..." — jedes AK beginnt direkt mit dem Akteur
 ❌ KEINE Verweise auf andere Stories ("Story 11", "Feld-Tabelle aus Story 9") — jede Story soll gemäss INVEST unabhängig sein. Information inline wiederholen statt referenzieren.
 ❌ AVOID GIVEN-WHEN-THEN notation or Gherkin syntax
+❌ KEINE Implementierungsdetails in AKs — AKs beschreiben WAS das System tut, nicht WIE es das intern löst. Typischer Fehler: Codebase-Analyse liefert technische Details, die ungefiltert in AKs landen.
 
-Statt:
+WAS-vs-WIE Litmus-Test für jedes AK:
+- "Muss der User/PO das wissen, um die Anforderung zu verstehen?" → Ja = WAS, Nein = WIE
+- "Schränkt das die Entwickler unnötig ein?" → Ja = WIE, raus aus AK
+- "Beobachtbares Verhalten oder interner Mechanismus?" → Mechanismus = WIE
+
+Statt (WIE — Erkennungsmechanismus):
+  3. Das SYSTEM erkennt die Aktion: leere id-Spalte = Create, existierende id = Update, delete-Spalte = true = Delete
+Richtig (WAS — beobachtbares Verhalten):
+  3. Das SYSTEM unterscheidet pro Zeile, ob eine Einrichtung erstellt, aktualisiert oder gelöscht werden soll
+
+Statt (WIE — interne Verarbeitungslogik):
+  4. Das SYSTEM verarbeitet in der Reihenfolge: zuerst Create, dann Update, dann Delete
+Richtig (WAS — beobachtbares Ergebnis, nur falls fachlich relevant):
+  4. Das SYSTEM stellt sicher, dass neu erstellte Einrichtungen im selben Import aktualisiert oder gelöscht werden können
+
+Statt (WIE — Technologie und Architektur):
+  PC1. Erstellte Einrichtungen sind über MessageHub an Downstream-Services (ies-koordination/einsatz) propagiert
+Richtig (WAS — beobachtbarer Zustand):
+  PC1. Erstellte Einrichtungen sind in der Organisation sichtbar
+
+Statt (Formatierung & Referenzen):
   4. **Create:** Das SYSTEM erstellt eine neue Einrichtung (Feld-Tabelle aus Story 11)
   7. **Delete:** Das SYSTEM ruft die bestehende Löschlogik auf
 Richtig:
