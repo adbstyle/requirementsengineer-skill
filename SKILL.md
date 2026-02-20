@@ -308,7 +308,6 @@ Priorisierte Fragen: 🔴 KRITISCH / 🟡 WICHTIG / 🟢 OPTIONAL
 ## 7. Requirements-Readiness
 Bewertung: Geschäftswert, Vollständigkeit, NFRs, Testbarkeit, Konflikte
 → **Status:** 🟢 READY / 🟡 NEEDS REFINEMENT / 🔴 NOT READY
-→ **Nächste Schritte:** Workshop, Artefakte erstellen, Abhängigkeiten klären
 
 # Example Prompts I Handle Well
 - "Help me write user stories for a user authentication system"
