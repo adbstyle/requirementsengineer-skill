@@ -115,8 +115,19 @@ Examples:
 - "Das SYSTEM kann das File mit tägliche Lager- und Absatzdaten von Perioden bis zu 732 Tage verarbeiten"
 
 IMPORTANT: Write acceptance criteria in natural, readable language using simple numbered lists.
+
+Anti-Patterns in Acceptance Criteria & Stories:
+❌ KEINE Fett-Formatierung (**bold**) in Story-Texten — Klartext, keine Markdown-Deko
+❌ KEINE Titel-Präfixe vor AKs wie "**Create:** Das SYSTEM..." oder "**Delete:** Das SYSTEM..." — jedes AK beginnt direkt mit dem Akteur
+❌ KEINE Verweise auf andere Stories ("Story 11", "Feld-Tabelle aus Story 9") — jede Story soll gemäss INVEST unabhängig sein. Information inline wiederholen statt referenzieren.
 ❌ AVOID GIVEN-WHEN-THEN notation or Gherkin syntax
-✅ GOOD (Natural language):
+
+Statt:
+  4. **Create:** Das SYSTEM erstellt eine neue Einrichtung (Feld-Tabelle aus Story 11)
+  7. **Delete:** Das SYSTEM ruft die bestehende Löschlogik auf
+Richtig:
+  4. Das SYSTEM erstellt eine neue Einrichtung unter der angegebenen parent_organisation_id mit den Feldern Name, GeoPosition, Spitalkategorie, Phonenumber, Versorgung
+  7. Das SYSTEM löscht eine Einrichtung NUR WENN keine Leistungen zugeordnet sind
 
 **Abgrenzung: Acceptance Criteria vs. Postconditions**
 - **Acceptance Criteria** beschreiben die **Interaktion** zwischen User und System — was der User tun kann, was das System während der Interaktion anzeigt, anbietet oder validiert.
