@@ -47,21 +47,25 @@ Als Requirements Engineer fokussierst du auf:
 ## Phase 2: Analysis
 ### Sammle Anforderungskontext (SOLL)
 
-> **MANDATORY:** Verwende das **Task-Tool** mit `subagent_type="general-purpose"` 
-> für diese 3 Agenten. Spawne alle 3 in **einem einzigen Message-Block** (parallel).
+> **MANDATORY:** Verwende das **Task-Tool** mit `subagent_type="general-purpose"`
+> für diese Agenten. Spawne alle in **einem einzigen Message-Block** (parallel).
 
 | # | tier | description | prompt |
 |---|------|-------------|--------|
 | 1 | fast | "Fetch main issue" | "Hole Issue inkl. Kommentare. Fasse zusammen: Summary, Description, Status, Vorbedingungen, Akzeptanzkriterien, Nachbedingungen." |
 | 2 | fast | "Fetch parent issue" | "Hole Parent issue Extrahiere: Ziel, Scope, Budget, Abhängigkeiten." |
 | 3 | fast | "Fetch linked issues" | "Hole alle Issues aus dem issuelinks-Array von. Für jedes verlinkte Issue: Key, Summary, Beziehungstyp, Status." |
+| 4 | fast | "Fetch doc context" | "Lies [Pfad] vollständig. Extrahiere für Story [N]: (1) Offene Fragen (Q-Nummern) die diese Story betreffen, (2) Verwandte Stories mit denselben Konzepten/Feldern, (3) Querschnittliche Constraints aus Header oder übergreifenden Abschnitten. Verlinkte Dokumente (Decision Records, Tech Specs, UX Specs) ebenfalls lesen." |
 
-**Selbst-Check:** Erst wenn alle 3 Agenten zurückgekehrt sind -> weiter zu Analyse.
+**Selbst-Check:** Erst wenn alle Agenten zurückgekehrt sind -> weiter zu Analyse.
+
+**Agent 4** greift nur wenn die Story in einem Requirements-Dokument lebt (req.md, spec.md, etc.) — dann ist das Dokument die **primäre Kontextquelle**, nicht der Issue-Tracker.
 
 **Fallback bei fehlendem Kontext:**
-- Kein Issue vorhanden (kein Jira, GitHub Issue, etc.) → Phase 2 SOLL-Agenten entfallen. Starte direkt mit Discovery (Phase 1) und stelle Kontextfragen interaktiv via AskUserQuestion.
+- Kein Issue vorhanden (kein Jira, GitHub Issue, etc.) → Agenten 1–3 entfallen. Starte direkt mit Discovery (Phase 1) und stelle Kontextfragen interaktiv via AskUserQuestion.
 - Kein Parent-Issue/Epic → Agent 2 entfällt. Dokumentiere "Kein übergeordnetes Epic/Feature identifiziert" unter Constraints.
-- User referenziert Dokumentation (Markdown-Files, Wiki, Confluence) → NUR durchsuchen wenn der User explizit auf Doku verweist oder das Issue Links/Referenzen auf Dokumentation enthält. Scope auf die genannten Pfade/Seiten beschränken — keine breite Suche ohne Anhaltspunkte.
+- Story lebt in einem Requirements-Dokument → Agent 4 ist MANDATORY (nicht optional). Das Dokument IST der Primärkontext.
+- User referenziert zusätzliche Dokumentation (Wiki, Confluence, andere Markdown-Files) → Scope auf die genannten Pfade/Seiten beschränken — keine breite Suche ohne Anhaltspunkte.
 - Keine Codebase → IST-Analyse (nächster Abschnitt) entfällt komplett. Dokumentiere "Greenfield — keine bestehenden Constraints aus Code".
 
 ### Sammle Ist-Zustand für Requirements-Lücken-Analyse
