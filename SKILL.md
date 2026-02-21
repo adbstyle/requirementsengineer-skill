@@ -205,13 +205,24 @@ Examples:
 | Q2 | 🟡 | Sollen Änderungen für alle Packungen oder nur eine angezeigt werden? | Fachexperte |
 | Q3 | 🟢 | Wie soll das System reagieren, wenn keine Änderungen vorhanden sind? | UX Designer |
 
-**Constraints & Randbedingungen** — Einschränkungen für die Lösungsumsetzung: Was muss das Dev-Team beachten?
-1. [Architektur-Einschränkung, Permission, Abhängigkeit]
-NICHT duplizieren was bereits in Preconditions steht.
+**Constraints & Randbedingungen** — Fachliche Einschränkungen, die den SCOPE oder das VERHALTEN beeinflussen.
+Constraints beantworten: "Was schränkt die Anforderung ein?" — NICHT "Wie ist es technisch gebaut?"
 
-Examples:
-- "Bestehende Architektur speichert Daten als Composite (nicht einzeln filterbar)"
-- "Permission-System muss berücksichtigt werden (ReadChangelog)"
+WAS-vs-WIE Filter für Constraints:
+- Beeinflusst es den Scope oder das fachliche Verhalten? → Constraint (bleibt)
+- Beschreibt es interne Architektur, Technologie oder Code-Patterns? → Raus (gehört in Tech-Spec/Architektur-Doku)
+
+Statt (WIE):
+  - "Einrichtung lebt in ies-koordination/leistungen (nicht usermanagement)"
+  - "Name-Uniqueness wird im Aggregate-State geprüft (nicht in DB)"
+  - "Downstream-Propagation via EinrichtungChanged-MessageHub-Event"
+  - "Optimistic Concurrency: Update-Commands benötigen StreamPosition"
+Richtig (WAS):
+  - "Hospitale und prähospitale Einrichtungen werden gleich behandelt"
+  - "ExterneReferenz auf Einrichtung existiert aktuell nicht — nur UUID"
+  - "Der USER benötigt das Domänenrecht ManageLeistungsadministration und Zugang zur Organisations-Hierarchie"
+
+NICHT duplizieren was bereits in Preconditions oder AKs steht.
 
 **Mögliche Lösungsansätze** (optional, nur wenn in Jira/Diskussion bereits erwähnt)
 1. [Lösungsidee aus Ticket/Kommentaren - NICHT deine Empfehlung, nur Dokumentation]
