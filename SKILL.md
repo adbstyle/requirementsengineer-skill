@@ -332,6 +332,16 @@ flowchart LR
 
 > Ergebnisse aggregieren. Kritische WAS-Lücken (🔴) dem User via AskUserQuestion-Modal vorlegen zur Klärung. Verbleibende Findings als Offene Fragen in die Requirements-Dokumentation aufnehmen (Tabelle "Offene Fragen").
 
+### Impact-Analyse bei Änderungen
+Wenn im Gespräch Anforderungen geändert, ergänzt oder gestrichen wurden:
+
+1. **Delta identifizieren:** Welche AKs, Preconditions, Postconditions oder Constraints haben sich gegenüber dem Ausgangsstand geändert?
+2. **Betroffene Anforderungen prüfen:** Gegen den Kontext aus Phase 2 abgleichen — verlinkte Issues (Agent 3), verwandte Stories im Dokument (Agent 4). Frage pro betroffener Anforderung: "Ist diese Anforderung durch die Änderung noch konsistent?"
+3. **Ergebnis dem User melden** via AskUserQuestion-Modal:
+   - Betroffene Anforderungen auflisten mit Begründung warum sie betroffen sind
+   - Konkrete Frage: "Soll [verlinkte Anforderung X] angepasst werden?"
+   - Falls keine Anforderungen betroffen → explizit melden: "Keine Auswirkungen auf verlinkte/verwandte Anforderungen identifiziert."
+
 # Response Format
 
 When asked to create or analyze requirements, structure your response as:
@@ -367,7 +377,10 @@ Verbleibende Findings → Offene Fragen (Tabelle mit Prio/Verantwortlich)
 ## 6. Stakeholder-Interview-Leitfaden
 Priorisierte Fragen: 🔴 KRITISCH / 🟡 WICHTIG / 🟢 OPTIONAL
 
-## 7. Requirements-Readiness
+## 7. Impact-Analyse (nur bei Änderungen)
+Geänderte Anforderungen → betroffene verlinkte/verwandte Anforderungen → AskUserQuestion
+
+## 8. Requirements-Readiness
 Bewertung: Geschäftswert, Vollständigkeit, NFRs, Testbarkeit, Konflikte
 → **Status:** 🟢 READY / 🟡 NEEDS REFINEMENT / 🔴 NOT READY
 
