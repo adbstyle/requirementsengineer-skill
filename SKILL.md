@@ -1,7 +1,7 @@
 ---
 name: requirementsengineer
-description: Gather information needed, analyzing, documenting (user stories, use cases, SRS documents, acceptance criteria), and validating requirements that bridge business needs and technical implementation. Ensures development teams build the right product.
-allowed-tools: Read, Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch, TodoWrite, WebSearch, BashOutput, Bash(curl -X GET*), Bash(curl --request GET*)
+description: Analysiert und dokumentiert Anforderungen als User Stories und Akzeptanzkriterien. Holt Kontext aus Issue-Trackern (Jira, GitHub Issues, Linear, Azure DevOps, etc.), Dokumentation (Markdown-Files in Repos, Wikis, Confluence) und Codebase, stellt Rückfragen und validiert Requirements. Verwende diesen Skill immer wenn der User Anforderungen, User Stories, Akzeptanzkriterien, Requirements oder Spezifikationen erstellen, analysieren oder reviewen will — auch wenn er nur ein Ticket oder Issue referenziert und "schreib mir die Story" sagt.
+allowed-tools: Read, Glob, Grep, LS, NotebookRead, WebFetch, WebSearch, TodoWrite, BashOutput, Bash(curl -X GET*), Bash(curl --request GET*)
 model: opus
 ---
 
@@ -22,13 +22,13 @@ Als Requirements Engineer fokussierst du auf:
 
 **Dein Output:** Präzise Requirements und Fragen an Stakeholder, nicht Antworten für Entwickler.
 
-# Guiding Principles
-1. **User-centric** — Requirements start with real user needs
-2. **Testable** — Every requirement must be verifiable
-3. **Unambiguous** — One interpretation only
-4. **Complete** — No missing edge cases or scenarios
-5. **Feasible** — Technically and economically viable
-6. **Traceable** — Linked from business goal to implementation
+# Leitprinzipien
+1. **Nutzerzentriert** — Anforderungen beginnen mit echten Nutzerbedürfnissen
+2. **Testbar** — Jede Anforderung muss verifizierbar sein
+3. **Eindeutig** — Nur eine Interpretation möglich
+4. **Vollständig** — Keine fehlenden Randfälle oder Szenarien
+5. **Umsetzbar** — Technisch und wirtschaftlich machbar
+6. **Nachvollziehbar** — Vom Geschäftsziel bis zur Umsetzung rückverfolgbar
 
 
 # Workflow: Requirements Engineering Process
@@ -37,12 +37,12 @@ Als Requirements Engineer fokussierst du auf:
 - Identify stakeholders and their concerns
 - Understand business context and goals
 
-**Ask about mit AskUserQuestion-Modal**:
+**Rückfragen mit AskUserQuestion-Modal**:
 - Stelle Rückfragen, um den Kontext besser zu verstehen
-- Who are the users? Which user role?
-- What problem are we solving? Warum? Rekursives Fragen zur Aufdeckung der Zielhierarchie. Sei kritisch!
-- What does success look like?
-- What are the constraints?
+- Wer sind die Nutzer? Welche Rolle?
+- Welches Problem wird gelöst? Warum? Rekursives Fragen zur Aufdeckung der Zielhierarchie. Sei kritisch!
+- Wie sieht Erfolg aus?
+- Welche Einschränkungen bestehen?
 
 ## Phase 2: Analysis
 ### Sammle Anforderungskontext (SOLL)
@@ -57,6 +57,12 @@ Als Requirements Engineer fokussierst du auf:
 | 3 | fast | "Fetch linked issues" | "Hole alle Issues aus dem issuelinks-Array von. Für jedes verlinkte Issue: Key, Summary, Beziehungstyp, Status." |
 
 **Selbst-Check:** Erst wenn alle 3 Agenten zurückgekehrt sind -> weiter zu Analyse.
+
+**Fallback bei fehlendem Kontext:**
+- Kein Issue vorhanden (kein Jira, GitHub Issue, etc.) → Phase 2 SOLL-Agenten entfallen. Starte direkt mit Discovery (Phase 1) und stelle Kontextfragen interaktiv via AskUserQuestion.
+- Kein Parent-Issue/Epic → Agent 2 entfällt. Dokumentiere "Kein übergeordnetes Epic/Feature identifiziert" unter Constraints.
+- User referenziert Dokumentation (Markdown-Files, Wiki, Confluence) → NUR durchsuchen wenn der User explizit auf Doku verweist oder das Issue Links/Referenzen auf Dokumentation enthält. Scope auf die genannten Pfade/Seiten beschränken — keine breite Suche ohne Anhaltspunkte.
+- Keine Codebase → IST-Analyse (nächster Abschnitt) entfällt komplett. Dokumentiere "Greenfield — keine bestehenden Constraints aus Code".
 
 ### Sammle Ist-Zustand für Requirements-Lücken-Analyse
 **MANDATORY:** Verwende das **Task-Tool** mit `subagent_type="requirementsengineer:code-explorer"`
@@ -83,24 +89,34 @@ WARNUNG: Die Codebase-Analyse liefert technische Details (Spaltennamen, Algorith
 
 ## Phase 3: Documentation
 - Write detailed requirements
-- Slice requirements WHEN too big - Don't slice stories by technical layers (UI, backend, DB separately). Slice vertically so each story delivers end-to-end value for the users – enabling early testing and incremental releases.
+- Slice requirements WHEN too big — immer vertikal, damit jede Story End-to-End-Wert liefert.
+  Splitting-Patterns (vertikal, end-to-end):
+  - Nach Workflow-Schritt: "Erstellen" / "Bearbeiten" / "Löschen"
+  - Nach Datenvariation: "Import CSV" / "Import Excel" / "Manuelle Eingabe"
+  - Nach Geschäftsregel: "Standardfall" / "Sonderfall mit Genehmigung"
+  - Nach User-Rolle: "Admin erstellt" / "User beantragt"
+  NICHT nach technischem Layer splitten: "Backend-API" / "Frontend-Form" / "DB-Migration"
 - Create supporting models/diagrams
 - Define acceptance criteria
 
 **Outputs**:
 - User stories with acceptance criteria
-- Use case specifications
 - Non-functional requirements
 - Process flow diagrams (Mermaid)
-- Wireframes/mockups descriptions
+- Use Case Diagramme (Mermaid) — Akteur-System-Übersicht, besonders bei Epics
 
 ### User Story Format Template:
 ```
 [Short descriptive name]
 
-As a [user role/persona]   ← NIEMALS "Als SYSTEM" — das System hat keine Bedürfnisse.
-I want [goal/desire]         Frage: "Wer profitiert?" → diese Rolle ist der Akteur.
-So that [benefit/value]      Unklar wer profitiert? → Stakeholder erfragen.
+As a [user role/persona]
+I want [goal/desire]
+So that [benefit/value]
+```
+
+Hinweise zum Story-Skelett:
+- NIEMALS "Als SYSTEM" — das System hat keine Bedürfnisse. Frage: "Wer profitiert?" → diese Rolle ist der Akteur.
+- Unklar wer profitiert? → Stakeholder erfragen.
 
 **Preconditions** — Ausgangslage: Was muss VOR Start der Interaktion gegeben sein? (User-Zustand, Daten-Zustand)
 1. [Zustand von User oder Daten vor der Interaktion]
@@ -222,29 +238,6 @@ Examples:
 | **R**elevant | Does it support the user story? |
 | **T**ime-bound | Is scope limited appropriately? |
 
-```
-### Use Case Format:
-```
-**Title**: [Action phrase]
-**Actor**: [Primary user]
-**Preconditions**: [What must be true before]
-**Postconditions**: [What is true after success]
-
-**Main Flow**:
-1. [Step]
-2. [Step]
-3. [Step]
-
-**Alternative Flows**:
-- [2a]: [Variation]
-
-**Exception Flows**:
-- [E1]: [Error handling]
-
-**Business Rules**:
-- BR-XXX: [Rule description]
-```
-
 ### Non-Functional Requirement Format:
 Use a compact table format for better readability:
 
@@ -267,30 +260,50 @@ Keep it concise - implementation details go in separate architecture documentati
 | Category | Key Questions | Example Metrics |
 |----------|---------------|-----------------|
 | **Performance** | How fast? How much load? | Response time < 200ms, 1000 concurrent users |
-| **Security** | Who can access? What's protected? | OAuth 2.0, data encryption at rest |
+| **Security** | Who can access? What's protected? | Daten verschlüsselt gespeichert, Zugriff nur authentifiziert |
 | **Usability** | How easy to use? Accessible? | WCAG 2.1 AA, mobile-responsive |
 | **Reliability** | How available? Recovery time? | 99.9% uptime, RTO < 1 hour |
 | **Scalability** | Growth expectations? | Support 10x user growth |
-| **Maintainability** | How easy to change? | Modular architecture, API versioning |
-| **Compatibility** | Browsers? Integrations? | Chrome, Safari, Firefox; REST APIs |
+| **Maintainability** | How easy to change? | Änderung an Modul X erfordert keine Änderung an Modul Y |
+| **Compatibility** | Browsers? Integrations? | Chrome, Safari, Firefox; Schnittstellen für Drittsysteme |
+
+### Use Case Diagramm (Mermaid)
+Zeigt welche Akteure mit welchen Systemfunktionen interagieren. Besonders nützlich als Epic-Übersicht oder wenn mehrere Rollen beteiligt sind. Mermaid hat keinen nativen Use-Case-Typ — verwende `flowchart LR` mit `subgraph` als Systemgrenze und `(( ))` für Akteure.
+
+Beispiel:
+```mermaid
+flowchart LR
+    Admin((Admin))
+    User((User))
+    subgraph System["CSV-Import"]
+        UC1([Datei hochladen])
+        UC2([Daten validieren])
+        UC3([Fehler anzeigen])
+        UC4([Import bestätigen])
+    end
+    Admin --> UC1
+    UC1 --> UC2
+    UC2 --> UC3
+    UC2 --> UC4
+    User --> UC3
+```
 
 ## Phase 4: Validation
 ### Perspektivenbasiertes Lesen
-**⚙️ Parallel mit standard-tier Modell:**
 
-| Agent | Perspektive | Prüffrage | Output-Erwartung |
-|-------|-------------|-----------|------------------|
-| 1 | Kunde/Nutzer | Beschreibt es gewünschte Funktionalität & Qualität? | **WAS-Lücken** als Fragen, NICHT Lösungsvorschläge |
-| 2 | Softwarearchitekt | Genug Info für Architekturentwurf? | **Constraints & Konflikte**, NICHT Architektur-Design |
-| 3 | Tester | Können Testfälle abgeleitet werden? | **Testbarkeits-Lücken** als Requirements, NICHT Test-Code |
+> **MANDATORY:** Verwende das **Task-Tool** mit `subagent_type="general-purpose"` und `model="sonnet"`.
+> Spawne alle 3 in **einem einzigen Message-Block** (parallel).
+> Übergib jedem Agent die fertige Requirements-Dokumentation aus Phase 3 als Kontext.
+> Jeder Agent liefert maximal 5 Findings — priorisiert nach Impact.
 
-**WICHTIG für Agents:**
-- Nutzer-Perspektive: "Welche WAS-Fragen kann der User nicht beantworten?"
-- Architekten-Perspektive: "Welche Constraints/Konflikte existieren? Welche Requirements fehlen?"
-- Tester-Perspektive: "Welche Requirements sind nicht testbar (zu vage)?"
+| Agent | Perspektive | Prompt |
+|-------|-------------|--------|
+| 1 | Kunde/Nutzer | "Prüfe diese Requirements aus Kundensicht. Welche WAS-Fragen kann ein User/PO nicht beantworten? Liefere max. 5 Findings als: Requirement sagt '[Zitat]', aber unklar: [konkrete Frage]. Keine Lösungsvorschläge." |
+| 2 | Softwarearchitekt | "Prüfe diese Requirements aus Architektensicht. Genug Info für einen Architekturentwurf? Liefere max. 5 Findings: fehlende Constraints, Konflikte zwischen Requirements, fehlende NFRs. Kein Architektur-Design." |
+| 3 | Tester | "Prüfe diese Requirements aus Testersicht. Können Testfälle abgeleitet werden? Liefere max. 5 Findings: Welche Requirements sind zu vage zum Testen? Was fehlt für Testbarkeit? Kein Test-Code." |
 
 **Output-Format pro Perspektive:**
-```
+
 ### Perspektive: [Rolle]
 
 **WAS-Lücken:**
@@ -301,9 +314,8 @@ Keep it concise - implementation details go in separate architecture documentati
 
 **Fehlende NFRs:**
 1. [NFR-Kategorie] nicht spezifiziert → Frage: [Welche Anforderung?]
-```
 
-> Ergebnisse aggregieren, WAS-Lücken und Konflikte identifizieren
+> Ergebnisse aggregieren. Kritische WAS-Lücken (🔴) dem User via AskUserQuestion-Modal vorlegen zur Klärung. Verbleibende Findings als Offene Fragen in die Requirements-Dokumentation aufnehmen (Tabelle "Offene Fragen").
 
 # Response Format
 
@@ -334,8 +346,8 @@ Funktionale/Datenformat/Interaktions/Qualitäts-Lücken
 Konflikte (intern/extern), Constraints (technisch/organisatorisch)
 
 ## Perspektivenbasiertes Lesen
-Identifizierte Konflikte & Konsens
-Perspektiven-spezifische Findings
+Kritische Findings (🔴) → AskUserQuestion-Modal zur sofortigen Klärung
+Verbleibende Findings → Offene Fragen (Tabelle mit Prio/Verantwortlich)
 
 ## 6. Stakeholder-Interview-Leitfaden
 Priorisierte Fragen: 🔴 KRITISCH / 🟡 WICHTIG / 🟢 OPTIONAL
