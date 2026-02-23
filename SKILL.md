@@ -18,7 +18,7 @@ Als Requirements Engineer fokussierst du auf:
 - ❌ Code-Beispiele oder technische Lösungen vorschlagen
 - ❌ Technologie-Entscheidungen treffen
 
-**Wann du Code anschaust:** Nur um Constraints und Konflikte zu verstehen, nicht um Lösungen zu designen.
+**Wann du Code anschaust:** Nur um Einschränkungen und Konflikte zu verstehen (→ daraus Offene Fragen und Out-of-Scope ableiten), nicht um Lösungen zu designen.
 
 **Dein Output:** Präzise Requirements und Fragen an Stakeholder, nicht Antworten für Entwickler.
 
@@ -55,7 +55,7 @@ Als Requirements Engineer fokussierst du auf:
 | 1 | fast | "Fetch main issue" | "Hole Issue inkl. Kommentare. Fasse zusammen: Summary, Description, Status, Vorbedingungen, Akzeptanzkriterien, Nachbedingungen." |
 | 2 | fast | "Fetch parent issue" | "Hole Parent issue Extrahiere: Ziel, Scope, Budget, Abhängigkeiten." |
 | 3 | fast | "Fetch linked issues" | "Hole alle Issues aus dem issuelinks-Array von. Für jedes verlinkte Issue: Key, Summary, Beziehungstyp, Status." |
-| 4 | fast | "Fetch doc context" | "Lies [Pfad] vollständig. Extrahiere für Story [N]: (1) Offene Fragen (Q-Nummern) die diese Story betreffen, (2) Verwandte Stories mit denselben Konzepten/Feldern, (3) Querschnittliche Constraints aus Header oder übergreifenden Abschnitten. Verlinkte Dokumente (Decision Records, Tech Specs, UX Specs) ebenfalls lesen." |
+| 4 | fast | "Fetch doc context" | "Lies [Pfad] vollständig. Extrahiere für Story [N]: (1) Offene Fragen (Q-Nummern) die diese Story betreffen, (2) Verwandte Stories mit denselben Konzepten/Feldern, (3) Querschnittliche Einschränkungen aus Header oder übergreifenden Abschnitten. Verlinkte Dokumente (Decision Records, Tech Specs, UX Specs) ebenfalls lesen." |
 
 **Selbst-Check:** Erst wenn alle Agenten zurückgekehrt sind -> weiter zu Analyse.
 
@@ -63,29 +63,29 @@ Als Requirements Engineer fokussierst du auf:
 
 **Fallback bei fehlendem Kontext:**
 - Kein Issue vorhanden (kein Jira, GitHub Issue, etc.) → Agenten 1–3 entfallen. Starte direkt mit Discovery (Phase 1) und stelle Kontextfragen interaktiv via AskUserQuestion.
-- Kein Parent-Issue/Epic → Agent 2 entfällt. Dokumentiere "Kein übergeordnetes Epic/Feature identifiziert" unter Constraints.
+- Kein Parent-Issue/Epic → Agent 2 entfällt. Dokumentiere "Kein übergeordnetes Epic/Feature identifiziert" als Offene Frage.
 - Story lebt in einem Requirements-Dokument → Agent 4 ist MANDATORY (nicht optional). Das Dokument IST der Primärkontext.
 - User referenziert zusätzliche Dokumentation (Wiki, Confluence, andere Markdown-Files) → Scope auf die genannten Pfade/Seiten beschränken — keine breite Suche ohne Anhaltspunkte.
-- Keine Codebase → IST-Analyse (nächster Abschnitt) entfällt komplett. Dokumentiere "Greenfield — keine bestehenden Constraints aus Code".
+- Keine Codebase → IST-Analyse (nächster Abschnitt) entfällt komplett.
 
 ### Sammle Ist-Zustand für Requirements-Lücken-Analyse
 **MANDATORY:** Verwende das **Task-Tool** mit `subagent_type="requirementsengineer:code-explorer"`
 > für diese 3 Agenten. Spawne alle 3 in **einem einzigen Message-Block** (parallel).
-> Ziel: Constraints und Konflikte identifizieren, NICHT Lösungen designen
+> Ziel: Einschränkungen und Konflikte aus Codebase gegenüber Anfoderung identifizieren → daraus Offene Fragen und Out-of-Scope-Punkte ableiten, NICHT Lösungen designen
 > Nutze `model="sonnet"` für standard-tier Analyse.
 
 | # | Fokus | Ziel | Prompt |
 |---|-------|------|--------|
-| 1 | Ist-Zustand | Constraints identifizieren | "Verstehe [betroffene Komponente]: Welche bestehenden Funktionen sind ähnlich? Welche Patterns/Konventionen existieren? (Ziel: Constraints finden, NICHT Lösungen vorschlagen)" |
+| 1 | Ist-Zustand | Einschränkungen identifizieren | "Verstehe [betroffene Komponente]: Welche bestehenden Funktionen sind ähnlich? Welche Patterns/Konventionen existieren? (Ziel: Einschränkungen finden → Offene Fragen und Out-of-Scope ableiten, NICHT Lösungen vorschlagen)" |
 | 2 | Abhängigkeiten | Requirement-Konflikte | "Welche Module/Daten sind betroffen? Wo könnten neue Requirements mit bestehender Funktionalität kollidieren?" |
 | 3 | Implizite Annahmen | Unklare Requirements | "Welche Annahmen werden in [Anforderung] implizit gemacht? Was ist nicht spezifiziert?" |
 
 **Outputs** 
 - Stelle Rückfragen mit AskUserQuestion-Modal: WAS-Fragen, die aus Erkenntnissen entstehen, z.B.:
  - "Anforderung sagt X, aber IST zeigt Y und Z. FRAGE: Welches Pattern ist gemeint?"
- - "Constraint: Daten werden als Composite gespeichert. FRAGE: Welche Teile sollen angezeigt werden?"
+ - "Einschränkung: Daten werden als Composite gespeichert. FRAGE: Welche Teile sollen angezeigt werden?"
 
-WARNUNG: Die Codebase-Analyse liefert technische Details (Spaltennamen, Algorithmen, Service-Namen, Technologien). Diese gehören in "Constraints & Randbedingungen", NICHT in Acceptance Criteria. Vor dem Schreiben von AKs: Technische Erkenntnisse bewusst filtern.
+WARNUNG: Die Codebase-Analyse liefert technische Details (Spaltennamen, Algorithmen, Service-Namen, Technologien). Diese gehören NICHT in die Story-Dokumentation. Technische Einschränkungen werden ausschliesslich genutzt um (1) Offene Fragen zu formulieren und (2) Out-of-Scope-Punkte abzuleiten. Vor dem Schreiben von AKs: Technische Erkenntnisse bewusst filtern — sie fliessen in Fragen ein, nicht in Anforderungen.
 
 - Categorize and organize requirements
 - Dependency map
@@ -222,43 +222,20 @@ Examples:
 | Q2 | 🟡 | Sollen Änderungen für alle Packungen oder nur eine angezeigt werden? | Fachexperte |
 | Q3 | 🟢 | Wie soll das System reagieren, wenn keine Änderungen vorhanden sind? | UX Designer |
 
-**Constraints & Randbedingungen** — Fachliche Einschränkungen, die den SCOPE oder das VERHALTEN beeinflussen.
-Constraints beantworten: "Was schränkt die Anforderung ein?" — NICHT "Wie ist es technisch gebaut?"
+KEIN "Constraints & Randbedingungen"-Abschnitt im Output. Technische und fachliche Einschränkungen aus der Codebase-Analyse werden NICHT als eigene Sektion dokumentiert, sondern ausschliesslich verwertet um:
+1. Offene Fragen zu formulieren — "Einschränkung X wurde identifiziert. FRAGE: Wie soll damit umgegangen werden?"
+2. Out-of-Scope-Punkte abzuleiten — wenn eine Einschränkung zeigt, dass etwas bewusst nicht Teil der Story ist
+3. Preconditions zu ergänzen — wenn eine Abhängigkeit als Vorbedingung formuliert werden muss (als Zustand, nicht als Ticket-Referenz)
 
-WAS-vs-WIE Filter für Constraints:
-- Beeinflusst es den Scope oder das fachliche Verhalten? → Constraint (bleibt)
-- Beschreibt es interne Architektur, Technologie oder Code-Patterns? → Raus (gehört in Tech-Spec/Architektur-Doku)
-
-Statt (WIE):
-  - "Einrichtung lebt in ies-koordination/leistungen (nicht usermanagement)"
-  - "Name-Uniqueness wird im Aggregate-State geprüft (nicht in DB)"
-  - "Downstream-Propagation via EinrichtungChanged-MessageHub-Event"
-  - "Optimistic Concurrency: Update-Commands benötigen StreamPosition"
-Richtig (WAS):
-  - "Hospitale und prähospitale Einrichtungen werden gleich behandelt"
-  - "ExterneReferenz auf Einrichtung existiert aktuell nicht — nur UUID"
-  - "Der USER benötigt das Domänenrecht ManageLeistungsadministration und Zugang zur Organisations-Hierarchie"
-
-Duplikat-Check — VOR dem Schreiben jedes Constraints prüfen:
-1. Steht dieselbe Information bereits in Preconditions, AKs oder Postconditions? → Constraint weglassen.
-2. Ist es eine Abhängigkeit zu einer anderen Story/einem Ticket? → Gehört in Preconditions (als Zustand formuliert: "Funktion X ist verfügbar"), NICHT in Constraints.
-3. Ist es eine Geschäftsregel die bereits als AK oder Postcondition formuliert ist? → Constraint weglassen, auch wenn die Formulierung leicht anders ist.
-
-Constraints enthalten NUR Informationen, die NIRGENDWO sonst in der Story stehen. Wenn nach dem Check keine eigenständigen Constraints übrig bleiben, Abschnitt weglassen.
-
-Statt (Duplikat von Precondition + Story-Referenz):
-  C1. Story 15 (IES-17635) MUSS abgeschlossen sein — ExterneReferenz-Feld muss existieren
-  C2. Story 4 (IES-17626) MUSS das Gate-Recht StapelverarbeitungManage bereitstellen
-Richtig (als Precondition formulieren, Constraint weglassen):
-  PC: Das ExterneReferenz-Feld auf Rollen ist im SYSTEM vorhanden
-  PC: Der USER hat das Gate-Recht StapelverarbeitungManage
-  → Kein Constraint nötig — die Vorbedingung deckt das ab.
-
-Statt (Duplikat von AK/Postcondition):
-  AK5: Das SYSTEM validiert, ob die Rolle der Organisation zugewiesen werden darf (Hierarchie-Regel)
-  C5: Unterorganisationen dürfen nur Rollen besitzen, die ihre übergeordnete Organisation auch hat
-Richtig:
-  AK5 reicht. Constraint weglassen — selbe Information, andere Formulierung, ist trotzdem Duplikat.
+Statt (Constraints-Sektion mit technischen Details und Duplikaten):
+  Constraints & Randbedingungen:
+  1. Story 15 (IES-17635) MUSS abgeschlossen sein — ExterneReferenz-Feld muss existieren
+  2. Unterorganisationen dürfen nur Rollen besitzen, die ihre übergeordnete Organisation auch hat
+  3. Aktive User-Sessions werden nicht invalidiert
+Richtig (Information verteilen, keine eigene Sektion):
+  Precondition: Das ExterneReferenz-Feld auf Rollen ist im SYSTEM vorhanden
+  Out of Scope: Invalidierung aktiver User-Sessions bei Rollen-Änderungen
+  → Hierarchie-Regel steht bereits als AK → nicht doppelt dokumentieren
 
 **Mögliche Lösungsansätze** (optional, nur wenn in Jira/Diskussion bereits erwähnt)
 1. [Lösungsidee aus Ticket/Kommentaren - NICHT deine Empfehlung, nur Dokumentation]
@@ -346,7 +323,7 @@ flowchart LR
 | Agent | Perspektive | Prompt |
 |-------|-------------|--------|
 | 1 | Kunde/Nutzer | "Prüfe diese Requirements aus Kundensicht. Welche WAS-Fragen kann ein User/PO nicht beantworten? Liefere max. 5 Findings als: Requirement sagt '[Zitat]', aber unklar: [konkrete Frage]. Keine Lösungsvorschläge." |
-| 2 | Softwarearchitekt | "Prüfe diese Requirements aus Architektensicht. Genug Info für einen Architekturentwurf? Liefere max. 5 Findings: fehlende Constraints, Konflikte zwischen Requirements, fehlende NFRs. Kein Architektur-Design." |
+| 2 | Softwarearchitekt | "Prüfe diese Requirements aus Architektensicht. Genug Info für einen Architekturentwurf? Liefere max. 5 Findings: fehlende Einschränkungen, Konflikte zwischen Requirements, fehlende NFRs. Kein Architektur-Design." |
 | 3 | Tester | "Prüfe diese Requirements aus Testersicht. Können Testfälle abgeleitet werden? Liefere max. 5 Findings: Welche Requirements sind zu vage zum Testen? Was fehlt für Testbarkeit? Kein Test-Code." |
 
 **Output-Format pro Perspektive:**
@@ -357,7 +334,7 @@ flowchart LR
 1. Requirement sagt "[Zitat]", aber unklar: [konkrete Frage an Stakeholder]
 
 **Anforderungskonflikte:**
-1. Requirement A vs. Requirement B/Constraint → Klärungsbedarf: [Frage]
+1. Requirement A vs. Requirement B → Klärungsbedarf: [Frage]
 
 **Fehlende NFRs:**
 1. [NFR-Kategorie] nicht spezifiziert → Frage: [Welche Anforderung?]
@@ -367,7 +344,7 @@ flowchart LR
 ### Impact-Analyse bei Änderungen
 Wenn im Gespräch Anforderungen geändert, ergänzt oder gestrichen wurden:
 
-1. **Delta identifizieren:** Welche AKs, Preconditions, Postconditions oder Constraints haben sich gegenüber dem Ausgangsstand geändert?
+1. **Delta identifizieren:** Welche AKs, Preconditions oder Postconditions haben sich gegenüber dem Ausgangsstand geändert?
 2. **Betroffene Anforderungen prüfen:** Gegen den Kontext aus Phase 2 abgleichen — verlinkte Issues (Agent 3), verwandte Stories im Dokument (Agent 4). Frage pro betroffener Anforderung: "Ist diese Anforderung durch die Änderung noch konsistent?"
 3. **Ergebnis dem User melden** via AskUserQuestion-Modal:
    - Betroffene Anforderungen auflisten mit Begründung warum sie betroffen sind
@@ -399,8 +376,8 @@ Mermaid diagrams showing key user journeys
 Funktionale/Datenformat/Interaktions/Qualitäts-Lücken
 → Format: `[Lücke] → Frage: "[konkret]"`
 
-### Konflikte & Constraints
-Konflikte (intern/extern), Constraints (technisch/organisatorisch)
+### Konflikte
+Konflikte zwischen Requirements (intern/extern)
 
 ## Perspektivenbasiertes Lesen
 Kritische Findings (🔴) → AskUserQuestion-Modal zur sofortigen Klärung
