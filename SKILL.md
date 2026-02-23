@@ -142,7 +142,7 @@ IMPORTANT: Write acceptance criteria in natural, readable language using simple 
 Anti-Patterns in Acceptance Criteria & Stories:
 ❌ KEINE Fett-Formatierung (**bold**) in Story-Texten — Klartext, keine Markdown-Deko
 ❌ KEINE Titel-Präfixe vor AKs wie "**Create:** Das SYSTEM..." oder "**Delete:** Das SYSTEM..." — jedes AK beginnt direkt mit dem Akteur
-❌ KEINE Verweise auf andere Stories ("Story 11", "Feld-Tabelle aus Story 9") — jede Story soll gemäss INVEST unabhängig sein. Information inline wiederholen statt referenzieren.
+❌ KEINE Referenzen in AKs — weder auf andere Stories/Tickets ("Story 11", "IES-12345"), noch auf offene Fragen ("gem. Q20", "gem. Q-NEU-1"), noch auf externe Dokumente. Der Leser muss jedes AK verstehen, ohne etwas nachzuschlagen. Information inline wiederholen. Wenn ein Detail noch ungeklärt ist: AK so weit formulieren wie möglich und das offene Detail als Frage in die Offene-Fragen-Tabelle verschieben — NICHT als "gem. Q-xyz"-Platzhalter im AK parken.
 ❌ AVOID GIVEN-WHEN-THEN notation or Gherkin syntax
 ❌ KEINE Implementierungsdetails in AKs — AKs beschreiben WAS das System tut, nicht WIE es das intern löst. Typischer Fehler: Codebase-Analyse liefert technische Details, die ungefiltert in AKs landen.
 
@@ -172,6 +172,19 @@ Statt (Formatierung & Referenzen):
 Richtig:
   4. Das SYSTEM erstellt eine neue Einrichtung unter der angegebenen parent_organisation_id mit den Feldern Name, GeoPosition, Spitalkategorie, Phonenumber, Versorgung
   7. Das SYSTEM löscht eine Einrichtung NUR WENN keine Leistungen zugeordnet sind
+
+Statt (Q-Referenz als Platzhalter — Detail ungeklärt ins AK geschoben):
+  2. Das SYSTEM erkennt die Aktion pro Zeile — ausser eine explizite Delete-Spalte ist gesetzt (Spaltenname/Format gem. Q-NEU-2)
+  3. Das SYSTEM identifiziert Organisationen anhand des Lookup-Keys (Lookup-Key gem. Q20)
+Richtig (so weit formulieren wie bekannt, Unklares in Offene Fragen):
+  2. Das SYSTEM erkennt die gewünschte Aktion pro Zeile: leerer Lookup-Key bedeutet Create, vorhandener Lookup-Key bedeutet Update, gesetzte Delete-Spalte bedeutet Deaktivierung
+  3. Das SYSTEM identifiziert bestehende Organisationen anhand eines eindeutigen Schlüsselfelds im CSV
+  → Falls unklar welches Feld/welches Format: Offene Frage anlegen, NICHT "gem. Q-xyz" ins AK schreiben
+
+Statt (Ticket-Referenz in AK):
+  7. Der Import-Vorgang ist in der Import-Übersicht nachvollziehbar (IES-17623)
+Richtig (Anforderung selbsterklärend formulieren):
+  7. Der Import-Vorgang ist in der Import-Übersicht nachvollziehbar
 
 **Abgrenzung: Acceptance Criteria vs. Postconditions**
 - **Acceptance Criteria** beschreiben die **Interaktion** zwischen User und System — was der User tun kann, was das System während der Interaktion anzeigt, anbietet oder validiert.
@@ -226,7 +239,26 @@ Richtig (WAS):
   - "ExterneReferenz auf Einrichtung existiert aktuell nicht — nur UUID"
   - "Der USER benötigt das Domänenrecht ManageLeistungsadministration und Zugang zur Organisations-Hierarchie"
 
-NICHT duplizieren was bereits in Preconditions oder AKs steht.
+Duplikat-Check — VOR dem Schreiben jedes Constraints prüfen:
+1. Steht dieselbe Information bereits in Preconditions, AKs oder Postconditions? → Constraint weglassen.
+2. Ist es eine Abhängigkeit zu einer anderen Story/einem Ticket? → Gehört in Preconditions (als Zustand formuliert: "Funktion X ist verfügbar"), NICHT in Constraints.
+3. Ist es eine Geschäftsregel die bereits als AK oder Postcondition formuliert ist? → Constraint weglassen, auch wenn die Formulierung leicht anders ist.
+
+Constraints enthalten NUR Informationen, die NIRGENDWO sonst in der Story stehen. Wenn nach dem Check keine eigenständigen Constraints übrig bleiben, Abschnitt weglassen.
+
+Statt (Duplikat von Precondition + Story-Referenz):
+  C1. Story 15 (IES-17635) MUSS abgeschlossen sein — ExterneReferenz-Feld muss existieren
+  C2. Story 4 (IES-17626) MUSS das Gate-Recht StapelverarbeitungManage bereitstellen
+Richtig (als Precondition formulieren, Constraint weglassen):
+  PC: Das ExterneReferenz-Feld auf Rollen ist im SYSTEM vorhanden
+  PC: Der USER hat das Gate-Recht StapelverarbeitungManage
+  → Kein Constraint nötig — die Vorbedingung deckt das ab.
+
+Statt (Duplikat von AK/Postcondition):
+  AK5: Das SYSTEM validiert, ob die Rolle der Organisation zugewiesen werden darf (Hierarchie-Regel)
+  C5: Unterorganisationen dürfen nur Rollen besitzen, die ihre übergeordnete Organisation auch hat
+Richtig:
+  AK5 reicht. Constraint weglassen — selbe Information, andere Formulierung, ist trotzdem Duplikat.
 
 **Mögliche Lösungsansätze** (optional, nur wenn in Jira/Diskussion bereits erwähnt)
 1. [Lösungsidee aus Ticket/Kommentaren - NICHT deine Empfehlung, nur Dokumentation]
