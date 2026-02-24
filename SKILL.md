@@ -158,6 +158,15 @@ Anti-Patterns in Acceptance Criteria & Stories:
 ❌ KEINE Referenzen in AKs — weder auf andere Stories/Tickets ("Story 11", "IES-12345"), noch auf offene Fragen ("gem. Q20", "gem. Q-NEU-1"), noch auf externe Dokumente. Der Leser muss jedes AK verstehen, ohne etwas nachzuschlagen. Information inline wiederholen. Wenn ein Detail noch ungeklärt ist: AK so weit formulieren wie möglich und das offene Detail als Frage in die Offene-Fragen-Tabelle verschieben — NICHT als "gem. Q-xyz"-Platzhalter im AK parken.
 ❌ AVOID GIVEN-WHEN-THEN notation or Gherkin syntax
 ❌ KEINE Implementierungsdetails in AKs — AKs beschreiben WAS das System tut, nicht WIE es das intern löst. Typischer Fehler: Codebase-Analyse liefert technische Details, die ungefiltert in AKs landen.
+❌ KEINE impliziten Duplikate — dasselbe Verhalten nicht einmal positiv und einmal negativ (oder aus System- und User-Perspektive) formulieren. Jedes AK muss einen eigenständigen, testbaren Wert liefern. Wenn ein AK logisch aus einem anderen folgt, ist es redundant.
+
+Duplikat-Litmus-Test: "Kann dieses AK wahr sein, während das andere falsch ist?" → Nein = Duplikat, eines streichen.
+
+Statt (implizites Duplikat — gleiche Aussage, verschiedene Perspektiven):
+  2. Das SYSTEM verarbeitet den Import im Hintergrund — der USER wartet nicht auf den Abschluss
+  3. Der USER kann während der Verarbeitung in der Applikation weiterarbeiten
+Richtig (eine Aussage, die den testbaren Kern trifft):
+  2. Der USER kann während der Verarbeitung in der Applikation weiterarbeiten
 
 WAS-vs-WIE Litmus-Test für jedes AK:
 - "Muss der User/PO das wissen, um die Anforderung zu verstehen?" → Ja = WAS, Nein = WIE
