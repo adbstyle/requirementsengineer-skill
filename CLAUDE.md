@@ -13,6 +13,8 @@ Wenn Änderungen auf `main` gemergt werden und für andere veröffentlicht werde
 - Skill-Inhalt bearbeiten: `skills/requirementsengineer/SKILL.md` (nicht den Symlink)
 - Subagent bearbeiten: `skills/requirementsengineer/agents/code-explorer.md`
 - Plugin validieren: `claude plugin validate .`
+- Lokales Testen: Änderungen wirken sofort (Symlink), keine Plugin-Installation nötig
+- Plugin wird adbstyle **nicht** installiert — nur für andere Nutzer via Marketplace
 
 ## Projektstruktur
 
