@@ -1,19 +1,31 @@
-# Requirements Engineer Skill
+# Requirements Engineer Plugin
 
 Professional requirements engineering for Claude Code following IREB standards.
 
-## Installation
+## Installation as Plugin (recommended)
+
+### Option 1: Via Marketplace (auto-updates)
 
 ```bash
-cd ~/.claude/skills
-git clone https://github.com/adbstyle/requirementsengineer-skill.git requirementsengineer
+# 1. Marketplace hinzufügen
+/plugin marketplace add adbstyle/claude-code-marketplace
+
+# 2. Plugin installieren
+/plugin install requirementsengineer@adbstyle-skills
+```
+
+### Option 2: Direkt als Plugin (manuell)
+
+```bash
+# Plugin installieren (zeigt auf dieses Repo)
+/plugin install adbstyle/requirementsengineer-skill
 ```
 
 ## Usage
 
 ```bash
-claude /requirementsengineer analyse https://jira.example.com/browse/ISSUE-123
-claude /requirementsengineer Als Administartor will ich Rechtegruppen löschen können, damit ich nach unten vererbte Rechte den Organisationen entziehen kann
+/requirementsengineer analyse https://jira.example.com/browse/ISSUE-123
+/requirementsengineer Als Administrator will ich Rechtegruppen löschen können, damit ich nach unten vererbte Rechte den Organisationen entziehen kann
 ```
 
 ## Features
@@ -27,12 +39,16 @@ claude /requirementsengineer Als Administartor will ich Rechtegruppen löschen k
 ## Structure
 
 ```
-requirementsengineer/
-├── SKILL.md           # Main skill definition
-├── README.md          # This file
-├── agents/            # Subagents
-│   └── code-explorer.md  # Analyzes codebase for IST-Zustand
-└── references/        # Reference materials (IREB books, etc.)
+requirementsengineer-skill/
+├── .claude-plugin/
+│   └── plugin.json                    # Plugin manifest
+├── skills/
+│   └── requirementsengineer/
+│       ├── SKILL.md                   # Main skill definition
+│       ├── agents/
+│       │   └── code-explorer.md       # Analyzes codebase for IST-Zustand
+│       └── references/               # Reference materials (IREB books, etc.)
+└── README.md                          # This file
 ```
 
 ## Subagents
@@ -50,12 +66,6 @@ The skill uses two types of subagents via Task tool:
 - Documents implicit assumptions in current implementation
 
 No external dependencies required - all functionality is self-contained.
-
-## Updates
-
-```bash
-cd ~/.claude/skills/requirementsengineer && git pull
-```
 
 ## Author
 
