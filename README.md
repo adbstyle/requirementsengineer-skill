@@ -21,6 +21,28 @@ Professional requirements engineering for Claude Code following IREB standards.
 /plugin install adbstyle/requirementsengineer-skill
 ```
 
+### Option 3: In eigene Marketplace einbinden
+
+Andere Marketplace-Betreiber können dieses Plugin in ihrer `marketplace.json` referenzieren:
+
+```json
+{
+  "plugins": [
+    {
+      "name": "requirementsengineer",
+      "source": {
+        "source": "github",
+        "repo": "adbstyle/requirementsengineer-skill",
+        "ref": "main"
+      },
+      "description": "Requirements Engineering Skill nach IREB-Standards"
+    }
+  ]
+}
+```
+
+Mit `"ref": "main"` wird immer der neueste Stand von `main` gezogen — ohne manuelle Version-Synchronisation.
+
 ## Usage
 
 ```bash
