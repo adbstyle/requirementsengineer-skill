@@ -1,6 +1,6 @@
 {
   "name": "requirementsengineer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Analysiert und dokumentiert Anforderungen als User Stories und Akzeptanzkriterien nach IREB-Standards. Holt Kontext aus Issue-Trackern, Dokumentation und Codebase, stellt Rückfragen und validiert Requirements.",
   "author": {
     "name": "Adrian Bader",
