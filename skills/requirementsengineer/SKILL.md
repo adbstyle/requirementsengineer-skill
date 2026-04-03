@@ -154,13 +154,29 @@ IMPORTANT: Write acceptance criteria in natural, readable language using simple 
 
 Anti-Patterns in Acceptance Criteria & Stories:
 ❌ KEINE Fett-Formatierung (**bold**) in Story-Texten — Klartext, keine Markdown-Deko
+❌ KEINE Zwischenüberschriften oder Kategorie-Titel innerhalb der Acceptance Criteria — die AKs sind eine flache, durchnummerierte Liste ohne Gruppierung. Subtitels wie "Erstellen", "Anzeigen", "Bearbeiten", "Löschen" etc. zwischen den AKs sind unnötig und stören den Lesefluss. Die Nummerierung allein gibt Struktur genug.
 ❌ KEINE Titel-Präfixe vor AKs wie "**Create:** Das SYSTEM..." oder "**Delete:** Das SYSTEM..." — jedes AK beginnt direkt mit dem Akteur
 ❌ KEINE Referenzen in AKs — weder auf andere Stories/Tickets ("Story 11", "IES-12345"), noch auf offene Fragen ("gem. Q20", "gem. Q-NEU-1"), noch auf externe Dokumente. Der Leser muss jedes AK verstehen, ohne etwas nachzuschlagen. Information inline wiederholen. Wenn ein Detail noch ungeklärt ist: AK so weit formulieren wie möglich und das offene Detail als Frage in die Offene-Fragen-Tabelle verschieben — NICHT als "gem. Q-xyz"-Platzhalter im AK parken.
 ❌ AVOID GIVEN-WHEN-THEN notation or Gherkin syntax
 ❌ KEINE Implementierungsdetails in AKs — AKs beschreiben WAS das System tut, nicht WIE es das intern löst. Typischer Fehler: Codebase-Analyse liefert technische Details, die ungefiltert in AKs landen.
 ❌ KEINE impliziten Duplikate — dasselbe Verhalten nicht einmal positiv und einmal negativ (oder aus System- und User-Perspektive) formulieren. Jedes AK muss einen eigenständigen, testbaren Wert liefern. Wenn ein AK logisch aus einem anderen folgt, ist es redundant.
+❌ KEINE Halbsatz-Konstrukte mit Gedankenstrich (—) — ein AK ist ein vollständiger, einfacher Aussagesatz. Der Gedankenstrich wird oft als Krücke benutzt, um einen vagen ersten Teil mit einer Erklärung oder Einschränkung zu retten. Stattdessen: den Gedanken zu Ende denken und als eigenständigen Satz formulieren. Wenn ein AK zwei Aussagen enthält, in zwei AKs aufteilen.
 
 Duplikat-Litmus-Test: "Kann dieses AK wahr sein, während das andere falsch ist?" → Nein = Duplikat, eines streichen.
+
+Statt (Zwischenüberschriften in AKs — unnötige Gruppierung):
+  Erstellen
+  1. Der USER kann eine Word-Datei hochladen.
+  2. Der USER muss beim Hochladen einen Titel angeben.
+  Anzeigen
+  3. Der USER kann alle Vorlagen einsehen.
+  Löschen
+  4. Der USER kann eine Vorlage löschen.
+Richtig (flache, durchnummerierte Liste):
+  1. Der USER kann eine Word-Datei hochladen.
+  2. Der USER muss beim Hochladen einen Titel angeben.
+  3. Der USER kann alle Vorlagen in einer übersichtlichen Darstellung einsehen.
+  4. Der USER kann eine Vorlage löschen.
 
 Statt (implizites Duplikat — gleiche Aussage, verschiedene Perspektiven):
   2. Das SYSTEM verarbeitet den Import im Hintergrund — der USER wartet nicht auf den Abschluss
