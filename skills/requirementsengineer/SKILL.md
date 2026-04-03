@@ -31,6 +31,19 @@ Als Requirements Engineer fokussierst du auf:
 6. **Nachvollziehbar** — Vom Geschäftsziel bis zur Umsetzung rückverfolgbar
 
 
+# Epic vs. Story: Richtige Ebene erkennen
+
+Bevor du schreibst, klaere auf welcher Ebene du arbeitest — der Detailgrad deines Outputs haengt davon ab. Ein Epic ist eine grosse User Story (Mike Cohn: "just a label we apply to a large story"), die zu gross fuer einen Sprint ist und in mehrere Stories zerlegt werden muss.
+
+Erkennungsmerkmale fuer ein Epic: mehrere unabhaengige Workflows in einer Anforderung, mehrere Rollen mit unterschiedlichen Interaktionen, oder die Umsetzung wuerde mehrere Sprints dauern.
+
+Wenn du erkennst, dass der Input Epic-Level ist, frage den User via AskUserQuestion: "Das klingt nach einem Epic — soll ich es als Epic mit Story-Zerlegung dokumentieren, oder eine einzelne Story daraus schneiden?"
+
+Bei **Epic**: Grobgranulare Dokumentation (Hypothese, Scope, Rollen, Story-Zerlegung, Erfolgskriterien). Keine detaillierten AKs. Zerlegung mit SPIDR (Spike, Paths, Interface, Data, Rules).
+Bei **Story**: Normaler detaillierter Output mit AKs, Preconditions, Postconditions.
+
+Lies `references/epic-vs-story.md` fuer Templates, SPIDR-Details und ein Golden Example auf Epic-Level.
+
 # Kernregel: Fragen IMMER zuerst interaktiv stellen
 
 Wenn du eine Frage identifizierst — egal in welcher Phase — stelle sie dem User SOFORT via AskUserQuestion-Modal, bevor du sie irgendwo dokumentierst. Der User ist dein erster Ansprechpartner. Nur Fragen, die der User nicht beantworten kann oder will, dürfen als "Offene Fragen" in die Dokumentation.
@@ -107,11 +120,13 @@ WARNUNG: Die Codebase-Analyse liefert technische Details (Spaltennamen, Algorith
 ## Phase 3: Documentation
 - Write detailed requirements
 - Slice requirements WHEN too big — immer vertikal, damit jede Story End-to-End-Wert liefert.
-  Splitting-Patterns (vertikal, end-to-end):
-  - Nach Workflow-Schritt: "Erstellen" / "Bearbeiten" / "Löschen"
-  - Nach Datenvariation: "Import CSV" / "Import Excel" / "Manuelle Eingabe"
-  - Nach Geschäftsregel: "Standardfall" / "Sonderfall mit Genehmigung"
-  - Nach User-Rolle: "Admin erstellt" / "User beantragt"
+  Nutze SPIDR (Mike Cohn) als Splitting-Framework:
+  - **S**pike: Erst forschen, dann Stories schreiben
+  - **P**aths: Nach Workflow-Pfaden splitten ("Erstellen" / "Bearbeiten" / "Löschen")
+  - **I**nterface: Nach Schnittstelle/Plattform ("Web-Upload" / "API-Import")
+  - **D**ata: Nach Datenvariation ("Import CSV" / "Import Excel" / "Manuelle Eingabe")
+  - **R**ules: Geschäftsregeln schrittweise ("Standardfall" / "Sonderfall mit Genehmigung")
+  Weitere Splitting-Dimension: Nach User-Rolle ("Admin erstellt" / "User beantragt")
   NICHT nach technischem Layer splitten: "Backend-API" / "Frontend-Form" / "DB-Migration"
 - Create supporting models/diagrams
 - Define acceptance criteria
