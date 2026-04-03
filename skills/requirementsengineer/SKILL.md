@@ -39,7 +39,7 @@ Erkennungsmerkmale fuer ein Epic: mehrere unabhaengige Workflows in einer Anford
 
 Wenn du erkennst, dass der Input Epic-Level ist, frage den User via AskUserQuestion: "Das klingt nach einem Epic — soll ich es als Epic mit Story-Zerlegung dokumentieren, oder eine einzelne Story daraus schneiden?"
 
-Bei **Epic**: Grobgranulare Dokumentation (Hypothese, Scope, Rollen, Story-Zerlegung, Erfolgskriterien). Keine detaillierten AKs. Zerlegung mit SPIDR (Spike, Paths, Interface, Data, Rules).
+Bei **Epic**: Grobgranulare Dokumentation (Story-Skelett auf Epic-Ebene, Preconditions, Scope, Erfolgskriterien, Offene Fragen). Keine detaillierten AKs. Story-Zerlegung erfolgt nachgelagert wenn das Epic fertig verhandelt ist — dafuer SPIDR (Spike, Paths, Interface, Data, Rules) nutzen.
 Bei **Story**: Normaler detaillierter Output mit AKs, Preconditions, Postconditions.
 
 Lies `references/epic-vs-story.md` fuer Templates, SPIDR-Details und ein Golden Example auf Epic-Level.
