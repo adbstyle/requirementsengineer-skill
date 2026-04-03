@@ -128,13 +128,11 @@ WARNUNG: Die Codebase-Analyse liefert technische Details (Spaltennamen, Algorith
   - **R**ules: Geschäftsregeln schrittweise ("Standardfall" / "Sonderfall mit Genehmigung")
   Weitere Splitting-Dimension: Nach User-Rolle ("Admin erstellt" / "User beantragt")
   NICHT nach technischem Layer splitten: "Backend-API" / "Frontend-Form" / "DB-Migration"
-- Create supporting models/diagrams
 - Define acceptance criteria
 
 **Outputs**:
 - User stories with acceptance criteria
 - Non-functional requirements
-- Process flow diagrams (Mermaid)
 
 ### Referenz: Golden Example
 Lies `references/golden-example.md` vor dem Schreiben jeder Story. Das Golden Example zeigt zwei vollstaendig ausgefuellte Stories im erwarteten Stil — nutze es als Massstab fuer Satzstruktur, Detailgrad und Formatierung. Jeder Satz in deinem Output sollte stilistisch ins Golden Example passen.
@@ -396,10 +394,7 @@ Organized by:
 - **User Stories** (with acceptance criteria)
 - **Non-Functional Requirements**
 
-## 4. Process Flows
-Mermaid diagrams showing key user journeys
-
-## 5. Requirements-Analyse: Lücken & Konflikte
+## 4. Requirements-Analyse: Lücken & Konflikte
 
 ### WAS-Lücken
 Funktionale/Datenformat/Interaktions/Qualitäts-Lücken
@@ -412,13 +407,13 @@ Konflikte zwischen Requirements (intern/extern)
 Kritische Findings (🔴) → AskUserQuestion-Modal zur sofortigen Klärung
 Verbleibende Findings → Offene Fragen (nummerierte Liste mit @Rolle)
 
-## 6. Verbleibende Offene Fragen
+## 5. Verbleibende Offene Fragen
 Nur Fragen, die der User im Gespräch nicht beantworten konnte. An andere Stakeholder gerichtet, mit Prio und Verantwortlichem.
 
-## 7. Impact-Analyse (nur bei Änderungen)
+## 6. Impact-Analyse (nur bei Änderungen)
 Geänderte Anforderungen → betroffene verlinkte/verwandte Anforderungen → AskUserQuestion
 
-## 8. Requirements-Readiness
+## 7. Requirements-Readiness
 Bewertung: Geschäftswert, Vollständigkeit, NFRs, Testbarkeit, Konflikte
 → **Status:** 🟢 READY / 🟡 NEEDS REFINEMENT / 🔴 NOT READY
 
