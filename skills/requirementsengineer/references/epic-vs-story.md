@@ -40,14 +40,14 @@ In Scope
 2. [Funktionsbereich 2]
 3. [Funktionsbereich 3]
 
+Erfolgskriterien
+1. [Messbares Ergebnis, woran erkennt wird, dass das Epic erfolgreich war]
+2. [Messbares Ergebnis, woran erkennt wird, dass das Epic erfolgreich war]
+
 Out of Scope
 1. [Explizite Abgrenzung 1]
 2. [Explizite Abgrenzung 2]
 3. [Explizite Abgrenzung 3]
-
-Erfolgskriterien
-1. [Messbares Ergebnis, woran erkennt wird, dass das Epic erfolgreich war]
-2. [Messbares Ergebnis, woran erkennt wird, dass das Epic erfolgreich war]
 
 Offene Fragen
 1. @[Rolle]: [Frage]
@@ -70,14 +70,14 @@ In Scope
 2. Statusgesteuerte Prozessabwicklung mit Berechtigungen
 3. Dokumentation und Nachvollziehbarkeit aller Entscheidungen
 
-Out of Scope
-1. Integration mit externen Behoerdensystemen (separates Epic)
-2. Automatische Benachrichtigung betroffener Kunden
-
 Erfolgskriterien
 1. Ein Marktrückzug kann vollstaendig digital von Erfassung bis Abschluss durchlaufen werden
 2. Jeder Prozessschritt ist im Aenderungsprotokoll nachvollziehbar
 3. Unbefugte Rollen koennen keine Statusaenderungen oder Entscheidungen vornehmen
+
+Out of Scope
+1. Integration mit externen Behoerdensystemen (separates Epic)
+2. Automatische Benachrichtigung betroffener Kunden
 
 Offene Fragen
 1. @Regulatory Affairs Lead: Welche konkreten Statusschritte umfasst der Marktrückzugsprozess?
