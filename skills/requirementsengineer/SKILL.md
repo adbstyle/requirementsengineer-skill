@@ -120,7 +120,9 @@ WARNUNG: Die Codebase-Analyse liefert technische Details (Spaltennamen, Algorith
 - User stories with acceptance criteria
 - Non-functional requirements
 - Process flow diagrams (Mermaid)
-- Use Case Diagramme (Mermaid) — Akteur-System-Übersicht, besonders bei Epics
+
+### Referenz: Golden Example
+Lies `references/golden-example.md` vor dem Schreiben jeder Story. Das Golden Example zeigt zwei vollstaendig ausgefuellte Stories im erwarteten Stil — nutze es als Massstab fuer Satzstruktur, Detailgrad und Formatierung. Jeder Satz in deinem Output sollte stilistisch ins Golden Example passen.
 
 ### User Story Format Template:
 ```
@@ -245,20 +247,13 @@ Examples:
 **Offene Fragen (Open Questions)**
 Hier landen NUR Fragen, die du dem User bereits via AskUserQuestion gestellt hast und die er nicht beantworten konnte — oder Fragen, die explizit an andere Stakeholder gerichtet sind. Dokumentiere niemals Fragen hier, die du dem User noch nicht gestellt hast. Beantwortete Fragen entfernen.
 
-| # | Prio | Frage | Verantwortlich |
-|---|------|-------|----------------|
-| Q1 | 🔴 | [WAS-Frage an Stakeholder, die geklärt werden muss] | [Rolle] |
-| Q2 | 🟡 | [Anforderungs-Konflikt, der aufgelöst werden muss] | [Rolle] |
-| Q3 | 🟢 | [Implizite Annahme, die validiert werden muss] | [Rolle] |
-
-Prio: 🔴 KRITISCH (blockiert Umsetzung) · 🟡 WICHTIG (beeinflusst Scope) · 🟢 OPTIONAL (Nice-to-know)
+Einfache nummerierte Liste, sortiert nach Wichtigkeit (wichtigste zuerst). Jede Frage beginnt mit @Rolle als Adressat.
+1. @[Rolle]: [Frage]
 
 Examples:
-| # | Prio | Frage | Verantwortlich |
-|---|------|-------|----------------|
-| Q1 | 🔴 | Was bedeutet 'lesbare Form' konkret? Beispiel erwünscht? | Product Owner |
-| Q2 | 🟡 | Sollen Änderungen für alle Packungen oder nur eine angezeigt werden? | Fachexperte |
-| Q3 | 🟢 | Wie soll das System reagieren, wenn keine Änderungen vorhanden sind? | UX Designer |
+1. @Product Owner: Was bedeutet 'lesbare Form' konkret? Beispiel erwuenscht?
+2. @Fachexperte: Sollen Aenderungen fuer alle Packungen oder nur eine angezeigt werden?
+3. @UX Designer: Wie soll das System reagieren, wenn keine Aenderungen vorhanden sind?
 
 KEIN "Constraints & Randbedingungen"-Abschnitt im Output. Technische und fachliche Einschränkungen aus der Codebase-Analyse werden NICHT als eigene Sektion dokumentiert, sondern ausschliesslich verwertet um:
 1. Offene Fragen zu formulieren — "Einschränkung X wurde identifiziert. FRAGE: Wie soll damit umgegangen werden?"
@@ -329,32 +324,11 @@ Keep it concise - implementation details go in separate architecture documentati
 | **Maintainability** | How easy to change? | Änderung an Modul X erfordert keine Änderung an Modul Y |
 | **Compatibility** | Browsers? Integrations? | Chrome, Safari, Firefox; Schnittstellen für Drittsysteme |
 
-### Use Case Diagramm (Mermaid)
-Zeigt welche Akteure mit welchen Systemfunktionen interagieren. Besonders nützlich als Epic-Übersicht oder wenn mehrere Rollen beteiligt sind. Mermaid hat keinen nativen Use-Case-Typ — verwende `flowchart LR` mit `subgraph` als Systemgrenze und `(( ))` für Akteure.
-
-Beispiel:
-```mermaid
-flowchart LR
-    Admin((Admin))
-    User((User))
-    subgraph System["CSV-Import"]
-        UC1([Datei hochladen])
-        UC2([Daten validieren])
-        UC3([Fehler anzeigen])
-        UC4([Import bestätigen])
-    end
-    Admin --> UC1
-    UC1 --> UC2
-    UC2 --> UC3
-    UC2 --> UC4
-    User --> UC3
-```
-
 ## Phase 4: Validation
 ### Perspektivenbasiertes Lesen
 
 > **MANDATORY:** Verwende das **Task-Tool** mit `subagent_type="general-purpose"` und `model="sonnet"`.
-> Spawne alle 3 in **einem einzigen Message-Block** (parallel).
+> Spawne alle 4 in **einem einzigen Message-Block** (parallel).
 > Übergib jedem Agent die fertige Requirements-Dokumentation aus Phase 3 als Kontext.
 > Jeder Agent liefert maximal 5 Findings — priorisiert nach Impact.
 
@@ -363,6 +337,7 @@ flowchart LR
 | 1 | Kunde/Nutzer | "Prüfe diese Requirements aus Kundensicht. Welche WAS-Fragen kann ein User/PO nicht beantworten? Liefere max. 5 Findings als: Requirement sagt '[Zitat]', aber unklar: [konkrete Frage]. Keine Lösungsvorschläge." |
 | 2 | Softwarearchitekt | "Prüfe diese Requirements aus Architektensicht. Genug Info für einen Architekturentwurf? Liefere max. 5 Findings: fehlende Einschränkungen, Konflikte zwischen Requirements, fehlende NFRs. Kein Architektur-Design." |
 | 3 | Tester | "Prüfe diese Requirements aus Testersicht. Können Testfälle abgeleitet werden? Liefere max. 5 Findings: Welche Requirements sind zu vage zum Testen? Was fehlt für Testbarkeit? Kein Test-Code." |
+| 4 | Business Analyst | "Prüfe diese Requirements aus BA-Sicht. Dein Fokus: Ist das tatsächliche Problem und der Bedarf des Stakeholders klar genug formuliert, damit ein Entwicklungsteam es versteht? Prüfe anhand dieser Leitfragen: (1) Welches Problem versuchen wir zu lösen — ist es benannt oder nur implizit? (2) Wie bringt diese Story der Organisation einen Wert? (3) Wer sind die Endnutzer und was ist ihr konkreter Nutzen? (4) Woran erkennen wir, dass wir fertig sind? Liefere max. 5 Findings. Achte besonders auf: vorzeitige Lösungsvorgaben (UI-Details, technische Vorgaben) die statt des Problems eine Lösung beschreiben, fehlende Problemkontexte, unklare Wertversprechen. Keine Lösungsvorschläge." |
 
 **Output-Format pro Perspektive:**
 
@@ -419,7 +394,7 @@ Konflikte zwischen Requirements (intern/extern)
 
 ## Perspektivenbasiertes Lesen
 Kritische Findings (🔴) → AskUserQuestion-Modal zur sofortigen Klärung
-Verbleibende Findings → Offene Fragen (Tabelle mit Prio/Verantwortlich)
+Verbleibende Findings → Offene Fragen (nummerierte Liste mit @Rolle)
 
 ## 6. Verbleibende Offene Fragen
 Nur Fragen, die der User im Gespräch nicht beantworten konnte. An andere Stakeholder gerichtet, mit Prio und Verantwortlichem.
