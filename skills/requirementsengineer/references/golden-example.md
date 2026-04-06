@@ -43,9 +43,9 @@ Postconditions
 3. Bereits erstellte Bescheide, die auf einer geloeschten Vorlage basieren, bleiben unveraendert
 
 Out of Scope
-1. Versionierung von Vorlagen (eine neue Version wird als separate Vorlage hochgeladen)
-2. Vorschau des Vorlageninhalts in der Applikation
-3. Bearbeitung des Vorlageninhalts innerhalb der Applikation
+1. Das SYSTEM unterstuetzt keine Versionierung von Vorlagen — eine neue Version wird als separate Vorlage hochgeladen
+2. Der USER kann den Inhalt einer Vorlage nicht in der Applikation ansehen
+3. Der USER kann den Inhalt einer Vorlage nicht in der Applikation bearbeiten
 
 Offene Fragen
 1. @Fachexperte: Welche Platzhalter muss eine gueltige Vorlage enthalten, damit das System sie beim Bescheid-Erstellen befuellen kann?
@@ -80,8 +80,8 @@ Postconditions
 2. Der Statusübergang ist im Aenderungsprotokoll sichtbar
 
 Out of Scope
-1. Konfiguration der Prozessschritte durch den User (die Schritte sind fest definiert)
-2. Automatische Benachrichtigungen bei Statusaenderungen
+1. Der USER kann die Prozessschritte nicht selbst konfigurieren — die Schritte sind fest definiert
+2. Das SYSTEM versendet keine automatischen Benachrichtigungen bei Statusaenderungen
 
 Offene Fragen
 1. @Regulatory Affairs Lead: Welche konkreten Statusschritte umfasst der Marktrückzugsprozess (vollstaendige Liste)?

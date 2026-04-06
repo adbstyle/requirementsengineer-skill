@@ -45,9 +45,7 @@ Erfolgskriterien
 2. [Messbares Ergebnis, woran erkennt wird, dass das Epic erfolgreich war]
 
 Out of Scope
-1. [Explizite Abgrenzung 1]
-2. [Explizite Abgrenzung 2]
-3. [Explizite Abgrenzung 3]
+1. [Aussagesatz der beschreibt, was das System NICHT tut — auch ohne Ueberschrift verstaendlich]
 
 Offene Fragen
 1. @[Rolle]: [Frage]
@@ -76,8 +74,8 @@ Erfolgskriterien
 3. Unbefugte Rollen koennen keine Statusaenderungen oder Entscheidungen vornehmen
 
 Out of Scope
-1. Integration mit externen Behoerdensystemen (separates Epic)
-2. Automatische Benachrichtigung betroffener Kunden
+1. Das SYSTEM kommuniziert nicht direkt mit externen Behoerdensystemen
+2. Das SYSTEM versendet keine automatischen Benachrichtigungen an betroffene Kunden
 
 Offene Fragen
 1. @Regulatory Affairs Lead: Welche konkreten Statusschritte umfasst der Marktrückzugsprozess?

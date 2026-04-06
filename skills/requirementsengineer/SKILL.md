@@ -252,10 +252,20 @@ Examples:
 - Das SYSTEM speichert die Vorgangserstellung WENN der USER die Erstellung bestätigt UND alle Eingaben valide sind
 
 **Out of Scope**
-1. [requirement or possible solution that is explicitely not part of] 
-Examples:
-- Die hinzugefügten / korrigierten Werte werden nicht sogleich im Diagramm reflektiert. Die Werte müssen zuerst gespeichert werden
-- Automatische Fehlerkorrektur - das SYSTEM korrigiert keine Daten
+Hier stehen nur Punkte, die bewusst verneint wurden oder die ein Risiko fuer Scope Creep darstellen — Funktionalitaet, die man beim Lesen der AKs faelschlicherweise mit hineininterpretieren koennte und die zu erheblichem Mehraufwand fuehren wuerde. Out of Scope ist KEIN Index der Nachbar-Stories.
+
+Jeder Punkt ist ein vollstaendiger Aussagesatz, der auch ohne die Ueberschrift "Out of Scope" verstaendlich ist. Keine Stichworte, keine Doppelverneinungen.
+
+1. [Aussagesatz der beschreibt, was das System NICHT tut]
+
+Anti-Pattern — Stichworte und Story-Verweise:
+❌ Automatische Fehlerkorrektur
+❌ Import von Swisscard-Visa-Abrechnungen (eigene Story E1-S2)
+Stichworte sind mehrdeutig ("machen wir das oder nicht?"). Story-Verweise gehoeren ins Backlog, nicht in Out of Scope.
+
+Richtig — eigenstaendige Aussagesaetze:
+1. Das SYSTEM korrigiert fehlerhafte Daten nicht automatisch
+2. Bereits abgeschlossene Perioden werden nicht neu berechnet
 
 **Offene Fragen (Open Questions)**
 Hier landen NUR Fragen, die du dem User bereits via AskUserQuestion gestellt hast und die er nicht beantworten konnte — oder Fragen, die explizit an andere Stakeholder gerichtet sind. Dokumentiere niemals Fragen hier, die du dem User noch nicht gestellt hast. Beantwortete Fragen entfernen.
