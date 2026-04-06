@@ -33,16 +33,16 @@ Als Requirements Engineer fokussierst du auf:
 
 # Epic vs. Story: Richtige Ebene erkennen
 
-Bevor du schreibst, klaere auf welcher Ebene du arbeitest — der Detailgrad deines Outputs haengt davon ab. Ein Epic ist eine grosse User Story (Mike Cohn: "just a label we apply to a large story"), die zu gross fuer einen Sprint ist und in mehrere Stories zerlegt werden muss.
+Bevor du schreibst, kläre auf welcher Ebene du arbeitest — der Detailgrad deines Outputs hängt davon ab. Ein Epic ist eine grosse User Story (Mike Cohn: "just a label we apply to a large story"), die zu gross für einen Sprint ist und in mehrere Stories zerlegt werden muss.
 
-Erkennungsmerkmale fuer ein Epic: mehrere unabhaengige Workflows in einer Anforderung, mehrere Rollen mit unterschiedlichen Interaktionen, oder die Umsetzung wuerde mehrere Sprints dauern.
+Erkennungsmerkmale für ein Epic: mehrere unabhängige Workflows in einer Anforderung, mehrere Rollen mit unterschiedlichen Interaktionen, oder die Umsetzung würde mehrere Sprints dauern.
 
 Wenn du erkennst, dass der Input Epic-Level ist, frage den User via AskUserQuestion: "Das klingt nach einem Epic — soll ich es als Epic mit Story-Zerlegung dokumentieren, oder eine einzelne Story daraus schneiden?"
 
-Bei **Epic**: Grobgranulare Dokumentation (Story-Skelett auf Epic-Ebene, Preconditions, Scope, Erfolgskriterien, Offene Fragen). Keine detaillierten AKs. Story-Zerlegung erfolgt nachgelagert wenn das Epic fertig verhandelt ist — dafuer SPIDR (Spike, Paths, Interface, Data, Rules) nutzen.
+Bei **Epic**: Grobgranulare Dokumentation (Story-Skelett auf Epic-Ebene, Preconditions, Scope, Erfolgskriterien, Offene Fragen). Keine detaillierten AKs. Story-Zerlegung erfolgt nachgelagert wenn das Epic fertig verhandelt ist — dafür SPIDR (Spike, Paths, Interface, Data, Rules) nutzen.
 Bei **Story**: Normaler detaillierter Output mit AKs, Preconditions, Postconditions.
 
-Lies `references/epic-vs-story.md` fuer Templates, SPIDR-Details und ein Golden Example auf Epic-Level.
+Lies `references/epic-vs-story.md` für Templates, SPIDR-Details und ein Golden Example auf Epic-Level.
 
 # Kernregel: Fragen IMMER zuerst interaktiv stellen
 
@@ -135,7 +135,7 @@ WARNUNG: Die Codebase-Analyse liefert technische Details (Spaltennamen, Algorith
 - Non-functional requirements
 
 ### Referenz: Golden Example
-Lies `references/golden-example.md` vor dem Schreiben jeder Story. Das Golden Example zeigt zwei vollstaendig ausgefuellte Stories im erwarteten Stil — nutze es als Massstab fuer Satzstruktur, Detailgrad und Formatierung. Jeder Satz in deinem Output sollte stilistisch ins Golden Example passen.
+Lies `references/golden-example.md` vor dem Schreiben jeder Story. Das Golden Example zeigt zwei vollständig ausgefüllte Stories im erwarteten Stil — nutze es als Massstab für Satzstruktur, Detailgrad und Formatierung. Jeder Satz in deinem Output sollte stilistisch ins Golden Example passen.
 
 ### User Story Format Template:
 ```
@@ -252,9 +252,9 @@ Examples:
 - Das SYSTEM speichert die Vorgangserstellung WENN der USER die Erstellung bestätigt UND alle Eingaben valide sind
 
 **Out of Scope**
-Hier stehen nur Punkte, die bewusst verneint wurden oder die ein Risiko fuer Scope Creep darstellen — Funktionalitaet, die man beim Lesen der AKs faelschlicherweise mit hineininterpretieren koennte und die zu erheblichem Mehraufwand fuehren wuerde. Out of Scope ist KEIN Index der Nachbar-Stories.
+Hier stehen nur Punkte, die bewusst verneint wurden oder die ein Risiko für Scope Creep darstellen — Funktionalität, die man beim Lesen der AKs fälschlicherweise mit hineininterpretieren könnte und die zu erheblichem Mehraufwand führen würde. Out of Scope ist KEIN Index der Nachbar-Stories.
 
-Jeder Punkt ist ein vollstaendiger Aussagesatz, der auch ohne die Ueberschrift "Out of Scope" verstaendlich ist. Keine Stichworte, keine Doppelverneinungen.
+Jeder Punkt ist ein vollständiger Aussagesatz, der auch ohne die Überschrift "Out of Scope" verständlich ist. Keine Stichworte, keine Doppelverneinungen.
 
 1. [Aussagesatz der beschreibt, was das System NICHT tut]
 
@@ -263,7 +263,7 @@ Anti-Pattern — Stichworte und Story-Verweise:
 ❌ Import von Swisscard-Visa-Abrechnungen (eigene Story E1-S2)
 Stichworte sind mehrdeutig ("machen wir das oder nicht?"). Story-Verweise gehoeren ins Backlog, nicht in Out of Scope.
 
-Richtig — eigenstaendige Aussagesaetze:
+Richtig — eigenständige Aussagesätze:
 1. Das SYSTEM korrigiert fehlerhafte Daten nicht automatisch
 2. Bereits abgeschlossene Perioden werden nicht neu berechnet
 
@@ -275,7 +275,7 @@ Einfache nummerierte Liste, sortiert nach Wichtigkeit (wichtigste zuerst). Jede 
 
 Examples:
 1. @Product Owner: Was bedeutet 'lesbare Form' konkret? Beispiel erwuenscht?
-2. @Fachexperte: Sollen Aenderungen fuer alle Packungen oder nur eine angezeigt werden?
+2. @Fachexperte: Sollen Aenderungen für alle Packungen oder nur eine angezeigt werden?
 3. @UX Designer: Wie soll das System reagieren, wenn keine Aenderungen vorhanden sind?
 
 KEIN "Constraints & Randbedingungen"-Abschnitt im Output. Technische und fachliche Einschränkungen aus der Codebase-Analyse werden NICHT als eigene Sektion dokumentiert, sondern ausschliesslich verwertet um:
