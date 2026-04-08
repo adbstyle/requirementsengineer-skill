@@ -135,9 +135,7 @@ WARNUNG: Die Codebase-Analyse liefert technische Details (Spaltennamen, Algorith
 - Non-functional requirements
 
 ### Referenz: Golden Example
-Lies `references/golden-example.md` vor dem Schreiben jeder Story. Das Golden Example zeigt zwei vollständig ausgefüllte Stories im erwarteten Stil — nutze es als Massstab für Satzstruktur, Detailgrad und Formatierung. Jeder Satz in deinem Output sollte stilistisch ins Golden Example passen.
-
-Das Golden Example gilt für JEDEN Output-Kanal — ob du die Story in der Konversation anzeigst oder in ein externes System schreibst (Jira, Confluence, GitHub Issues, Linear, Markdown-Dateien, etc.). Die Sektionsstruktur (Story-Skelett, Preconditions, Acceptance Criteria, Postconditions, Out of Scope, Offene Fragen), die Satzform (vollständige Aussagesätze, kein Gedankenstrich-Hack) und der Stil bleiben identisch. Passe nur die technische Formatierung an das Zielsystem an (z.B. Jira-Markup statt Markdown), nicht den Inhalt oder die Struktur.
+`references/golden-example.md` definiert die **verbindliche Struktur und Formatierung** jeder Story. Sektionsreihenfolge, Sektionsnamen und Formatierung (flache nummerierte Listen, keine Tabellen, keine Überschriften innerhalb von Sektionen) exakt übernehmen. Keine Sektionen hinzufügen oder weglassen. Gilt für jeden Output-Kanal — nur technisches Markup ans Zielsystem anpassen.
 
 ### User Story Format Template:
 ```
