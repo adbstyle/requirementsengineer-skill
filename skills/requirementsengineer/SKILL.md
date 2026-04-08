@@ -167,6 +167,8 @@ Examples:
 
 IMPORTANT: Write acceptance criteria in natural, readable language using simple numbered lists.
 
+Jeder AK-Satz beginnt mit einem Akteur und ist aktiv formuliert. Kein Passiv, kein akteurloser Satz. Wenn kein Akteur offensichtlich ist, stimmt die Formulierung nicht — umformulieren bis der Akteur klar ist. Typischer Fehler: "Die Einträge sind sortiert" → richtig: "Das SYSTEM sortiert die Einträge nach Datum".
+
 Anti-Patterns in Acceptance Criteria & Stories:
 ❌ KEINE Fett-Formatierung (**bold**) in Story-Texten — Klartext, keine Markdown-Deko
 ❌ KEINE Zwischenüberschriften oder Kategorie-Titel innerhalb der Acceptance Criteria — die AKs sind eine flache, durchnummerierte Liste ohne Gruppierung. Subtitels wie "Erstellen", "Anzeigen", "Bearbeiten", "Löschen" etc. zwischen den AKs sind unnötig und stören den Lesefluss. Die Nummerierung allein gibt Struktur genug.
