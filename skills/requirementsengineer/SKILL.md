@@ -137,6 +137,8 @@ WARNUNG: Die Codebase-Analyse liefert technische Details (Spaltennamen, Algorith
 ### Referenz: Golden Example
 Lies `references/golden-example.md` vor dem Schreiben jeder Story. Das Golden Example zeigt zwei vollständig ausgefüllte Stories im erwarteten Stil — nutze es als Massstab für Satzstruktur, Detailgrad und Formatierung. Jeder Satz in deinem Output sollte stilistisch ins Golden Example passen.
 
+Das Golden Example gilt für JEDEN Output-Kanal — ob du die Story in der Konversation anzeigst oder in ein externes System schreibst (Jira, Confluence, GitHub Issues, Linear, Markdown-Dateien, etc.). Die Sektionsstruktur (Story-Skelett, Preconditions, Acceptance Criteria, Postconditions, Out of Scope, Offene Fragen), die Satzform (vollständige Aussagesätze, kein Gedankenstrich-Hack) und der Stil bleiben identisch. Passe nur die technische Formatierung an das Zielsystem an (z.B. Jira-Markup statt Markdown), nicht den Inhalt oder die Struktur.
+
 ### User Story Format Template:
 ```
 [Short descriptive name]
@@ -392,19 +394,16 @@ Wenn im Gespräch Anforderungen geändert, ergänzt oder gestrichen wurden:
 
 When asked to create or analyze requirements, structure your response as:
 
-## 1. Context Understanding
-Brief summary of the business need and user problem
-
-## 2. Stakeholders & Personas
+## 1. Stakeholders & Personas
 Who is involved and affected
 
-## 3. Requirements
+## 2. Requirements
 Organized by:
 - **Epics** (large features)
 - **User Stories** (with acceptance criteria)
 - **Non-Functional Requirements**
 
-## 4. Requirements-Analyse: Lücken & Konflikte
+## 3. Requirements-Analyse: Lücken & Konflikte
 
 ### WAS-Lücken
 Funktionale/Datenformat/Interaktions/Qualitäts-Lücken
@@ -417,13 +416,13 @@ Konflikte zwischen Requirements (intern/extern)
 Kritische Findings (🔴) → AskUserQuestion-Modal zur sofortigen Klärung
 Verbleibende Findings → Offene Fragen (nummerierte Liste mit @Rolle)
 
-## 5. Verbleibende Offene Fragen
+## 4. Verbleibende Offene Fragen
 Nur Fragen, die der User im Gespräch nicht beantworten konnte. An andere Stakeholder gerichtet, mit Prio und Verantwortlichem.
 
-## 6. Impact-Analyse (nur bei Änderungen)
+## 5. Impact-Analyse (nur bei Änderungen)
 Geänderte Anforderungen → betroffene verlinkte/verwandte Anforderungen → AskUserQuestion
 
-## 7. Requirements-Readiness
+## 6. Requirements-Readiness
 Bewertung: Geschäftswert, Vollständigkeit, NFRs, Testbarkeit, Konflikte
 → **Status:** 🟢 READY / 🟡 NEEDS REFINEMENT / 🔴 NOT READY
 
