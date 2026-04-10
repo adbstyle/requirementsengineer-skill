@@ -7,9 +7,10 @@ Dieses Beispiel zeigt den erwarteten Stil und die Form einer fertigen User Story
 - Jedes AK ist ein vollständiger, einfacher Aussagesatz
 - Ein Gedanke pro Satz, kein Gedankenstrich (—) als Krücke
 - Kein Bold, keine Zwischenüberschriften, keine Referenzen in AKs
-- Akteur steht am Satzanfang: "Der USER..." oder "Das SYSTEM..."
-- Preconditions beschreiben Zustände VOR der Interaktion
-- Postconditions beschreiben Ergebnisse NACH Abschluss der Interaktion
+- AKs aus User-Sicht: Der USER ist der aktive Akteur ("Der USER kann...", "Der USER muss...")
+- Das SYSTEM in AKs nur bei Einschränkungen/Validierungen, die der User nicht steuert
+- Preconditions: nur nicht-offensichtliche Voraussetzungen ("User ist angemeldet" ist implizit)
+- Postconditions: System-Ergebnisse mit WENN-Bedingungen, keine Wiederholung der AKs
 - Offene Fragen enthalten nur unbeantwortete Fragen an andere Stakeholder
 
 ---
@@ -23,24 +24,20 @@ möchte ich Word-Vorlagen für Bescheide hochladen, einsehen und entfernen könn
 damit ich die Korrespondenz mit aktuellen Dokumentvorlagen führen kann
 
 Preconditions
-1. Der USER ist an der Applikation angemeldet
-2. Der USER besitzt die Rolle Vorlagenverwaltung
+1. Der USER besitzt die Rolle Vorlagenverwaltung
 
 Acceptance Criteria
 1. Der USER kann eine Word-Datei im Format .docx hochladen
 2. Der USER muss beim Hochladen einen eindeutigen Titel für die Vorlage angeben
-3. Das SYSTEM lehnt den Upload ab, wenn der Titel bereits vergeben ist
-4. Das SYSTEM lehnt Dateien ab, die grösser als 10 MB sind
-5. Das SYSTEM zeigt eine Fehlermeldung mit dem konkreten Grund an, wenn der Upload abgelehnt wird
-6. Der USER kann alle verfügbaren Vorlagen in einer Liste einsehen
-7. Die Liste zeigt pro Vorlage den Titel, das Hochladedatum und den Namen des Erstellers an
-8. Der USER kann eine Vorlage aus der Liste löschen
-9. Das SYSTEM fragt vor dem Löschen eine explizite Bestätigung ab
+3. Der USER kann alle verfügbaren Vorlagen in einer Liste einsehen
+4. Der USER kann eine Vorlage aus der Liste löschen
+5. Der USER muss das Löschen einer Vorlage explizit bestätigen
+6. Das SYSTEM lehnt den Upload ab, wenn der Titel bereits vergeben ist oder die Datei grösser als 10 MB ist
 
 Postconditions
-1. Eine hochgeladene Vorlage steht allen Sachbearbeitern mit der Rolle Vorlagenverwaltung zur Verfügung
-2. Eine gelöschte Vorlage ist nicht mehr in der Liste sichtbar und kann nicht mehr für neue Bescheide verwendet werden
-3. Bereits erstellte Bescheide, die auf einer gelöschten Vorlage basieren, bleiben unverändert
+1. Das SYSTEM speichert eine hochgeladene Vorlage und stellt sie allen Sachbearbeitern mit der Rolle Vorlagenverwaltung zur Verfügung
+2. Das SYSTEM entfernt die Vorlage endgültig WENN der USER das Löschen bestätigt hat
+3. Das SYSTEM verändert keine bereits erstellten Bescheide, die auf einer gelöschten Vorlage basieren
 
 Out of Scope
 1. Das SYSTEM unterstützt keine Versionierung von Vorlagen — eine neue Version wird als separate Vorlage hochgeladen
@@ -62,22 +59,18 @@ möchte ich den Status eines Marktrückzugs entlang definierter Schritte ändern
 damit der Rückzugsprozess nachvollziehbar und kontrolliert abläuft
 
 Preconditions
-1. Der USER ist an der Applikation angemeldet
-2. Ein Marktrückzug existiert im System
+1. Ein Marktrückzug existiert im System
 
 Acceptance Criteria
 1. Der USER kann den Status eines Marktrückzugs auf den nächsten Schritt im Prozess setzen
-2. Das SYSTEM erlaubt den Übergang von Entwurf auf Eingereicht nur für Rollen mit der Berechtigung Marktrückzug einreichen
-3. Das SYSTEM erlaubt den Übergang von Eingereicht auf Freigegeben nur für Rollen mit der Berechtigung Marktrückzug freigeben
-4. Das SYSTEM verhindert Statusübergänge, die nicht im definierten Prozessablauf vorgesehen sind
-5. Das SYSTEM protokolliert jeden Statusübergang mit Zeitpunkt, ausführendem User und vorherigem Status
-6. Nur Rollen mit Leseberechtigung auf das Entscheidfeld können dieses einsehen
-7. Nur Rollen mit Schreibberechtigung auf das Entscheidfeld können dieses bearbeiten
-8. Der USER sieht nur die Statusübergänge als Aktionen, für die er berechtigt ist
+2. Der USER sieht nur die Statusübergänge als Aktionen, für die er berechtigt ist
+3. Der USER kann das Entscheidfeld nur einsehen, wenn seine Rolle die Leseberechtigung dafür hat
+4. Der USER kann das Entscheidfeld nur bearbeiten, wenn seine Rolle die Schreibberechtigung dafür hat
+5. Das SYSTEM verhindert Statusübergänge, die nicht im definierten Prozessablauf vorgesehen sind
 
 Postconditions
-1. Der Marktrückzug befindet sich im neuen Status
-2. Der Statusübergang ist im Änderungsprotokoll sichtbar
+1. Das SYSTEM setzt den Marktrückzug auf den neuen Status WENN der USER den Übergang auslöst UND seine Rolle die Berechtigung für diesen Übergang hat
+2. Das SYSTEM protokolliert jeden Statusübergang mit Zeitpunkt, ausführendem User und vorherigem Status
 
 Out of Scope
 1. Der USER kann die Prozessschritte nicht selbst konfigurieren — die Schritte sind fest definiert

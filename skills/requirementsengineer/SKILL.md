@@ -150,20 +150,39 @@ Hinweise zum Story-Skelett:
 - NIEMALS "Als SYSTEM" — das System hat keine Bedürfnisse. Frage: "Wer profitiert?" → diese Rolle ist der Akteur.
 - Unklar wer profitiert? → Stakeholder erfragen.
 
-**Preconditions** — Ausgangslage: Was muss VOR Start der Interaktion gegeben sein? (User-Zustand, Daten-Zustand)
+**Preconditions** — Ausgangslage: Was muss VOR Start der Interaktion gegeben sein? Nur nicht-offensichtliche Voraussetzungen auflisten.
 1. [Zustand von User oder Daten vor der Interaktion]
-Examples:
-- "Der USER zeigt eine Meldung im Detail an."
-- "Das SYSTEM kennt mindesten 1 weitere Meldung, welche mit der Organisation des USERs geteilt ist UND das Arzneimittel mindesten ein gleicher Wirkstoff aufweist"
-- "Der USER ist berechtigt Patienten zu erstellen"
+
+Implizite Bedingungen NICHT auflisten:
+- "Der USER ist an der Applikation angemeldet" — ist immer gegeben und selbstverständlich, gehört nicht in Preconditions
+- Zustände, die sich direkt aus der Story ergeben (z.B. "Die Organisation hat mindestens einen zugewiesenen User" bei einer Story über Entfernung von Usern — das ist trivial)
+
+Nur Preconditions auflisten, die ein Leser nicht selbst ableiten kann:
+- "Der USER besitzt das Recht 'Bewirtschaftung der Zuweisung von Benutzern zu Organisationen'"
+- "Das SYSTEM kennt mindestens 1 weitere Meldung, welche mit der Organisation des USERs geteilt ist UND das Arzneimittel mindestens einen gleichen Wirkstoff aufweist"
+- "Der USER zeigt eine Meldung im Detail an"
 
 **Acceptance Criteria**
-1. [action of a user role or a system actor]
+1. [Aktion des USERs — was der USER tun kann, auslösen kann, bestätigen muss]
+
+AKs beschreiben die Interaktion aus der Perspektive des USERs. Der USER ist der aktive Akteur. Wo immer möglich, formuliere aus User-Sicht statt aus System-Sicht. Das SYSTEM ist in AKs nur als Akteur erlaubt, wenn es um Einschränkungen oder Validierungen geht, die der USER nicht direkt steuert (z.B. Berechtigungsprüfungen).
+
+Statt (System-Sicht — System als aktiver Akteur):
+  3. Das SYSTEM zeigt vor der Ausführung einen Bestätigungsdialog an
+  4. Der Bestätigungsdialog zeigt die Anzahl der betroffenen User an
+Richtig (User-Sicht — User ist der aktive Akteur):
+  3. Der USER muss die Ausführung der Entfernung bestätigen
+
+Statt (System-Sicht — Ergebnis einer User-Aktion als AK):
+  6. Das SYSTEM entfernt die Organisationszugehörigkeit erst nach expliziter Bestätigung
+  7. Das SYSTEM informiert den USER über das Ergebnis
+Richtig (→ gehört in Postconditions, weil es System-Reaktionen nach Abschluss der Interaktion sind)
+
 Examples:
-- "Der USER wird auf der HMP dabei angeleitet, wie er seinen .csv File Upload durchführen muss."
-- "Der USER kann eine Benachrichtigung für neue Pflichtlagerbefreiungsanträge abonnieren."
+- "Der USER kann eine Benachrichtigung für neue Pflichtlagerbefreiungsanträge abonnieren"
 - "Der USER kann zu den angezeigten ähnlichen Meldungen navigieren"
-- "Das SYSTEM kann das File mit tägliche Lager- und Absatzdaten von Perioden bis zu 732 Tage verarbeiten"
+- "Der USER muss die Ausführung der Löschaktion bestätigen"
+- "Das SYSTEM kann nur User entfernen, die in Organisationen liegen, auf die der ausführende USER Zugriff hat" (Einschränkung — SYSTEM als Akteur erlaubt)
 
 IMPORTANT: Write acceptance criteria in natural, readable language using simple numbered lists.
 
@@ -242,16 +261,27 @@ Richtig (Anforderung selbsterklärend formulieren):
   7. Der Import-Vorgang ist in der Import-Übersicht nachvollziehbar
 
 **Abgrenzung: Acceptance Criteria vs. Postconditions**
-- **Acceptance Criteria** beschreiben die **Interaktion** zwischen User und System — was der User tun kann, was das System während der Interaktion anzeigt, anbietet oder validiert.
-- **Postconditions** beschreiben den **Zustand oder das Ergebnis**, das das System produziert oder der USER hat/kann, **nachdem** der User seine Aktionen abgeschlossen hat.
-- **Faustregel:** Geschieht es WÄHREND der User-Interaktion → Acceptance Criterion. Beschreibt es, was NACH Abschluss der Interaktion existiert oder resultiert → Postcondition.
+- **Acceptance Criteria** beschreiben, was der **USER tut** — seine Aktionen, Auslöser, Bestätigungen. Der USER ist der aktive Akteur. System-Verhalten in AKs nur bei Einschränkungen/Validierungen, die der User nicht steuert.
+- **Postconditions** beschreiben, was das **SYSTEM als Ergebnis** produziert, nachdem der User seine Aktionen abgeschlossen hat. Postconditions verwenden WENN-Bedingungen, um die Abhängigkeit von User-Aktionen auszudrücken.
+- **Faustregel:** "Was tut der USER?" → Acceptance Criterion. "Was resultiert daraus im SYSTEM?" → Postcondition.
+- **Keine Wiederholung:** Postconditions wiederholen NICHT die AKs als blosse Zustandsumkehrung. AK = "Der USER kann X löschen" (Möglichkeit), PC = "Das SYSTEM löscht X WENN der USER die Löschung bestätigt hat" (Ergebnis mit Bedingung) — das ist KEINE Redundanz, weil "können" noch kein erfolgreiches Gelingen ist. Redundant wäre: AK sagt "Der USER kann X löschen" UND PC sagt nur "X ist gelöscht" ohne Bedingung oder Seiteneffekt — das fügt keinen Informationswert hinzu.
 
 **Postcondition**
-1. [expected result]
+1. [System-Ergebnis mit WENN-Bedingung]
+
+Statt (AK-Wiederholung als Zustandsbeschreibung):
+  PC1. Die entfernten User sind der Organisation nicht mehr zugewiesen
+  PC2. Alle Rollenzuweisungen der entfernten User sind entfernt
+  PC3. Die entfernten User bleiben aktiv und behalten andere Zugehörigkeiten
+Richtig (System-Ergebnisse mit Bedingungen, keine Redundanz):
+  PC1. Das SYSTEM entfernt die Organisationszugehörigkeit der ausgewählten User WENN der USER die Ausführung bestätigt hat
+  PC2. Das SYSTEM entfernt nur die Zugehörigkeit zur ausgewählten Organisation, nicht zu anderen Organisationen der betroffenen User
+  PC3. Das SYSTEM informiert den USER über das Ergebnis der Bulk-Entfernung
+
 Examples:
 - "Das SYSTEM entfernt das PDF endgültig WENN der USER die Löschaktion bestätigt"
-- Der USER erkennt die Erstell- und Löschaktion im Änderungsprotokoll
-- Das SYSTEM speichert die Vorgangserstellung WENN der USER die Erstellung bestätigt UND alle Eingaben valide sind
+- "Das SYSTEM speichert die Vorgangserstellung WENN der USER die Erstellung bestätigt UND alle Eingaben valide sind"
+- "Das SYSTEM informiert den USER über das Ergebnis der Verarbeitung"
 
 **Out of Scope**
 Hier stehen nur Punkte, die bewusst verneint wurden oder die ein Risiko für Scope Creep darstellen — Funktionalität, die man beim Lesen der AKs fälschlicherweise mit hineininterpretieren könnte und die zu erheblichem Mehraufwand führen würde. Out of Scope ist KEIN Index der Nachbar-Stories.
