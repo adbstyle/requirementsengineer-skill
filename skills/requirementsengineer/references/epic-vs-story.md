@@ -134,22 +134,35 @@ Richtig (spezifisch — selbst-verifizierend):
 
 **Litmus-Test:** Wenn ein Stakeholder das Erfolgskriterium liest und nicht weiss, was er prüfen müsste, ist es zu vage. Wenn er es liest und sofort eine Idee hat wie er es prüfen würde — auch ohne explizite Verifikationsmethode — ist es gut formuliert.
 
-### Formulierungsregel: Kein Akteur, ausser die Verantwortung ist explizit
+### Formulierungsregeln für Erfolgskriterien
 
-Erfolgskriterien auf Epic-Ebene beschreiben einen Zustand, der am Ende erreicht ist — nicht wer ihn herbeiführt. Auf Epic-Ebene ist oft noch unklar, wer genau ein Kriterium verantwortet. Ein aktiver Akteur ("Das TEAM hat...", "Der Auftraggeber hat...") impliziert Verantwortung, die möglicherweise noch nicht geklärt ist.
+**1. Kein Akteur, ausser die Verantwortung ist explizit**
 
-Deshalb: Erfolgskriterien als einfache, leserliche Sätze formulieren, die das Outcome beschreiben — ohne Akteur. Einen Akteur nur dann verwenden, wenn die Verantwortung explizit geklärt ist (z.B. PO-Abnahme — der PO ist per Definition der Abnehmende).
+Erfolgskriterien beschreiben einen Zustand, der am Ende erreicht ist — nicht wer ihn herbeiführt. Ein aktiver Akteur ("Das TEAM hat...", "Der Auftraggeber hat...") impliziert Verantwortung, die auf Epic-Ebene oft noch nicht geklärt ist. Akteur nur verwenden, wenn die Verantwortung explizit ist (z.B. PO-Abnahme).
 
-Statt (aktiver Akteur — impliziert ungeklärte Verantwortung):
-  "Das TEAM hat ein Mapping erstellt, das..."
-  "Das TEAM hat die Mengenkennzahl definiert..."
-  "Das TEAM hat die EMDN-Hierarchie dokumentiert..."
-Richtig (Outcome ohne Akteur):
-  "Für jedes Pflichtfeld ist dokumentiert, ob es übernommen, transformiert oder ignoriert wird"
-  "Die Mengenkennzahl ist mit Einheit, Granularität und Berechnungsformel definiert"
-  "Die EMDN-Hierarchie ist mit Aggregationsempfehlung dokumentiert"
-Richtig (Akteur, weil Verantwortung explizit):
-  "Der PO hat das konsolidierte Analysedokument schriftlich freigegeben"
+Statt: "Das TEAM hat die Mengenkennzahl definiert mit Einheit, Granularität und Berechnungsformel. Der Auftraggeber hat die Definition abgenommen."
+Richtig: "Die Mengenkennzahl ist definiert mit Einheit, Granularität und Berechnungsformel"
+Richtig (Akteur, weil Verantwortung explizit): "Der Auftraggeber hat die Mengenkennzahl-Definition abgenommen"
+
+**2. Ein Gedanke pro Kriterium**
+
+Jedes Erfolgskriterium enthält genau eine überprüfbare Aussage. Komplexe Themen in mehrere Kriterien aufsplitten statt alles in einen Satz zu pressen.
+
+Statt (drei Gedanken in einem Kriterium):
+  "Das TEAM hat die Mengenkennzahl definiert mit Einheit, Granularität und Berechnungsformel. Die Arbeitshypothese "Stückzahl = Quantity of Device × Quantity per Package" wurde validiert oder begründet verworfen, wobei die mehrstufige Packungshierarchie von swissdamed (Unit of Use → Base Package → Higher-Level Package) explizit berücksichtigt wurde. Der Auftraggeber hat die Definition abgenommen."
+Richtig (drei separate Kriterien):
+  "Die Mengenkennzahl ist definiert mit Einheit, Granularität und Berechnungsformel"
+  "Die Arbeitshypothese Stückzahl = Quantity of Device x Quantity per Package ist validiert oder begründet verworfen, unter Berücksichtigung der mehrstufigen Packungshierarchie"
+  "Der Auftraggeber hat die Mengenkennzahl-Definition abgenommen"
+
+**3. Kurze, leserliche Sätze**
+
+Keine verschachtelten Klammern, keine (A)/(B)/(C)-Aufzählungen innerhalb eines Kriteriums. Wenn ein Kriterium Unterpunkte braucht, ist es wahrscheinlich mehrere Kriterien.
+
+Statt: "Das TEAM hat ein Mapping erstellt, das drei Feldkategorien abdeckt: (A) formale Pflichtfelder (Occurrence 1 oder 1..n), (B) bedingt verpflichtende Felder (z.B. Device Model ODER Device Name, wo mindestens eines vorhanden sein muss), (C) für die Alternativensuche relevante optionale Felder (Clinical Sizes, Lagerbedingungen). Pro Feld ist dokumentiert, ob es ins MHP-Zieldatenformat übernommen, transformiert oder ignoriert wird, jeweils mit fachlicher Begründung."
+Richtig (zwei separate Kriterien):
+  "Ein Mapping dokumentiert pro swissdamed-Feld, ob es ins MHP-Zieldatenformat übernommen, transformiert oder ignoriert wird, jeweils mit fachlicher Begründung"
+  "Das Mapping deckt drei Feldkategorien ab: formale Pflichtfelder, bedingt verpflichtende Felder und für die Alternativensuche relevante optionale Felder"
 
 ### Erfolgskriterien bei Epics (Business Epics)
 
@@ -220,13 +233,18 @@ Preconditions
 4. Der Entscheid für einen eigenen Bounded Context (ies-mhp) ist getroffen
 
 Erfolgskriterien
-1. Für jedes swissdamed-Pflichtfeld ist dokumentiert, ob es ins MHP-Zieldatenformat übernommen, transformiert oder ignoriert wird, inklusive Begründung
-2. Die Mengenkennzahl für Pflichtlager ist mit Einheit, Granularität und Berechnungsformel definiert und vom PO schriftlich abgenommen
-3. Die Produktidentifikation ist als Entscheidungsdokument festgehalten mit Begründung, warum der gewählte Primärschlüssel gegenüber Alternativen bevorzugt wird
-4. Für Hygieneprodukte ist eine Datenquelle mit Bewertung (Vollständigkeit, Integrierbarkeit, Lizenz) identifiziert, oder es liegt eine dokumentierte Analyse von mindestens 2 evaluierten Quellen mit Begründung der Ablehnung und empfohlenem nächsten Schritt vor
-5. Für fehlende oder inkonsistente swissdamed-Daten ist pro betroffenem Feld eine Fallback-Regel mit Verantwortlichkeit und Eskalationsweg definiert
-6. Die EMDN-Hierarchie ist mit Empfehlung der Aggregationsebene für MHP-Zwecke dokumentiert, inklusive Begründung warum EMDN allein für Austauschbarkeit nicht ausreicht
-7. Der PO hat das konsolidierte Analysedokument mit allen Teilergebnissen schriftlich freigegeben
+1. Ein Mapping dokumentiert pro swissdamed-Feld, ob es ins MHP-Zieldatenformat übernommen, transformiert oder ignoriert wird, jeweils mit fachlicher Begründung
+2. Das Mapping deckt drei Feldkategorien ab: formale Pflichtfelder, bedingt verpflichtende Felder und für die Alternativensuche relevante optionale Felder
+3. Die Mengenkennzahl ist definiert mit Einheit, Granularität und Berechnungsformel
+4. Die Arbeitshypothese Stückzahl = Quantity of Device x Quantity per Package ist validiert oder begründet verworfen, unter Berücksichtigung der mehrstufigen Packungshierarchie
+5. Der Auftraggeber hat die Mengenkennzahl-Definition abgenommen
+6. Die Produktidentifikation im MHP-Datenmodell ist als Entscheidungsdokument festgehalten mit Begründung des gewählten Primärschlüssels, der Gruppierungsebene und der Nomenklatur
+7. Für Hygieneprodukte ist entweder eine Datenquelle mit Bewertung zu Vollständigkeit, Integrierbarkeit und Lizenz identifiziert, oder es liegt eine dokumentierte Analyse von mindestens 2 evaluierten Quellen mit Begründung der Ablehnung und empfohlenem nächsten Schritt vor
+8. Eine Datenstrategie für fehlende oder inkonsistente swissdamed-Daten liegt vor und umfasst mindestens betroffene Felder, Fallback-Regel pro Feld, Verantwortlichkeit und Eskalationsweg
+9. Die EMDN-Hierarchie ist dokumentiert mit Empfehlung der Aggregationsebene für MHP-Zwecke und Begründung, warum EMDN allein für Austauschbarkeit nicht ausreicht
+10. Der Ansatz für die Approximation von Gerätekompatibilität über EMDN und Clinical Sizes ist dokumentiert
+11. Der Umgang mit Änderungen an swissdamed-Daten ist definiert, inklusive Entscheid ob historische Datenstände nachvollziehbar bleiben müssen
+12. Ein konsolidiertes Analysedokument fasst alle Ergebnisse zusammen und ist vom Auftraggeber schriftlich freigegeben
 
 Out of Scope
 1. Das MHP-Domänenmodell wird nur als Zieldatenformat dokumentiert, nicht als lauffähiger Code umgesetzt
@@ -239,8 +257,8 @@ Offene Fragen
 
 ### Warum dieses Beispiel funktioniert
 
-- Es ist ein **Enabler Epic**: Das Ergebnis ist Wissen und Entscheide, kein nutzbares Feature — Output und Outcome fallen zusammen
-- Die Erfolgskriterien sind **spezifisch im Qualitätsniveau**: nicht "ein Mapping liegt vor", sondern "für jedes Pflichtfeld ist dokumentiert ob übernommen, transformiert oder ignoriert, inklusive Begründung"
-- Erfolgskriterium 4 zeigt den **Oder-Pfad**: Entweder eine Quelle gefunden oder dokumentiert warum nicht — beide Ergebnisse sind ein Erfolg
-- Erfolgskriterium 7 ist das **Abnahme-Kriterium**: Der PO gibt das Gesamtdokument frei — das schliesst den Bogen zur Auftragnehmer-Abnahme
-- Out of Scope enthält **keine Verweise auf Nachbar-Epics** ("wird in Epic X gemacht") — stattdessen nur Punkte, die ein Leser fälschlicherweise mit hineininterpretieren könnte: eine Implementierungs-Einschränkung (Punkt 1), eine fachliche Fehlvorstellung (Punkt 2), eine Abgrenzung gegenüber verwandter Funktionalität (Punkt 3)
+- **Ein Gedanke pro Kriterium**: Mengenkennzahl wird zu drei Kriterien (Definition, Hypothesen-Validierung, Auftraggeber-Abnahme) statt einem Absatz
+- **Kein Akteur ausser bei klarer Verantwortung**: Nur EK5 ("Der Auftraggeber hat...") und EK12 ("vom Auftraggeber freigegeben") haben einen Akteur — weil der Auftraggeber explizit der Abnehmende ist. Alle anderen beschreiben den Zustand ohne zu sagen, wer ihn herbeiführt.
+- **Kurze, leserliche Sätze**: Keine verschachtelten Klammern, keine (A)/(B)/(C)-Listen innerhalb eines Kriteriums
+- Erfolgskriterium 7 zeigt den **Oder-Pfad**: Entweder eine Quelle gefunden oder dokumentiert warum nicht — beide Ergebnisse sind ein Erfolg
+- Out of Scope enthält **keine Verweise auf Nachbar-Epics** — stattdessen nur Punkte, die ein Leser fälschlicherweise mit hineininterpretieren könnte
