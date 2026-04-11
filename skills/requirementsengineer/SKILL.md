@@ -39,7 +39,7 @@ Erkennungsmerkmale für ein Epic: mehrere unabhängige Workflows in einer Anford
 
 Wenn du erkennst, dass der Input Epic-Level ist, frage den User via AskUserQuestion: "Das klingt nach einem Epic — soll ich es als Epic mit Story-Zerlegung dokumentieren, oder eine einzelne Story daraus schneiden?"
 
-Bei **Epic**: Grobgranulare Dokumentation (Story-Skelett auf Epic-Ebene, Preconditions, Scope, Erfolgskriterien, Offene Fragen). Keine detaillierten AKs. Story-Zerlegung erfolgt nachgelagert wenn das Epic fertig verhandelt ist — dafür SPIDR (Spike, Paths, Interface, Data, Rules) nutzen.
+Bei **Epic**: Grobgranulare Dokumentation (Story-Skelett auf Epic-Ebene, Preconditions, Erfolgskriterien, Out of Scope, Offene Fragen). Keine detaillierten AKs, kein "In Scope". Unterscheide zwei Epic-Typen: **Epic** (Business Epic) liefert direkt Nutzerwert — Erfolgskriterien sind outcome-orientiert und selbst-verifizierend. **Enabler Epic** schafft Voraussetzungen (Analysen, Entscheide, Infrastruktur) — Output und Outcome fallen zusammen, Spezifität kommt aus dem Qualitätsniveau des Artefakts. Story-Zerlegung erfolgt nachgelagert wenn das Epic fertig verhandelt ist — dafür SPIDR (Spike, Paths, Interface, Data, Rules) nutzen.
 Bei **Story**: Normaler detaillierter Output mit AKs, Preconditions, Postconditions.
 
 Lies `references/epic-vs-story.md` für Templates, SPIDR-Details und ein Golden Example auf Epic-Level.
@@ -79,10 +79,12 @@ Sammle NICHT erst 10 Fragen um sie dann als Tabelle auszugeben. Stelle sie laufe
 |---|------|-------------|--------|
 | 1 | fast | "Fetch main issue" | "Hole Issue inkl. Kommentare. Fasse zusammen: Summary, Description, Status, Vorbedingungen, Akzeptanzkriterien, Nachbedingungen." |
 | 2 | fast | "Fetch parent issue" | "Hole Parent issue Extrahiere: Ziel, Scope, Budget, Abhängigkeiten." |
-| 3 | fast | "Fetch linked issues" | "Hole alle Issues aus dem issuelinks-Array von. Für jedes verlinkte Issue: Key, Summary, Beziehungstyp, Status." |
+| 3 | fast | "Fetch linked issues (2 Ebenen)" | "Hole alle Issues aus dem issuelinks-Array von [Issue-Key] (1. Ebene). Für jedes verlinkte Issue: Key, Summary, Beziehungstyp, Status. Dann für jedes Issue der 1. Ebene: hole auch dessen issuelinks (2. Ebene) — nur Key, Summary, Beziehungstyp. Ziel: Nachbar-Epics und deren Abhängigkeiten verstehen, um echte Scope-Creep-Risiken von Nachbar-Story-Verweisen unterscheiden zu können." |
 | 4 | fast | "Fetch doc context" | "Lies [Pfad] vollständig. Extrahiere für Story [N]: (1) Offene Fragen (Q-Nummern) die diese Story betreffen, (2) Verwandte Stories mit denselben Konzepten/Feldern, (3) Querschnittliche Einschränkungen aus Header oder übergreifenden Abschnitten. Verlinkte Dokumente (Decision Records, Tech Specs, UX Specs) ebenfalls lesen." |
 
 **Selbst-Check:** Erst wenn alle Agenten zurückgekehrt sind -> weiter zu Analyse.
+
+**Agent 3 und Out of Scope:** Die 2-Ebenen-Traversierung liefert den Rundumblick, der nötig ist um Out-of-Scope-Punkte richtig zu formulieren. Wenn du weisst, was die Nachbar-Epics abdecken, kannst du sie aus Out of Scope heraushalten — Out of Scope ist kein Index der Nachbar-Stories, sondern enthält nur Punkte, die ein Leser fälschlicherweise mit hineininterpretieren könnte und die zu erheblichem Mehraufwand führen würden.
 
 **Agent 4** greift nur wenn die Story in einem Requirements-Dokument lebt (req.md, spec.md, etc.) — dann ist das Dokument die **primäre Kontextquelle**, nicht der Issue-Tracker.
 
