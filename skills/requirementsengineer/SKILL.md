@@ -298,20 +298,29 @@ Examples:
 - "Das SYSTEM informiert den USER über das Ergebnis der Verarbeitung"
 
 **Out of Scope**
-Hier stehen nur Punkte, die bewusst verneint wurden oder die ein Risiko für Scope Creep darstellen — Funktionalität, die man beim Lesen der AKs fälschlicherweise mit hineininterpretieren könnte und die zu erheblichem Mehraufwand führen würde. Out of Scope ist KEIN Index der Nachbar-Stories.
+Hier stehen nur Punkte, die ein Risiko für Scope Creep darstellen — Funktionalität, die man beim Lesen der Erfolgskriterien oder AKs fälschlicherweise mit hineininterpretieren könnte und die zu erheblichem Mehraufwand führen würde.
 
-Jeder Punkt ist ein vollständiger Aussagesatz, der auch ohne die Überschrift "Out of Scope" verständlich ist. Keine Stichworte, keine Doppelverneinungen.
+Out of Scope ist KEIN Index der Nachbar-Stories/Epics. Wenn du durch die Issue-Traversierung (Agent 3) weisst, dass etwas in einem anderen Epic bearbeitet wird, ist das kein Out-of-Scope-Punkt — es ist schlicht nicht Teil dieses Epics und braucht keine Erwähnung. Out-of-Scope-Punkte sind nur nötig, wenn ein Leser beim Lesen DIESES Epics/dieser Story fälschlicherweise annehmen könnte, dass es dazugehört.
 
-1. [Aussagesatz der beschreibt, was das System NICHT tut]
+Jeder Punkt ist ein vollständiger Aussagesatz, der auch ohne die Überschrift "Out of Scope" verständlich ist. Keine Stichworte, keine Doppelverneinungen, keine Issue-Keys.
 
-Anti-Pattern — Stichworte und Story-Verweise:
+1. [Aussagesatz der beschreibt, was NICHT Teil dieses Epics/dieser Story ist]
+
+Anti-Pattern — Nachbar-Epic-Verweise (häufigstes Problem!):
+❌ Das TEAM implementiert keinen Datenimport — die Implementierung erfolgt in IES-18699
+❌ Das TEAM definiert keine Meldepflicht — die Meldepflichtdefinition erfolgt in IES-18723
+❌ Vorgangsspezifische Anforderungen werden in nachgelagerten Epics behandelt
+Dass etwas in einem anderen Epic steckt, macht es NICHT zu einem Out-of-Scope-Punkt. Wenn du das andere Epic durch die Issue-Traversierung kennst, weisst du dass es dort erledigt wird — dann ist die Erwähnung hier redundant. Out of Scope ist kein Backlog-Index.
+
+Anti-Pattern — Stichworte:
 ❌ Automatische Fehlerkorrektur
-❌ Import von Swisscard-Visa-Abrechnungen (eigene Story E1-S2)
-Stichworte sind mehrdeutig ("machen wir das oder nicht?"). Story-Verweise gehoeren ins Backlog, nicht in Out of Scope.
+Stichworte sind mehrdeutig ("machen wir das oder nicht?").
 
-Richtig — eigenständige Aussagesätze:
-1. Das SYSTEM korrigiert fehlerhafte Daten nicht automatisch
-2. Bereits abgeschlossene Perioden werden nicht neu berechnet
+Richtig — eigenständige Aussagesätze, die Scope Creep verhindern:
+1. Das MHP-Domänenmodell wird nur als Zieldatenformat dokumentiert, nicht als lauffähiger Code umgesetzt
+2. Der EMDN-Code ist kein Pendant zum ATC-Code für Austauschbarkeit — zwei Produkte mit identischem EMDN-Code können klinisch nicht austauschbar sein
+3. Das SYSTEM korrigiert fehlerhafte Daten nicht automatisch
+Jeder dieser Punkte verhindert eine Fehlinterpretation, die beim Lesen der Erfolgskriterien/AKs entstehen könnte — das ist der einzige Grund für einen Out-of-Scope-Punkt.
 
 **Offene Fragen (Open Questions)**
 Hier landen NUR Fragen, die du dem User bereits via AskUserQuestion gestellt hast und die er nicht beantworten konnte — oder Fragen, die explizit an andere Stakeholder gerichtet sind. Dokumentiere niemals Fragen hier, die du dem User noch nicht gestellt hast. Beantwortete Fragen entfernen.
