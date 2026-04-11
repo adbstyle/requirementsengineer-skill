@@ -7,8 +7,8 @@ Dieses Beispiel zeigt den erwarteten Stil und die Form einer fertigen User Story
 - Jedes AK ist ein vollständiger, einfacher Aussagesatz
 - Ein Gedanke pro Satz, kein Gedankenstrich (—) als Krücke
 - Kein Bold, keine Zwischenüberschriften, keine Referenzen in AKs
-- AKs aus User-Sicht: Der USER ist der aktive Akteur ("Der USER kann...", "Der USER muss...")
-- Das SYSTEM in AKs nur bei Einschränkungen/Validierungen, die der User nicht steuert
+- **User Stories (Business):** AKs aus User-Sicht: Der USER ist der aktive Akteur ("Der USER kann...", "Der USER muss..."). Das SYSTEM in AKs nur bei Einschränkungen/Validierungen, die der User nicht steuert.
+- **Enabler Stories:** AKs mit TEAM oder SYSTEM als Akteur ("Das TEAM hat...", "Das SYSTEM validiert..."). Kein USER als Akteur, weil der Endnutzer nicht direkt betroffen ist.
 - Preconditions: nur nicht-offensichtliche Voraussetzungen ("User ist angemeldet" ist implizit)
 - Postconditions: System-Ergebnisse mit WENN-Bedingungen, keine Wiederholung der AKs
 - Offene Fragen enthalten nur unbeantwortete Fragen an andere Stakeholder
@@ -50,7 +50,38 @@ Offene Fragen
 
 ---
 
-## Beispiel 2: Berechtigungssteuerung (rollenbasiert)
+## Beispiel 2: Enabler Story (Exploration/Architektur)
+
+swissdamed-Importschnittstelle spezifizieren
+
+Als Entwicklungsteam
+möchte ich die Importschnittstelle für swissdamed-Daten technisch spezifizieren
+damit die Implementierung des Datenimports auf einer abgestimmten Schnittstellendefinition aufbauen kann
+
+Preconditions
+1. Das MHP-Zieldatenformat ist als Analysedokument freigegeben (Enabler Epic abgeschlossen)
+2. Der XML-Export von swissdamed ist als Testdatensatz verfügbar
+
+Acceptance Criteria
+1. Das TEAM hat für jedes Pflichtfeld im swissdamed-XML die Transformationsregel ins MHP-Zieldatenformat dokumentiert
+2. Das TEAM hat die Fehlerbehandlung pro Feld spezifiziert (Fallback-Wert, Abbruch oder Warnung)
+3. Das SYSTEM validiert einen Testdatensatz gegen das spezifizierte Schema ohne Fehler
+4. Das TEAM hat die Importfrequenz und den Trigger-Mechanismus mit dem PO abgestimmt
+
+Postconditions
+1. Das SYSTEM enthält eine Schnittstellenspezifikation, die als Grundlage für die Implementierung des Datenimports dient
+2. Das TEAM hat offene Transformationsfragen dokumentiert, die erst bei der Implementierung klärbar sind
+
+Out of Scope
+1. Das TEAM implementiert den Datenimport nicht — nur die Spezifikation wird erstellt
+2. Das SYSTEM führt keine produktiven Datenimporte durch
+
+Offene Fragen
+1. @PO: Soll der Import vollautomatisch laufen oder manuell angestossen werden?
+
+---
+
+## Beispiel 3: Berechtigungssteuerung (rollenbasiert)
 
 Marktrückzug-Status verwalten
 

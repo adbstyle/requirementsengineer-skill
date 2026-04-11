@@ -31,18 +31,22 @@ Als Requirements Engineer fokussierst du auf:
 6. **Nachvollziehbar** — Vom Geschäftsziel bis zur Umsetzung rückverfolgbar
 
 
-# Epic vs. Story: Richtige Ebene erkennen
+# Ebene und Typ erkennen
 
-Bevor du schreibst, kläre auf welcher Ebene du arbeitest — der Detailgrad deines Outputs hängt davon ab. Ein Epic ist eine grosse User Story (Mike Cohn: "just a label we apply to a large story"), die zu gross für einen Sprint ist und in mehrere Stories zerlegt werden muss.
+Bevor du schreibst, kläre zwei Dimensionen:
+1. **Ebene**: Epic (zu gross für einen Sprint) vs. Story (passt in einen Sprint)
+2. **Typ**: Business (liefert direkten Nutzerwert) vs. Enabler (schafft technische Voraussetzungen)
 
-Erkennungsmerkmale für ein Epic: mehrere unabhängige Workflows in einer Anforderung, mehrere Rollen mit unterschiedlichen Interaktionen, oder die Umsetzung würde mehrere Sprints dauern.
+Erkennungsmerkmale für ein Epic: mehrere unabhängige Workflows, mehrere Rollen mit unterschiedlichen Interaktionen, oder die Umsetzung würde mehrere Sprints dauern.
+Erkennungsmerkmale für Enabler: technische/organisatorische Rolle im Story-Skelett, Ergebnis ist Artefakt/Infrastruktur statt nutzbares Feature, Endnutzer nicht direkt betroffen.
 
 Wenn du erkennst, dass der Input Epic-Level ist, frage den User via AskUserQuestion: "Das klingt nach einem Epic — soll ich es als Epic mit Story-Zerlegung dokumentieren, oder eine einzelne Story daraus schneiden?"
 
-Bei **Epic**: Grobgranulare Dokumentation (Story-Skelett auf Epic-Ebene, Preconditions, Erfolgskriterien, Out of Scope, Offene Fragen). Keine detaillierten AKs, kein "In Scope". Unterscheide zwei Epic-Typen: **Epic** (Business Epic) liefert direkt Nutzerwert — Erfolgskriterien sind outcome-orientiert und selbst-verifizierend. **Enabler Epic** schafft Voraussetzungen (Analysen, Entscheide, Infrastruktur) — Output und Outcome fallen zusammen, Spezifität kommt aus dem Qualitätsniveau des Artefakts. Story-Zerlegung erfolgt nachgelagert wenn das Epic fertig verhandelt ist — dafür SPIDR (Spike, Paths, Interface, Data, Rules) nutzen.
-Bei **Story**: Normaler detaillierter Output mit AKs, Preconditions, Postconditions.
+Bei **Epic**: Grobgranulare Dokumentation (Story-Skelett, Preconditions, Erfolgskriterien, Out of Scope, Offene Fragen). Keine detaillierten AKs, kein "In Scope". **Business Epic** — Erfolgskriterien outcome-orientiert und selbst-verifizierend. **Enabler Epic** — Output und Outcome fallen zusammen, Spezifität kommt aus dem Qualitätsniveau des Artefakts. Story-Zerlegung erfolgt nachgelagert — dafür SPIDR (Spike, Paths, Interface, Data, Rules) nutzen.
+Bei **User Story (Business)**: Detaillierter Output mit AKs aus Nutzersicht (USER als Akteur), Preconditions, Postconditions.
+Bei **Enabler Story**: Detaillierter Output mit AKs, aber TEAM oder SYSTEM als Akteur statt USER. Kein Endnutzer direkt betroffen.
 
-Lies `references/epic-vs-story.md` für Templates, SPIDR-Details und ein Golden Example auf Epic-Level.
+Lies `references/epic-vs-story.md` für die vollständige Unterscheidung (Business vs. Enabler, Kategorien, Templates) und Golden Examples auf beiden Ebenen.
 
 # Kernregel: Fragen IMMER zuerst interaktiv stellen
 
@@ -150,6 +154,7 @@ So that [benefit/value]
 
 Hinweise zum Story-Skelett:
 - NIEMALS "Als SYSTEM" — das System hat keine Bedürfnisse. Frage: "Wer profitiert?" → diese Rolle ist der Akteur.
+- Bei Enabler Stories ist der Akteur eine technische oder organisatorische Rolle ("Als Entwicklungsteam", "Als DevOps-Engineer"), nicht der Endnutzer.
 - Unklar wer profitiert? → Stakeholder erfragen.
 
 **Preconditions** — Ausgangslage: Was muss VOR Start der Interaktion gegeben sein? Nur nicht-offensichtliche Voraussetzungen auflisten.
@@ -165,9 +170,16 @@ Nur Preconditions auflisten, die ein Leser nicht selbst ableiten kann:
 - "Der USER zeigt eine Meldung im Detail an"
 
 **Acceptance Criteria**
+
+**Bei User Stories (Business):**
 1. [Aktion des USERs — was der USER tun kann, auslösen kann, bestätigen muss]
 
 AKs beschreiben die Interaktion aus der Perspektive des USERs. Der USER ist der aktive Akteur. Wo immer möglich, formuliere aus User-Sicht statt aus System-Sicht. Das SYSTEM ist in AKs nur als Akteur erlaubt, wenn es um Einschränkungen oder Validierungen geht, die der USER nicht direkt steuert (z.B. Berechtigungsprüfungen).
+
+**Bei Enabler Stories:**
+1. [Technisches Ergebnis oder Entscheid — was das TEAM erarbeitet hat oder das SYSTEM bereitstellt]
+
+AKs beschreiben technische Ergebnisse oder Entscheide. Der Akteur ist das TEAM oder das SYSTEM, nicht der USER — weil der Endnutzer nicht direkt betroffen ist. AKs bleiben testbar, aber die Testbarkeit bezieht sich auf technische Nachweise (Schema validiert, Spezifikation abgestimmt, Pipeline grün).
 
 Statt (System-Sicht — System als aktiver Akteur):
   3. Das SYSTEM zeigt vor der Ausführung einen Bestätigungsdialog an

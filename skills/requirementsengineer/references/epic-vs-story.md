@@ -1,12 +1,20 @@
-# Epic vs. User Story
+# Ebene und Typ: Die zwei Dimensionen einer Anforderung
 
-Lies diese Referenz, wenn du unsicher bist ob der Input ein Epic oder eine Story ist, oder wenn du ein Epic dokumentieren sollst.
+Lies diese Referenz, wenn du unsicher bist ob der Input ein Epic oder eine Story ist, ob es ein Business- oder Enabler-Element ist, oder wenn du ein Epic dokumentieren sollst.
 
-## Definition (nach Mike Cohn)
+Jede Anforderung hat zwei unabhängige Dimensionen:
+- **Ebene**: Epic (zu gross für einen Sprint) vs. Story (passt in einen Sprint)
+- **Typ**: Business (liefert direkten Nutzerwert) vs. Enabler (schafft technische Voraussetzungen)
+
+Diese Kombination ergibt vier mögliche Formen: Business Epic, Enabler Epic, User Story (Business), Enabler Story.
+
+## Ebene: Epic vs. Story
+
+### Definition (nach Mike Cohn)
 
 Ein Epic ist einfach eine grosse User Story — es gibt keine magische Schwelle. Der Begriff kommt aus XP und beschreibt eine Anforderung, die zu gross ist um in einem Sprint umgesetzt zu werden. Sobald ein Epic in die Nähe der Umsetzung rückt, wird es in mehrere kleine Stories zerlegt.
 
-## Wann ist etwas ein Epic?
+### Wann ist etwas ein Epic?
 
 Prüfe diese Indikatoren:
 - Mehrere unabhängige Workflows in einer Anforderung (Erstellen + Bearbeiten + Löschen + Importieren + Berechtigungen)
@@ -17,11 +25,11 @@ Prüfe diese Indikatoren:
 
 Wenn keiner dieser Indikatoren zutrifft, ist es eine Story.
 
-## Zwei Arten von Epics
+## Typ: Business vs. Enabler
 
-Epics unterscheiden sich fundamental danach, was sie liefern. Die Art des Epics bestimmt, wie die Erfolgskriterien formuliert werden.
+Die Unterscheidung zwischen Business- und Enabler-Elementen (nach SAFe, Knaster/Leffingwell) gilt auf beiden Ebenen — Epic und Story. Der Typ bestimmt, wer der Akteur ist, wie die Erfolgskriterien bzw. Acceptance Criteria formuliert werden und was "fertig" bedeutet.
 
-### Epic (Business Epic)
+### Business (Epic oder Story)
 
 Liefert direkt Wert für den Endnutzer — neue Funktionalität, ein neuer Prozess, eine Verbesserung des bestehenden Systems. Der Erfolg zeigt sich daran, dass sich etwas im Verhalten oder in der Erfahrung des Nutzers ändert.
 
@@ -30,20 +38,45 @@ Erkennungsmerkmale:
 - Der Endnutzer ist direkt betroffen
 - Das Story-Skelett beginnt mit einer fachlichen Rolle ("Als Sachbearbeiter", "Als Regulatory-Affairs-Manager")
 
-### Enabler Epic
+### Enabler (Epic oder Story)
 
-Schafft Voraussetzungen für zukünftige Epics — Analysen, Datenmodelle, Architekturentscheide, Infrastruktur, Compliance-Grundlagen. Der Erfolg zeigt sich daran, dass Wissen, Entscheide oder technische Grundlagen geschaffen wurden, auf denen nachfolgende Epics aufbauen.
+Schafft Voraussetzungen für zukünftige Business-Elemente — baut die "Architectural Runway" (Architektur-Basis) aus, damit zukünftige Business-Features effizient und stabil ausgeliefert werden können. Der Endnutzer merkt direkt nichts davon.
+
+Typische Enabler-Kategorien:
+- **Exploration** — Analysen, Evaluationen, Spike/Proof of Concept
+- **Architektur** — Datenmodelle, API-Design, Schnittstellen-Spezifikation
+- **Infrastruktur** — Projekt-Scaffolding, CI/CD, Monitoring
+- **Refactoring** — Technische Schulden abbauen, Modularisierung
+- **Compliance** — Regulatorische Grundlagen, Audit-Fähigkeit
 
 Erkennungsmerkmale:
-- Beschreibt eine Analyse, Evaluation oder technische Grundlagenarbeit
-- Das Ergebnis ist ein Artefakt (Dokument, Entscheid, Prototyp), kein nutzbares Feature
-- Der Endnutzer merkt direkt nichts davon
+- Beschreibt eine Analyse, Evaluation, technische Grundlagenarbeit oder Infrastruktur-Aufbau
+- Das Ergebnis ist ein Artefakt (Dokument, Entscheid, Prototyp) oder eine technische Grundlage, kein nutzbares Feature
 - Das Story-Skelett beginnt oft mit einer technischen oder organisatorischen Rolle ("Als Entwicklungsteam", "Als Architekt")
 
-## Unterschiedlicher Output je nach Ebene
+## Unterschiedlicher Output je nach Ebene und Typ
 
-### Story-Level (Standard)
-Detaillierte Dokumentation mit allen Sektionen: Story-Skelett, Preconditions, Acceptance Criteria, Postconditions, Out of Scope, Offene Fragen. Jedes AK ist ein vollständiger, testbarer Satz. Siehe `references/golden-example.md`.
+### Story-Level: User Story (Business)
+Detaillierte Dokumentation mit allen Sektionen: Story-Skelett, Preconditions, Acceptance Criteria, Postconditions, Out of Scope, Offene Fragen. Jedes AK ist ein vollständiger, testbarer Satz. Der USER ist der aktive Akteur. Siehe `references/golden-example.md`.
+
+### Story-Level: Enabler Story
+Gleiche Sektionen wie eine User Story, aber mit angepasstem Akteur und Fokus:
+- **Story-Skelett**: Die Rolle ist technisch/organisatorisch ("Als Entwicklungsteam", "Als DevOps-Engineer"), nicht der Endnutzer
+- **Acceptance Criteria**: Beschreiben technische Ergebnisse oder Entscheide, nicht Nutzer-Interaktionen. Der Akteur ist das TEAM oder das SYSTEM, nicht der USER. AKs bleiben testbar, aber die Testbarkeit bezieht sich auf technische Nachweise, nicht auf Nutzer-Verhalten.
+- **Postconditions**: System-Zustände, die nach Abschluss gelten (z.B. "Die CI-Pipeline läuft grün durch", "Das Schema ist in der Staging-Umgebung deployt")
+
+Statt (User Story Pattern auf Enabler-Arbeit gezwungen):
+  Als Sachbearbeiter möchte ich, dass die Datenbank-Migration durchgeführt wird
+Richtig (Enabler Story mit technischer Rolle):
+  Als Entwicklungsteam möchte ich das Datenbankschema auf die neue Domänenstruktur migrieren, damit die nachfolgenden Business Stories auf einem konsistenten Datenmodell aufbauen können
+
+Statt (USER als Akteur bei technischer Arbeit):
+  1. Der USER kann die API aufrufen
+Richtig (TEAM/SYSTEM als Akteur):
+  1. Das SYSTEM stellt einen REST-Endpunkt bereit, der das MHP-Datenformat gemäss dem dokumentierten Schema zurückgibt
+  2. Das TEAM hat die Mapping-Regeln als automatisierte Transformationslogik implementiert, die alle Pflichtfelder abdeckt
+
+Siehe `references/golden-example.md` für ein vollständiges Enabler-Story-Beispiel.
 
 ### Epic-Level
 Grobgranulare Dokumentation — ein Epic bekommt KEINE 20 detaillierten AKs. Stattdessen:
