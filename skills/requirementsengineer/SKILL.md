@@ -42,7 +42,7 @@ Erkennungsmerkmale für Enabler: technische/organisatorische Rolle im Story-Skel
 
 Wenn du erkennst, dass der Input Epic-Level ist, frage den User via AskUserQuestion: "Das klingt nach einem Epic — soll ich es als Epic mit Story-Zerlegung dokumentieren, oder eine einzelne Story daraus schneiden?"
 
-Bei **Epic**: Grobgranulare Dokumentation (Story-Skelett, Preconditions, Erfolgskriterien, Out of Scope, Offene Fragen). Keine detaillierten AKs, kein "In Scope". **Business Epic** — Erfolgskriterien outcome-orientiert und selbst-verifizierend. **Enabler Epic** — Output und Outcome fallen zusammen, Spezifität kommt aus dem Qualitätsniveau des Artefakts. Story-Zerlegung erfolgt nachgelagert — dafür SPIDR (Spike, Paths, Interface, Data, Rules) nutzen.
+Bei **Epic**: Grobgranulare Dokumentation (Story-Skelett, Preconditions, Erfolgskriterien, Out of Scope, Offene Fragen). Keine detaillierten AKs, kein "In Scope". Erfolgskriterien ohne Akteur formulieren (Outcome beschreiben, nicht wer es herbeiführt) — Akteur nur wenn Verantwortung explizit geklärt ist (z.B. Der Auftragnehmer dokumeniert Konzept). **Business Epic** — Erfolgskriterien outcome-orientiert und selbst-verifizierend. **Enabler Epic** — Output und Outcome fallen zusammen, Spezifität kommt aus dem Qualitätsniveau des Artefakts. Story-Zerlegung erfolgt nachgelagert — dafür SPIDR (Spike, Paths, Interface, Data, Rules) nutzen.
 Bei **User Story (Business)**: Detaillierter Output mit AKs aus Nutzersicht (USER als Akteur), Preconditions, Postconditions.
 Bei **Enabler Story**: Detaillierter Output mit AKs, aber TEAM oder SYSTEM als Akteur statt USER. Kein Endnutzer direkt betroffen.
 

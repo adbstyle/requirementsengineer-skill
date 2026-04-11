@@ -134,6 +134,23 @@ Richtig (spezifisch — selbst-verifizierend):
 
 **Litmus-Test:** Wenn ein Stakeholder das Erfolgskriterium liest und nicht weiss, was er prüfen müsste, ist es zu vage. Wenn er es liest und sofort eine Idee hat wie er es prüfen würde — auch ohne explizite Verifikationsmethode — ist es gut formuliert.
 
+### Formulierungsregel: Kein Akteur, ausser die Verantwortung ist explizit
+
+Erfolgskriterien auf Epic-Ebene beschreiben einen Zustand, der am Ende erreicht ist — nicht wer ihn herbeiführt. Auf Epic-Ebene ist oft noch unklar, wer genau ein Kriterium verantwortet. Ein aktiver Akteur ("Das TEAM hat...", "Der Auftraggeber hat...") impliziert Verantwortung, die möglicherweise noch nicht geklärt ist.
+
+Deshalb: Erfolgskriterien als einfache, leserliche Sätze formulieren, die das Outcome beschreiben — ohne Akteur. Einen Akteur nur dann verwenden, wenn die Verantwortung explizit geklärt ist (z.B. PO-Abnahme — der PO ist per Definition der Abnehmende).
+
+Statt (aktiver Akteur — impliziert ungeklärte Verantwortung):
+  "Das TEAM hat ein Mapping erstellt, das..."
+  "Das TEAM hat die Mengenkennzahl definiert..."
+  "Das TEAM hat die EMDN-Hierarchie dokumentiert..."
+Richtig (Outcome ohne Akteur):
+  "Für jedes Pflichtfeld ist dokumentiert, ob es übernommen, transformiert oder ignoriert wird"
+  "Die Mengenkennzahl ist mit Einheit, Granularität und Berechnungsformel definiert"
+  "Die EMDN-Hierarchie ist mit Aggregationsempfehlung dokumentiert"
+Richtig (Akteur, weil Verantwortung explizit):
+  "Der PO hat das konsolidierte Analysedokument schriftlich freigegeben"
+
 ### Erfolgskriterien bei Epics (Business Epics)
 
 Erfolgskriterien beschreiben, was sich für den Nutzer ändert — das beobachtbare Outcome, nicht das technische Artefakt.
