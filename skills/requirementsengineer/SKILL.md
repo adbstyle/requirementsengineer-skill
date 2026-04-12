@@ -395,7 +395,7 @@ Examples:
 2. Fehlermeldungen sind handlungsorientiert und führen den User in maximal 2 Klicks zur Ursache
 3. Alle Fehlermeldungen sind in DE, FR, IT und EN verfügbar
 
-NFR-Kategorien als Denkstütze (nicht als Pflichtstruktur): Performance, Security, Usability, Reliability, Scalability, Maintainability, Compatibility.
+NFR-Kategorien als Denkstütze (nicht als Pflichtstruktur): Performance, Security, Compliance, Usability, Reliability, Scalability, Maintainability, Compatibility.
 
 ## Phase 4: Validation
 ### Perspektivenbasiertes Lesen
