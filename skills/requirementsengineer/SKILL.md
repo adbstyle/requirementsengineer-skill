@@ -88,7 +88,16 @@ Sammle NICHT erst 10 Fragen um sie dann als Tabelle auszugeben. Stelle sie laufe
 
 **Selbst-Check:** Erst wenn alle Agenten zurückgekehrt sind -> weiter zu Analyse.
 
-**Agent 3 und Out of Scope:** Die 2-Ebenen-Traversierung liefert den Rundumblick, der nötig ist um Out-of-Scope-Punkte richtig zu formulieren. Wenn du weisst, was die Nachbar-Epics abdecken, kannst du sie aus Out of Scope heraushalten — Out of Scope ist kein Index der Nachbar-Stories, sondern enthält nur Punkte, die ein Leser fälschlicherweise mit hineininterpretieren könnte und die zu erheblichem Mehraufwand führen würden.
+**Agent 3 — Wofür die Traversierungsdaten genutzt werden (und wofür NICHT):**
+Die 2-Ebenen-Traversierung liefert Wissen über die Nachbarschaft. Dieses Wissen nutzt du für:
+- **Preconditions** — Abhängigkeiten als Zustand formulieren ("MHP-Produktdaten sind im System verfügbar"), NICHT als Ticket-Referenz ("IES-18699 abgeschlossen")
+- **Offene Fragen** — An die richtigen Stakeholder adressieren, weil du weisst wer woran arbeitet
+- **Story-Zerlegung** — Abhängigkeiten in der SPIDR-Tabelle erkennen
+- **Eigene Orientierung** — Verstehen was die Nachbar-Epics abdecken, damit du sie NICHT in Out of Scope auflistest
+
+Die Traversierungsdaten werden NICHT genutzt für:
+- Out-of-Scope-Punkte — Dass etwas in einem anderen Epic steckt, ist kein Out-of-Scope-Punkt
+- Ticket-Referenzen in Preconditions — "(IES-18699 abgeschlossen)" gehört nicht in eine Precondition
 
 **Agent 4** greift nur wenn die Story in einem Requirements-Dokument lebt (req.md, spec.md, etc.) — dann ist das Dokument die **primäre Kontextquelle**, nicht der Issue-Tracker.
 
@@ -157,8 +166,13 @@ Hinweise zum Story-Skelett:
 - Bei Enabler Stories ist der Akteur eine technische oder organisatorische Rolle ("Als Entwicklungsteam", "Als DevOps-Engineer"), nicht der Endnutzer.
 - Unklar wer profitiert? → Stakeholder erfragen.
 
-**Preconditions** — Ausgangslage: Was muss VOR Start der Interaktion gegeben sein? Nur nicht-offensichtliche Voraussetzungen auflisten.
+**Preconditions** — Ausgangslage: Was muss VOR Start der Interaktion gegeben sein? Nur nicht-offensichtliche Voraussetzungen auflisten. Preconditions beschreiben einen Zustand, keine Ticket-Referenz.
 1. [Zustand von User oder Daten vor der Interaktion]
+
+Statt (Ticket-Referenz in Precondition):
+  "Die strukturierten MHP-Produktdaten sind im System verfügbar (IES-18699 abgeschlossen)"
+Richtig (Zustand ohne Ticket-Referenz):
+  "Die strukturierten MHP-Produktdaten sind im System verfügbar"
 
 Implizite Bedingungen NICHT auflisten:
 - "Der USER ist an der Applikation angemeldet" — ist immer gegeben und selbstverständlich, gehört nicht in Preconditions
@@ -298,29 +312,29 @@ Examples:
 - "Das SYSTEM informiert den USER über das Ergebnis der Verarbeitung"
 
 **Out of Scope**
-Hier stehen nur Punkte, die ein Risiko für Scope Creep darstellen — Funktionalität, die man beim Lesen der Erfolgskriterien oder AKs fälschlicherweise mit hineininterpretieren könnte und die zu erheblichem Mehraufwand führen würde.
+Out of Scope enthält nur Punkte, die ein Leser beim Lesen der Erfolgskriterien oder AKs fälschlicherweise mit hineininterpretieren könnte und die zu erheblichem Mehraufwand führen würden.
 
-Out of Scope ist KEIN Index der Nachbar-Stories/Epics. Wenn du durch die Issue-Traversierung (Agent 3) weisst, dass etwas in einem anderen Epic bearbeitet wird, ist das kein Out-of-Scope-Punkt — es ist schlicht nicht Teil dieses Epics und braucht keine Erwähnung. Out-of-Scope-Punkte sind nur nötig, wenn ein Leser beim Lesen DIESES Epics/dieser Story fälschlicherweise annehmen könnte, dass es dazugehört.
+**Filterschritt: Bevor du einen Out-of-Scope-Punkt aufnimmst, prüfe:**
+1. "Könnte ein Leser beim Lesen der Erfolgskriterien/AKs fälschlicherweise annehmen, dass dies dazugehört?" — Nein → NICHT aufnehmen
+2. "Weiss ich aus der Issue-Traversierung, dass dies in einem anderen Epic/Story behandelt wird?" — Ja → NICHT aufnehmen (es ist schlicht ein anderes Backlog-Item, keine Abgrenzung)
+3. "Würde das Weglassen dieses Punktes zu Scope Creep führen?" — Nein → NICHT aufnehmen
 
-Jeder Punkt ist ein vollständiger Aussagesatz, der auch ohne die Überschrift "Out of Scope" verständlich ist. Keine Stichworte, keine Doppelverneinungen, keine Issue-Keys.
+Nur wenn Frage 1 mit Ja UND Frage 2 mit Nein beantwortet wird, gehört der Punkt in Out of Scope. Die Issue-Traversierung (Agent 3) dient dazu, die Nachbarschaft zu verstehen — NICHT dazu, sie in Out of Scope aufzulisten. Die Traversierungsdaten helfen stattdessen bei: Preconditions formulieren (als Zustand, ohne Ticket-Referenz), Offene Fragen an die richtigen Stakeholder adressieren, Abhängigkeiten in der Story-Zerlegung erkennen.
+
+Jeder Punkt ist ein vollständiger Aussagesatz ohne Issue-Keys, ohne Ticket-Referenzen, ohne "wird in Epic X gemacht".
 
 1. [Aussagesatz der beschreibt, was NICHT Teil dieses Epics/dieser Story ist]
 
-Anti-Pattern — Nachbar-Epic-Verweise (häufigstes Problem!):
-❌ Das TEAM implementiert keinen Datenimport — die Implementierung erfolgt in IES-18699
-❌ Das TEAM definiert keine Meldepflicht — die Meldepflichtdefinition erfolgt in IES-18723
-❌ Vorgangsspezifische Anforderungen werden in nachgelagerten Epics behandelt
-Dass etwas in einem anderen Epic steckt, macht es NICHT zu einem Out-of-Scope-Punkt. Wenn du das andere Epic durch die Issue-Traversierung kennst, weisst du dass es dort erledigt wird — dann ist die Erwähnung hier redundant. Out of Scope ist kein Backlog-Index.
+Anti-Pattern — Nachbar-Epic-Verweise:
+❌ Das SYSTEM importiert keine MHP-Produktdaten — der Import ist Gegenstand von IES-18699
+❌ Das SYSTEM definiert keine Meldepflicht — die Meldepflichtdefinition wird separat behandelt
+❌ Das SYSTEM erstellt keine Vorgänge (Störungsmeldungen, ePL-Anträge) aus der Produktverwaltung heraus
+Jeder dieser Punkte beschreibt etwas, das schlicht ein anderes Backlog-Item ist. Kein Leser würde beim Lesen von "MHP-Produktdaten anzeigen, filtern und bearbeiten" annehmen, dass auch der Datenimport oder die Meldepflicht dazugehören.
 
-Anti-Pattern — Stichworte:
-❌ Automatische Fehlerkorrektur
-Stichworte sind mehrdeutig ("machen wir das oder nicht?").
-
-Richtig — eigenständige Aussagesätze, die Scope Creep verhindern:
-1. Das MHP-Domänenmodell wird nur als Zieldatenformat dokumentiert, nicht als lauffähiger Code umgesetzt
-2. Der EMDN-Code ist kein Pendant zum ATC-Code für Austauschbarkeit — zwei Produkte mit identischem EMDN-Code können klinisch nicht austauschbar sein
-3. Das SYSTEM korrigiert fehlerhafte Daten nicht automatisch
-Jeder dieser Punkte verhindert eine Fehlinterpretation, die beim Lesen der Erfolgskriterien/AKs entstehen könnte — das ist der einzige Grund für einen Out-of-Scope-Punkt.
+Richtig — Punkte, die eine Fehlinterpretation verhindern:
+1. Das SYSTEM korrigiert fehlerhafte Stammdaten nicht automatisch
+2. Der EMDN-Code ist kein Pendant zum ATC-Code für Austauschbarkeit
+Ein Leser KÖNNTE bei "Datenqualität sicherstellen" annehmen, dass automatische Korrektur dazugehört — deshalb gehört es in Out of Scope. Ein Leser würde NICHT annehmen, dass der Datenimport Teil der Produktverwaltung ist — deshalb gehört es NICHT in Out of Scope.
 
 **Offene Fragen (Open Questions)**
 Hier landen NUR Fragen, die du dem User bereits via AskUserQuestion gestellt hast und die er nicht beantworten konnte — oder Fragen, die explizit an andere Stakeholder gerichtet sind. Dokumentiere niemals Fragen hier, die du dem User noch nicht gestellt hast. Beantwortete Fragen entfernen.
