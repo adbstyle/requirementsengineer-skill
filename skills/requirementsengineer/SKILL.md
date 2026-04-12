@@ -81,7 +81,7 @@ Sammle NICHT erst 10 Fragen um sie dann als Tabelle auszugeben. Stelle sie laufe
 
 | # | tier | description | prompt |
 |---|------|-------------|--------|
-| 1 | fast | "Fetch main issue" | "Hole Issue inkl. Kommentare. Fasse zusammen: Summary, Description, Status, Vorbedingungen, Akzeptanzkriterien, Nachbedingungen." |
+| 1 | fast | "Fetch main issue (alle Felder)" | "Hole Issue mit ALLEN Feldern inkl. Kommentare. Gib ALLE Felder zurück die nicht leer sind. Erfasse insbesondere: Summary, Description, Status, Issue Type, Priority, Labels, Components, Fix Version, Sprint, Story Points, Epic Link/Parent. Gib auch die verlinkten Issues mit Beziehungstyp zurück." |
 | 2 | fast | "Fetch parent issue" | "Hole Parent issue Extrahiere: Ziel, Scope, Budget, Abhängigkeiten." |
 | 3 | fast | "Fetch linked issues (2 Ebenen)" | "Hole alle Issues aus dem issuelinks-Array von [Issue-Key] (1. Ebene). Für jedes verlinkte Issue: Key, Summary, Beziehungstyp, Status. Dann für jedes Issue der 1. Ebene: hole auch dessen issuelinks (2. Ebene) — nur Key, Summary, Beziehungstyp. Ziel: Nachbar-Epics und deren Abhängigkeiten verstehen, um echte Scope-Creep-Risiken von Nachbar-Story-Verweisen unterscheiden zu können." |
 | 4 | fast | "Fetch doc context" | "Lies [Pfad] vollständig. Extrahiere für Story [N]: (1) Offene Fragen (Q-Nummern) die diese Story betreffen, (2) Verwandte Stories mit denselben Konzepten/Feldern, (3) Querschnittliche Einschränkungen aus Header oder übergreifenden Abschnitten. Verlinkte Dokumente (Decision Records, Tech Specs, UX Specs) ebenfalls lesen." |
