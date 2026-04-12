@@ -387,34 +387,15 @@ Richtig (Information verteilen, keine eigene Sektion):
 | **R**elevant | Does it support the user story? |
 | **T**ime-bound | Is scope limited appropriately? |
 
-### Non-Functional Requirement Format:
-Use a compact table format for better readability:
+### Non-Functional Requirements Format:
+Einfache nummerierte Liste mit natürlichen Sätzen — keine Tabelle, keine IDs. Jede NFR ist ein vollständiger Satz, der die Anforderung und das Ziel in einem ausdrückt.
 
-| ID | Category | Requirement | Target | Priority |
-|----|----------|-------------|--------|----------|
-| NFR-1 | Performance | [What must perform well] | [Specific threshold with metric] | High |
-| NFR-2 | Usability | [What must be user-friendly] | [Measurable UX goal] | Medium |
+Examples:
+1. Die Übersichtsliste bleibt bei 10'000+ Einträgen reaktionsfähig, Filterung und Suche antworten in unter 2 Sekunden
+2. Fehlermeldungen sind handlungsorientiert und führen den User in maximal 2 Klicks zur Ursache
+3. Alle Fehlermeldungen sind in DE, FR, IT und EN verfügbar
 
-Example:
-| ID | Category | Requirement | Target | Priority |
-|----|----------|-------------|--------|----------|
-| NFR-1 | Performance | Duplikatsprüfung verzögert nicht | < 100ms Query-Zeit | High |
-| NFR-2 | Usability | Fehlermeldung handlungsorientiert | Link zu Duplikat in 2 Klicks | High |
-| NFR-3 | Localization | Mehrsprachige Fehlermeldungen | DE/FR/IT/EN vollständig | Medium |
-
-Keep it concise - implementation details go in separate architecture documentation.
-
-#### Non-Functional Requirements Categories
-
-| Category | Key Questions | Example Metrics |
-|----------|---------------|-----------------|
-| **Performance** | How fast? How much load? | Response time < 200ms, 1000 concurrent users |
-| **Security** | Who can access? What's protected? | Daten verschlüsselt gespeichert, Zugriff nur authentifiziert |
-| **Usability** | How easy to use? Accessible? | WCAG 2.1 AA, mobile-responsive |
-| **Reliability** | How available? Recovery time? | 99.9% uptime, RTO < 1 hour |
-| **Scalability** | Growth expectations? | Support 10x user growth |
-| **Maintainability** | How easy to change? | Änderung an Modul X erfordert keine Änderung an Modul Y |
-| **Compatibility** | Browsers? Integrations? | Chrome, Safari, Firefox; Schnittstellen für Drittsysteme |
+NFR-Kategorien als Denkstütze (nicht als Pflichtstruktur): Performance, Security, Usability, Reliability, Scalability, Maintainability, Compatibility.
 
 ## Phase 4: Validation
 ### Perspektivenbasiertes Lesen
