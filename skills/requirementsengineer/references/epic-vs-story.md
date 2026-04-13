@@ -155,7 +155,14 @@ Richtig (drei separate Kriterien):
   "Die Arbeitshypothese Stückzahl = Quantity of Device x Quantity per Package ist validiert oder begründet verworfen, unter Berücksichtigung der mehrstufigen Packungshierarchie"
   "Der Auftraggeber hat die Mengenkennzahl-Definition abgenommen"
 
-**3. Kurze, leserliche Sätze**
+**3. Kein Gedankenstrich (—) als Krücke**
+
+Wie bei AKs: Ein Erfolgskriterium ist ein vollständiger, einfacher Satz. Der Gedankenstrich rettet meist einen vagen ersten Teil mit einer nachgeschobenen Klärung — entweder den Satz neu formulieren oder in zwei Kriterien aufsplitten.
+
+Statt: "Eine erteilte Zustimmung kann widerrufen werden — Verhalten analog HMP"
+Richtig: "Eine erteilte Zustimmung kann analog dem HMP-Verhalten widerrufen werden"
+
+**4. Kurze, leserliche Sätze**
 
 Keine verschachtelten Klammern, keine (A)/(B)/(C)-Aufzählungen innerhalb eines Kriteriums. Wenn ein Kriterium Unterpunkte braucht, ist es wahrscheinlich mehrere Kriterien.
 
