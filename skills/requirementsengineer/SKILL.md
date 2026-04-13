@@ -339,13 +339,21 @@ Ein Leser KÖNNTE bei "Datenqualität sicherstellen" annehmen, dass automatische
 **Offene Fragen (Open Questions)**
 Hier landen NUR Fragen, die du dem User bereits via AskUserQuestion gestellt hast und die er nicht beantworten konnte — oder Fragen, die explizit an andere Stakeholder gerichtet sind. Dokumentiere niemals Fragen hier, die du dem User noch nicht gestellt hast. Beantwortete Fragen entfernen.
 
-Einfache nummerierte Liste, sortiert nach Wichtigkeit (wichtigste zuerst). Jede Frage beginnt mit @Rolle als Adressat.
+Einfache nummerierte Liste, sortiert nach Wichtigkeit (wichtigste zuerst). Jede Frage beginnt mit @Rolle als Adressat — **NUR die Rolle, niemals Personennamen**.
+
 1. @[Rolle]: [Frage]
 
+Statt (Name im Adressaten — falsche Zuordnung wahrscheinlich):
+  ❌ @Product Owner (Hans Mustermann): Welche Produktkategorien gehören zum Scope?
+  ❌ @Architect (Erich Blumenkohl) / @Tech Lead (Elon Blumenkohl): Wie werden Daten aus mehreren Quellen zusammengeführt?
+Richtig (nur Rolle):
+  1. @Product Owner: Welche Produktkategorien gehören zum Scope?
+  2. @Architect / @Tech Lead: Wie werden Daten aus mehreren Quellen zusammengeführt?
+
 Examples:
-1. @Product Owner: Was bedeutet 'lesbare Form' konkret? Beispiel erwuenscht?
-2. @Fachexperte: Sollen Aenderungen für alle Packungen oder nur eine angezeigt werden?
-3. @UX Designer: Wie soll das System reagieren, wenn keine Aenderungen vorhanden sind?
+1. @Product Owner: Was bedeutet 'lesbare Form' konkret? Beispiel erwünscht?
+2. @Fachexperte: Sollen Änderungen für alle Packungen oder nur eine angezeigt werden?
+3. @UX Designer: Wie soll das System reagieren, wenn keine Änderungen vorhanden sind?
 
 KEIN "Constraints & Randbedingungen"-Abschnitt im Output. Technische und fachliche Einschränkungen aus der Codebase-Analyse werden NICHT als eigene Sektion dokumentiert, sondern ausschliesslich verwertet um:
 1. Offene Fragen zu formulieren — "Einschränkung X wurde identifiziert. FRAGE: Wie soll damit umgegangen werden?"
