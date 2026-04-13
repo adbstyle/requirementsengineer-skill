@@ -405,6 +405,10 @@ Examples:
 
 NFR-Kategorien als Denkstütze (nicht als Pflichtstruktur): Performance, Security, Compliance, Usability, Reliability, Scalability, Maintainability, Compatibility.
 
+---
+
+**STOP — Dokumentation ist NICHT fertig.** Phase 4 ist jetzt zwingend, bevor du ausgibst. Rationalisierungen wie "offene Fragen decken's ab" oder "Epic ist klar genug" sind das Signal, Phase 4 gerade JETZT durchzuführen — du kannst nicht validieren was du selbst geschrieben hast.
+
 ## Phase 4: Validation
 ### Perspektivenbasiertes Lesen
 
