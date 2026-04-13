@@ -108,6 +108,10 @@ Die Traversierungsdaten werden NICHT genutzt für:
 - User referenziert zusätzliche Dokumentation (Wiki, Confluence, andere Markdown-Files) → Scope auf die genannten Pfade/Seiten beschränken — keine breite Suche ohne Anhaltspunkte.
 - Keine Codebase → IST-Analyse (nächster Abschnitt) entfällt komplett.
 
+---
+
+**STOP — SOLL-Kontext allein reicht nicht.** Wenn eine Codebase vorhanden ist, ist die IST-Analyse (nächster Abschnitt) zwingend. Rationalisierungen wie "Issue-Kontext reicht" oder "ist eh nur ein Epic" sind das Signal, sie JETZT zu machen.
+
 ### Sammle Ist-Zustand für Requirements-Lücken-Analyse
 **MANDATORY:** Verwende das **Task-Tool** mit `subagent_type="requirementsengineer:code-explorer"`
 > für diese 3 Agenten. Spawne alle 3 in **einem einzigen Message-Block** (parallel).
