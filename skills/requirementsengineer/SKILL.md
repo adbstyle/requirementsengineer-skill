@@ -438,7 +438,7 @@ NFR-Kategorien als Denkstütze (nicht als Pflichtstruktur): Performance, Securit
 **Fehlende NFRs:**
 1. [NFR-Kategorie] nicht spezifiziert → Frage: [Welche Anforderung?]
 
-> Ergebnisse aggregieren. ALLE Findings dem User via AskUserQuestion-Modal vorlegen — zuerst 🔴, dann 🟡, dann 🟢 (gebündelt in max 4 Fragen pro Modal). Nur Fragen, die der User nicht beantworten kann, in die Offene-Fragen-Tabelle aufnehmen.
+> Ergebnisse aggregieren und dem User vorlegen: 🔴 UND 🟡 Findings werden BEIDE via AskUserQuestion-Modal gefragt (gebündelt, max 4 pro Modal, erst 🔴 dann 🟡). Nicht nur die roten — gelbe sind wichtig genug zum Fragen, sonst landen sie in den offenen Fragen und müssten später wieder rausgelöscht werden wenn der User sie doch beantwortet. 🟢 Findings können direkt dokumentiert werden. Nur Fragen, die der User nicht beantworten kann, bleiben als Offene Fragen.
 
 ### Impact-Analyse bei Änderungen
 Wenn im Gespräch Anforderungen geändert, ergänzt oder gestrichen wurden:
@@ -473,7 +473,7 @@ Funktionale/Datenformat/Interaktions/Qualitäts-Lücken
 Konflikte zwischen Requirements (intern/extern)
 
 ## Perspektivenbasiertes Lesen
-Kritische Findings (🔴) → AskUserQuestion-Modal zur sofortigen Klärung
+🔴 und 🟡 Findings → AskUserQuestion-Modal zur sofortigen Klärung (erst 🔴, dann 🟡, max 4 pro Modal)
 Verbleibende Findings → Offene Fragen (nummerierte Liste mit @Rolle)
 
 ## 4. Verbleibende Offene Fragen
