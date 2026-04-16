@@ -171,6 +171,19 @@ Richtig (zwei separate Kriterien):
   "Ein Mapping dokumentiert pro swissdamed-Feld, ob es ins MHP-Zieldatenformat übernommen, transformiert oder ignoriert wird, jeweils mit fachlicher Begründung"
   "Das Mapping deckt drei Feldkategorien ab: formale Pflichtfelder, bedingt verpflichtende Felder und für die Alternativensuche relevante optionale Felder"
 
+**5. Ein Kriterium pro fachliches Konzept, nicht pro Funktion**
+
+Zusammengehörende Funktionen in ein Kriterium bündeln. Granularitätsebene ist das Konzept (Kommentare, Anhänge, Verlinkungen), nicht die Einzelaktion (erstellen, löschen, markieren). Bündelungsmuster: Aktion + Umkehraktion ("anhängen und entfernen"), Varianten ("entweder für alle Organisationen oder als interner Kommentar"), Feature + Qualifikator als Adjektiv ("rechtegesteuertes Aktivitätsprotokoll").
+
+Statt (eine Funktion pro Kriterium):
+  "Berechtigte User können Dokumente an einen Vorgang anhängen"
+  "Berechtigte User können bestehende Anhänge entfernen"
+  "Jede Änderung ist in einem Aktivitätsprotokoll rekonstruierbar"
+  "Die Einsehbarkeit des Aktivitätsprotokolls wird über ein Recht gesteuert"
+Richtig (konzeptbasiert gebündelt):
+  "Berechtigte User können Dokumente an einen Vorgang anhängen und entfernen"
+  "Jede Änderung ist in einem rechtegesteuerten Aktivitätsprotokoll rekonstruierbar"
+
 ### Erfolgskriterien bei Epics (Business Epics)
 
 Erfolgskriterien beschreiben, was sich für den Nutzer ändert — das beobachtbare Outcome, nicht das technische Artefakt.
