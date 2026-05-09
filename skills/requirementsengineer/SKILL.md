@@ -241,6 +241,29 @@ Anti-Patterns in Acceptance Criteria & Stories:
 ❌ KEINE Implementierungsdetails in AKs — AKs beschreiben WAS das System tut, nicht WIE es das intern löst. Typischer Fehler: Codebase-Analyse liefert technische Details, die ungefiltert in AKs landen.
 ❌ KEINE impliziten Duplikate — dasselbe Verhalten nicht einmal positiv und einmal negativ (oder aus System- und User-Perspektive) formulieren. Jedes AK muss einen eigenständigen, testbaren Wert liefern. Wenn ein AK logisch aus einem anderen folgt, ist es redundant.
 ❌ KEINE Halbsatz-Konstrukte mit Gedankenstrich (—) — ein AK ist ein vollständiger, einfacher Aussagesatz. Der Gedankenstrich wird oft als Krücke benutzt, um einen vagen ersten Teil mit einer Erklärung oder Einschränkung zu retten. Stattdessen: den Gedanken zu Ende denken und als eigenständigen Satz formulieren. Wenn ein AK zwei Aussagen enthält, in zwei AKs aufteilen.
+❌ KEINE konkreten Wertelisten oder Enums in AKs — Aufzählungen wie "(PERSON, ORT, DATUM, KONTAKT, ORGANISATION, MEDIZINISCH, SONSTIGES)" oder "wählt aus A, B, C, D" sind Lösungsdaten. Das konkrete Set gehört ins Datenmodell der späteren Spec oder in eine Anmerkung — niemals auf Anforderungsebene. Das AK beschreibt die Fähigkeit, nicht den Inhalt der Auswahl.
+❌ KEINE Mechanik der Lösung im AK — Zusätze wie "der aktuelle Typ wird ausgeblendet", "ohne ein Menü zu öffnen", "als Supporting-Text", "mit einem Klick", "über einen Quick-Action-Button" beschreiben wie die Lösung sich verhält, nicht was der USER können muss. Litmus: Bleibt die Anforderung intakt, wenn alles nach dem ersten Komma oder Semikolon gestrichen wird? Wenn ja → den Zusatz streichen. Mechanik gehört in die Spec, nicht in die Anforderung.
+❌ KEINE UI-Vergleichsreferenzen ("identisch zum Inline-Chip-Menü", "analog zum X", "wie im Y", "gleich wie in Z") — das sind Konsistenzregeln für Design/Spec, nicht für Anforderungen. Die Anforderung beschreibt, was der USER braucht, nicht woher er es kennt.
+
+Litmus-Test gegen Lösungstext (für jedes AK durchziehen):
+- "Würde ein PO diesen Satz auch ohne Designvorlage genau so schreiben?" → Nein = zu lösungsgetrieben, runterstrippen.
+- "Bleibt der testbare Kern intakt, wenn ich alles nach dem Verb des USERs streiche?" → Ja = den Rest streichen.
+- "Steht ein konkretes Set, eine UI-Bezeichnung in Anführungszeichen, ein Vergleich zu einem anderen Element drin?" → meist raus, oder als Anmerkung führen.
+
+Statt (Lösung im AK):
+  Der USER kann unter "Typ ändern" aus PERSON, ORT, DATUM, KONTAKT, ORGANISATION wählen; der aktuelle Typ wird ausgeblendet
+Richtig (Anforderung pur):
+  Der USER kann den Typ ändern
+
+Statt (UI-Vergleich + Mechanik):
+  Der USER sieht beim Eintrag "Pseudonym entfernen" den Originaltext und die Vorkommenshäufigkeit als Supporting-Text, identisch zum Inline-Chip-Menü
+Richtig (Bedürfnis):
+  Der USER erkennt den Originaltext und die Vorkommenshäufigkeit
+
+Statt (Quick-Action-Mechanik):
+  Der USER kann die Pseudonymisierung über einen Quick-Action-Button auf der Listen-Zeile mit einem Klick zurücknehmen, ohne ein Menü zu öffnen
+Richtig:
+  Der USER kann die Pseudonymisierung direkt aus der Liste zurücknehmen
 
 Duplikat-Litmus-Test: "Kann dieses AK wahr sein, während das andere falsch ist?" → Nein = Duplikat, eines streichen.
 
