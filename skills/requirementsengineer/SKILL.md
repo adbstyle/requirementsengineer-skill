@@ -242,13 +242,20 @@ Anti-Patterns in Acceptance Criteria & Stories:
 ❌ KEINE impliziten Duplikate — dasselbe Verhalten nicht einmal positiv und einmal negativ (oder aus System- und User-Perspektive) formulieren. Jedes AK muss einen eigenständigen, testbaren Wert liefern. Wenn ein AK logisch aus einem anderen folgt, ist es redundant.
 ❌ KEINE Halbsatz-Konstrukte mit Gedankenstrich (—) — ein AK ist ein vollständiger, einfacher Aussagesatz. Der Gedankenstrich wird oft als Krücke benutzt, um einen vagen ersten Teil mit einer Erklärung oder Einschränkung zu retten. Stattdessen: den Gedanken zu Ende denken und als eigenständigen Satz formulieren. Wenn ein AK zwei Aussagen enthält, in zwei AKs aufteilen.
 ❌ KEINE konkreten Wertelisten oder Enums in AKs — Aufzählungen wie "(PERSON, ORT, DATUM, KONTAKT, ORGANISATION, MEDIZINISCH, SONSTIGES)" oder "wählt aus A, B, C, D" sind Lösungsdaten. Das konkrete Set gehört ins Datenmodell der späteren Spec oder in eine Anmerkung — niemals auf Anforderungsebene. Das AK beschreibt die Fähigkeit, nicht den Inhalt der Auswahl.
+❌ KEINE Klammer-Beispiele oder Klammer-Aufzählungen in AKs — Klammern wie "(z.B. X, Y, Z)", "(Aktion A, Aktion B, ...)" oder konkrete Display-Strings wie '("1 Eintrag" / "{n} Einträge")' sind Mechanik bzw. Beispiele aus der Spec. Sie überspezifizieren die Anforderung, sind fehleranfällig (vergessenes Element verfälscht die Aussage) und blähen den Satz auf. Streiche die Klammer und prüfe: Trägt der Satz davor allein? Wenn ja → fertig. Wenn nein → der Klammer-Inhalt war der eigentliche funktionale Kern; formuliere DAS als AK.
+❌ KEINE Selbstverständlichkeiten/universellen Qualitätsstandards als AK — Aussagen wie "Text ist grammatikalisch korrekt", "UI ist barrierefrei", "Felder sind validiert", "Anzeige ist responsiv" sind Standards, keine Story-AKs. Wenn dahinter ein funktionaler Kern steckt (z.B. dynamische Einzahl/Mehrzahl, Live-Validierung, Breakpoint-Logik), formuliere DEN als AK — nicht das Qualitätsmerkmal "verziert" mit Beispielen in Klammern als Beweis.
+❌ KEIN explizit aufgezähltes Komplement — wenn ein AK "ausschliesslich X" oder "nur wenn X" sagt, ist alles andere logisch bereits ausgeschlossen. Das Komplement zusätzlich aufzulisten ("nicht Y, nicht Z, nicht W") liefert keinen Mehrwert und ist fehleranfällig: ein vergessenes Element verfälscht die Aussage. Vertraue auf die Logik von "ausschliesslich" / "nur".
+❌ KEINE Sonderfall-Implikate — wenn AK B nur einen Spezialfall einer allgemeineren Regel in AK A formuliert, ist B redundant. Beispiel: A "Anzahl wird nur angezeigt wenn > 0" deckt B "keine Anzeige bei 0 Wörtern" zwingend ab (0 Wörter → 0 Treffer → durch A bereits ausgeschlossen). Der einfache Duplikat-Test ("können beide unterschiedliche Wahrheitswerte haben?") greift hier nicht — weil A und B unterschiedliche Bedingungen prüfen, B aber durch A garantiert wird. Schärferer Test siehe unten.
 ❌ KEINE Mechanik der Lösung im AK — Zusätze wie "der aktuelle Typ wird ausgeblendet", "ohne ein Menü zu öffnen", "als Supporting-Text", "mit einem Klick", "über einen Quick-Action-Button" beschreiben wie die Lösung sich verhält, nicht was der USER können muss. Litmus: Bleibt die Anforderung intakt, wenn alles nach dem ersten Komma oder Semikolon gestrichen wird? Wenn ja → den Zusatz streichen. Mechanik gehört in die Spec, nicht in die Anforderung.
 ❌ KEINE UI-Vergleichsreferenzen ("identisch zum Inline-Chip-Menü", "analog zum X", "wie im Y", "gleich wie in Z") — das sind Konsistenzregeln für Design/Spec, nicht für Anforderungen. Die Anforderung beschreibt, was der USER braucht, nicht woher er es kennt.
 
 Litmus-Test gegen Lösungstext (für jedes AK durchziehen):
 - "Würde ein PO diesen Satz auch ohne Designvorlage genau so schreiben?" → Nein = zu lösungsgetrieben, runterstrippen.
 - "Bleibt der testbare Kern intakt, wenn ich alles nach dem Verb des USERs streiche?" → Ja = den Rest streichen.
-- "Steht ein konkretes Set, eine UI-Bezeichnung in Anführungszeichen, ein Vergleich zu einem anderen Element drin?" → meist raus, oder als Anmerkung führen.
+- "Steht ein konkretes Set, eine UI-Bezeichnung in Anführungszeichen, ein Vergleich zu einem anderen Element drin?" → meist raus.
+- "Steht eine Klammer im Satz?" → Klammer streichen und prüfen, ob der Satz davor allein trägt. Wenn ja → fertig. Wenn nein → der Klammerinhalt war der eigentliche Kern; den verbalisieren, nicht den Rahmen.
+- "Ist das, was ich als AK schreibe, in jeder UI ohnehin Pflicht (grammatikalisch korrekt, barrierefrei, validiert, responsiv)?" → Ja = Selbstverständlichkeit, raus. Wenn ein Mechanismus dahinter steckt (dynamische Einzahl/Mehrzahl, Live-Validierung), DEN formulieren.
+- "Zähle ich nach 'ausschliesslich' / 'nur' das Komplement explizit auf?" → Komplement-Aufzählung streichen; die Logik des Quantors trägt die Aussage.
 
 Statt (Lösung im AK):
   Der USER kann unter "Typ ändern" aus PERSON, ORT, DATUM, KONTAKT, ORGANISATION wählen; der aktuelle Typ wird ausgeblendet
@@ -263,9 +270,34 @@ Richtig (Bedürfnis):
 Statt (Quick-Action-Mechanik):
   Der USER kann die Pseudonymisierung über einen Quick-Action-Button auf der Listen-Zeile mit einem Klick zurücknehmen, ohne ein Menü zu öffnen
 Richtig:
-  Der USER kann die Pseudonymisierung direkt aus der Liste zurücknehmen
+  Der USER kann die Pseudonymisierung schnell und einfach rückgängig machen
 
-Duplikat-Litmus-Test: "Kann dieses AK wahr sein, während das andere falsch ist?" → Nein = Duplikat, eines streichen.
+Duplikat-Litmus-Test (zweistufig):
+1. **Symmetrischer Test** — "Kann AK A wahr sein, während AK B falsch ist (und umgekehrt)?" → Nein in beide Richtungen = identische Aussage, eines streichen.
+2. **Implikations-Test** — "Wenn AK A gilt, ist dann AK B automatisch erfüllt, ohne dass B etwas Eigenständiges hinzufügt?" → Ja = B ist Sonderfall/Implikat von A, B streichen.
+
+Der Implikations-Test fängt den Fall, in dem zwei AKs unterschiedliche Bedingungen prüfen, B aber durch A garantiert wird (z.B. A "nur wenn > 0" deckt B "0 Wörter → nicht angezeigt" zwingend ab — 0 Wörter erzwingt 0 Treffer, das ist bereits durch A geregelt). Solche AKs liefern keinen testbaren Mehrwert.
+
+Statt (Selbstverständlichkeit + Klammer-Beispiel als Beweis):
+  Der USER sieht die Anzahl in grammatikalisch korrektem Deutsch ("1 Pseudonymisierung" im Singular, "{n} Pseudonymisierungen" ab 2)
+Richtig (funktionaler Kern):
+  Der USER sieht die Anzahl mit dynamischer Einzahl/Mehrzahl-Unterscheidung
+
+Statt (Klammer-Aufzählung als Beispielcontainer + überflüssige "nachdem"-Erklärung):
+  Der USER sieht eine aktualisierte Anzahl, nachdem sich der Inhalt der Session im Review-Editor durch eine seiner Aktionen verändert hat (Chip-Entfernung, Quick-Add zur Sperrliste, Batch-Revert, Typ-Wechsel, Undo)
+Richtig (Kern):
+  Der USER sieht jederzeit die aktuelle Anzahl zum Inhalt der Session
+
+Statt (explizit aufgezähltes Komplement nach "ausschliesslich"):
+  Der USER sieht die Anzahl ausschliesslich bei Sessions im Status "review", nicht bei Sessions in den Status "recording", "queued", "processing" oder "error"
+Richtig (Komplement implizit):
+  Der USER sieht die Anzahl ausschliesslich bei Sessions im Status "review"
+
+Statt (Sonderfall-Implikat — durch allgemeineres AK bereits abgedeckt):
+  AK 4. Der USER sieht die Anzahl nur, wenn sie grösser als 0 ist
+  AK 8. Der USER sieht keine Pseudonymisierungs-Anzahl, wenn die Session 0 Wörter hat
+Richtig (allgemeineres AK behalten, Sonderfall streichen):
+  AK 4. Der USER sieht die Anzahl nur, wenn sie grösser als 0 ist
 
 Statt (Zwischenüberschriften in AKs — unnötige Gruppierung):
   Erstellen
