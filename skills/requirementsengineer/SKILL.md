@@ -243,7 +243,7 @@ Anti-Patterns in Acceptance Criteria & Stories:
 ❌ KEINE Halbsatz-Konstrukte mit Gedankenstrich (—) — ein AK ist ein vollständiger, einfacher Aussagesatz. Der Gedankenstrich wird oft als Krücke benutzt, um einen vagen ersten Teil mit einer Erklärung oder Einschränkung zu retten. Stattdessen: den Gedanken zu Ende denken und als eigenständigen Satz formulieren. Wenn ein AK zwei Aussagen enthält, in zwei AKs aufteilen.
 ❌ KEINE konkreten Wertelisten oder Enums in AKs — Aufzählungen wie "(PERSON, ORT, DATUM, KONTAKT, ORGANISATION, MEDIZINISCH, SONSTIGES)" oder "wählt aus A, B, C, D" sind Lösungsdaten. Das konkrete Set gehört ins Datenmodell der späteren Spec oder in eine Anmerkung — niemals auf Anforderungsebene. Das AK beschreibt die Fähigkeit, nicht den Inhalt der Auswahl.
 ❌ KEINE Klammer-Beispiele oder Klammer-Aufzählungen in AKs — Klammern wie "(z.B. X, Y, Z)", "(Aktion A, Aktion B, ...)" oder konkrete Display-Strings wie '("1 Eintrag" / "{n} Einträge")' sind Mechanik bzw. Beispiele aus der Spec. Sie überspezifizieren die Anforderung, sind fehleranfällig (vergessenes Element verfälscht die Aussage) und blähen den Satz auf. Streiche die Klammer und prüfe: Trägt der Satz davor allein? Wenn ja → fertig. Wenn nein → der Klammer-Inhalt war der eigentliche funktionale Kern; formuliere DAS als AK.
-❌ KEINE Selbstverständlichkeiten/universellen Qualitätsstandards als AK — Aussagen wie "Text ist grammatikalisch korrekt", "UI ist barrierefrei", "Felder sind validiert", "Anzeige ist responsiv" sind Standards, keine Story-AKs. Wenn dahinter ein funktionaler Kern steckt (z.B. dynamische Einzahl/Mehrzahl, Live-Validierung, Breakpoint-Logik), formuliere DEN als AK — nicht das Qualitätsmerkmal "verziert" mit Beispielen in Klammern als Beweis.
+❌ KEINE Selbstverständlichkeiten/universellen Qualitätsstandards als AK — Aussagen wie "Text ist grammatikalisch korrekt" sind Standards, keine Story-AKs. Wenn dahinter ein funktionaler Kern steckt (z.B. dynamische Einzahl/Mehrzahl, Live-Validierung, Breakpoint-Logik), formuliere DEN als AK — nicht das Qualitätsmerkmal "verziert" mit Beispielen in Klammern als Beweis.
 ❌ KEIN explizit aufgezähltes Komplement — wenn ein AK "ausschliesslich X" oder "nur wenn X" sagt, ist alles andere logisch bereits ausgeschlossen. Das Komplement zusätzlich aufzulisten ("nicht Y, nicht Z, nicht W") liefert keinen Mehrwert und ist fehleranfällig: ein vergessenes Element verfälscht die Aussage. Vertraue auf die Logik von "ausschliesslich" / "nur".
 ❌ KEINE Sonderfall-Implikate — wenn AK B nur einen Spezialfall einer allgemeineren Regel in AK A formuliert, ist B redundant. Beispiel: A "Anzahl wird nur angezeigt wenn > 0" deckt B "keine Anzeige bei 0 Wörtern" zwingend ab (0 Wörter → 0 Treffer → durch A bereits ausgeschlossen). Der einfache Duplikat-Test ("können beide unterschiedliche Wahrheitswerte haben?") greift hier nicht — weil A und B unterschiedliche Bedingungen prüfen, B aber durch A garantiert wird. Schärferer Test siehe unten.
 ❌ KEINE Mechanik der Lösung im AK — Zusätze wie "der aktuelle Typ wird ausgeblendet", "ohne ein Menü zu öffnen", "als Supporting-Text", "mit einem Klick", "über einen Quick-Action-Button" beschreiben wie die Lösung sich verhält, nicht was der USER können muss. Litmus: Bleibt die Anforderung intakt, wenn alles nach dem ersten Komma oder Semikolon gestrichen wird? Wenn ja → den Zusatz streichen. Mechanik gehört in die Spec, nicht in die Anforderung.
@@ -382,6 +382,35 @@ Examples:
 - "Das SYSTEM speichert die Vorgangserstellung WENN der USER die Erstellung bestätigt UND alle Eingaben valide sind"
 - "Das SYSTEM informiert den USER über das Ergebnis der Verarbeitung"
 
+**Anti-Patterns in Postconditions**
+Postconditions unterliegen DERSELBEN WAS-vs-WIE-Disziplin wie AKs. Sie beschreiben beobachtbare System-Ergebnisse, nicht Implementierungsmechanismen. Lösungstext rutscht hier besonders oft rein, weil "das SYSTEM" als Akteur einlädt, technisch zu denken — bewusst gegensteuern. Alle AK-Antipatterns gelten analog.
+
+❌ KEINE Datenquellen, Feldpfade, Dateien oder Schema-Details — "transcript.metadata.stitchMap", "<sessionId>.json", Tabellen- oder Spaltennamen sind Implementierung.
+❌ KEINE negativen Architektur-Constraints — "keine zusätzliche DB-Spalte", "keine Schema-Migration", "ohne neuen Service" sind Architekturentscheide. Wenn das Bedürfnis fachlich zwingend ist (z.B. keine Datenduplikation), formuliere das fachliche Bedürfnis.
+❌ KEINE Format-/Display-Mechanik — "rendert in Minuten und Sekunden", "gerundet auf 1 Nachkommastelle", konkrete Display-Strings wie '"5 min 29 s"' oder Locale-Identifier wie "de-CH" sind Format-Entscheide. Falls Locale-Konformität fachlich relevant ist, gehört sie in eine NFR ("folgt Schweizer Konventionen"), nicht in eine PC.
+❌ KEINE UI-Vergleichsreferenzen — "im selben Stil wie X", "analog zu Y", "konsistent mit Z" gehört in Spec/Design. (Gleicher Antipattern wie bei AKs — gilt analog für PCs.)
+❌ KEINE Render-/Komponentenmechanik — "rendert die Sektion ...", "blendet ein", "zeigt im Tab Y" sind UI-Mechanik. Frage: Was IST das fachliche Ergebnis für den User? — das ist die Postcondition.
+
+Statt (Datenquellen + negative Architektur-Constraints in PC):
+  Das SYSTEM aggregiert die Audio-Stats beim Laden der Review-Payload aus transcript.metadata.stitchMap und der persistierten Diarization-Datei — keine zusätzliche DB-Spalte und keine Schema-Migration
+Richtig (fachliches Ergebnis):
+  Das SYSTEM zeigt die Audio-Stats aus den bereits vorhandenen Verarbeitungsdaten — ohne zusätzliche Datenhaltung
+
+Statt (Berechnungsformel + Rundungsdetail im PC):
+  Das SYSTEM berechnet den Stille-Anteil als Differenz aus Original-Dauer und Sprach-Dauer und den Prozent-Wert daraus, gerundet auf eine Nachkommastelle
+Richtig (fachliche Definition, ohne Format):
+  Das SYSTEM weist als Stille-Anteil den Teil der Original-Aufnahme aus, der keine Sprache enthält
+
+Statt (Display-Format als PC):
+  Das SYSTEM rendert Zeitwerte ausgeschrieben in Minuten und Sekunden (z. B. "5 min 29 s")
+Richtig (PC weglassen — falls Locale-Konformität fachlich relevant, in NFR verschieben):
+  → NFR: "Zahlen- und Zeitformate folgen den Konventionen der Schweizer Locale"
+
+Statt (UI-Stilreferenz im PC):
+  Das SYSTEM rendert die Audio-Sektion im selben visuellen Stil wie die Modell-Sektionen
+Richtig (PC streichen — Stilkonsistenz ist Spec/Design, höchstens als NFR):
+  → NFR: "Die Audio-Sektion fügt sich visuell konsistent in das bestehende Panel ein"
+
 **Out of Scope**
 Out of Scope enthält nur Punkte, die ein Leser beim Lesen der Erfolgskriterien oder AKs fälschlicherweise mit hineininterpretieren könnte und die zu erheblichem Mehraufwand führen würden.
 
@@ -476,6 +505,29 @@ Examples:
 
 NFR-Kategorien als Denkstütze (nicht als Pflichtstruktur): Performance, Security, Compliance, Usability, Reliability, Scalability, Maintainability, Compatibility.
 
+**Anti-Patterns in NFRs**
+NFRs beschreiben Qualitätsmerkmale (wie gut, wie schnell, wie sicher, wie konsistent), nicht den technischen Weg. Wenn eine NFR sich liest wie eine Architekturskizze, ist sie keine NFR mehr.
+
+❌ KEINE Architektur-Entscheide — "im Main-Prozess", "via IPC", "validiert mit Zod", "über REST/GraphQL", "im Backend/Frontend" sind Architektur, kein Qualitätsmerkmal. Formuliere das Qualitätsziel ("Antwortzeit unter X", "Eingabevalidierung am Systemrand"), nicht den technischen Weg.
+❌ KEINE Datei-, Klassen- oder Komponentennamen — "respektiert ReviewSidePanel.tsx", "konsistent mit SecondaryTabs" sind Implementierungs-Verweise. Konsistenz benennen, nicht das Artefakt referenzieren.
+❌ KEINE Framework-/Library-Namen — "Tailwind-Tokens", "React-Hooks", "Zod-Schema" sind Tool-Entscheide. Wenn Theme-Konsistenz oder Schema-Validierung gemeint ist: das Qualitätsmerkmal benennen.
+❌ KEINE Selbstverständlichkeiten als NFR — "Light/Dark wird ohne separates Styling unterstützt" ist Implementierungsdetail; das Qualitätsmerkmal ist "Light- und Dark-Mode werden konsistent unterstützt".
+
+Statt (Architektur als NFR):
+  Die Aggregation erfolgt im Main-Prozess; der Renderer erhält ein flaches Objekt über die bestehende IPC-Payload, validiert mit Zod
+Richtig (Qualitätsmerkmal):
+  Die Audio-Stats sind beim Öffnen des Editors ohne spürbare Verzögerung verfügbar und vor der Anzeige auf Plausibilität geprüft
+
+Statt (Dateinamen als NFR):
+  Die Audio-Sektion respektiert das Spacing- und Indicator-Verhalten von ReviewSidePanel.tsx und SecondaryTabs.tsx
+Richtig (Qualitätsmerkmal):
+  Die Audio-Sektion fügt sich visuell und im Interaktionsverhalten konsistent in das bestehende Provenance-Panel ein
+
+Statt (Framework-Namen als NFR):
+  Light- und Dark-Mode werden ohne separates Styling unterstützt (Wiederverwendung der bestehenden Tailwind-Tokens)
+Richtig (Qualitätsmerkmal):
+  Die Audio-Sektion folgt dem aktiven Theme der Anwendung (Light und Dark) ohne Abweichung
+
 ---
 
 **STOP — Dokumentation ist NICHT fertig.** Phase 4 ist jetzt zwingend, bevor du ausgibst. Rationalisierungen wie "offene Fragen decken's ab" oder "Epic ist klar genug" sind das Signal, Phase 4 gerade JETZT durchzuführen — du kannst nicht validieren was du selbst geschrieben hast.
@@ -493,7 +545,7 @@ NFR-Kategorien als Denkstütze (nicht als Pflichtstruktur): Performance, Securit
 | 1 | Kunde/Nutzer | "Prüfe diese Requirements aus Kundensicht. Welche WAS-Fragen kann ein User/PO nicht beantworten? Liefere max. 5 Findings als: Requirement sagt '[Zitat]', aber unklar: [konkrete Frage]. Keine Lösungsvorschläge." |
 | 2 | Softwarearchitekt | "Prüfe diese Requirements aus Architektensicht. Genug Info für einen Architekturentwurf? Liefere max. 5 Findings: fehlende Einschränkungen, Konflikte zwischen Requirements, fehlende NFRs. Kein Architektur-Design." |
 | 3 | Tester | "Prüfe diese Requirements aus Testersicht. Können Testfälle abgeleitet werden? Liefere max. 5 Findings: Welche Requirements sind zu vage zum Testen? Was fehlt für Testbarkeit? Kein Test-Code." |
-| 4 | Business Analyst | "Prüfe diese Requirements aus BA-Sicht. Dein Fokus: Ist das tatsächliche Problem und der Bedarf des Stakeholders klar genug formuliert, damit ein Entwicklungsteam es versteht? Prüfe anhand dieser Leitfragen: (1) Welches Problem versuchen wir zu lösen — ist es benannt oder nur implizit? (2) Wie bringt diese Story der Organisation einen Wert? (3) Wer sind die Endnutzer und was ist ihr konkreter Nutzen? (4) Woran erkennen wir, dass wir fertig sind? Liefere max. 5 Findings. Achte besonders auf: vorzeitige Lösungsvorgaben (UI-Details, technische Vorgaben) die statt des Problems eine Lösung beschreiben, fehlende Problemkontexte, unklare Wertversprechen. Keine Lösungsvorschläge." |
+| 4 | Business Analyst | "Prüfe diese Requirements aus BA-Sicht. Dein Fokus: Ist das tatsächliche Problem und der Bedarf des Stakeholders klar genug formuliert, damit ein Entwicklungsteam es versteht? Prüfe anhand dieser Leitfragen: (1) Welches Problem versuchen wir zu lösen — ist es benannt oder nur implizit? (2) Wie bringt diese Story der Organisation einen Wert? (3) Wer sind die Endnutzer und was ist ihr konkreter Nutzen? (4) Woran erkennen wir, dass wir fertig sind? Liefere max. 5 Findings. Achte besonders auf: vorzeitige Lösungsvorgaben (UI-Details, technische Vorgaben) die statt des Problems eine Lösung beschreiben, fehlende Problemkontexte, unklare Wertversprechen. Prüfe technische Drift NICHT NUR in AKs, sondern auch in Postconditions und NFRs — typische Drift-Marker dort: Datenquellen/Feldpfade ('transcript.metadata.x'), Dateinamen ('Component.tsx'), Framework-/Library-Namen (Tailwind, Zod, IPC), Architektur-Entscheide ('im Main-Prozess', 'keine DB-Migration'), Format-Mechanik (Locale-Identifier, konkrete Display-Strings, Rundungsdetails). Keine Lösungsvorschläge." |
 | 5 | Fachexperte (Domain Expert) | "Du bist Fachexperte in der Domäne dieser Story. Leite aus dem Kontext ab, welche Fachdomäne betroffen ist (z.B. Pharma, Logistik, Finanzwesen, Gesundheitswesen). Prüfe aus dieser Fachperspektive: (1) Werden Fachbegriffe korrekt und konsistent verwendet? (2) Fehlen domänenspezifische Geschäftsregeln, die ein Fachexperte als selbstverständlich voraussetzen würde, die aber für ein Entwicklungsteam nicht offensichtlich sind? (3) Gibt es fachliche Annahmen, die in dieser Domäne falsch oder unvollständig sind? (4) Fehlen regulatorische oder branchenspezifische Anforderungen? Liefere max. 5 Findings. Keine Lösungsvorschläge." |
 
 **Output-Format pro Perspektive:**
