@@ -29,7 +29,7 @@ Erstelle vor allem anderen eine TodoWrite-Liste mit allen Pflicht-Phasen als sep
 1. **Phase 2 SOLL** — Anforderungskontext (Agenten 1-4)
 2. **Phase 2 IST** — Codebase-Analyse (3 Agenten, falls Codebase vorhanden)
 3. **Phase 3** — Requirements dokumentieren
-4. **Phase 4** — Perspektivenbasiertes Lesen (5 Agenten)
+4. **Phase 4** — Perspektivenbasiertes Lesen (6 Agenten)
 5. **Phase 4** — 🔴 und 🟡 Findings via AskUserQuestion
 
 Items streichen nur mit expliziter Begründung (z.B. "keine Codebase").
@@ -241,8 +241,63 @@ Anti-Patterns in Acceptance Criteria & Stories:
 ❌ KEINE Implementierungsdetails in AKs — AKs beschreiben WAS das System tut, nicht WIE es das intern löst. Typischer Fehler: Codebase-Analyse liefert technische Details, die ungefiltert in AKs landen.
 ❌ KEINE impliziten Duplikate — dasselbe Verhalten nicht einmal positiv und einmal negativ (oder aus System- und User-Perspektive) formulieren. Jedes AK muss einen eigenständigen, testbaren Wert liefern. Wenn ein AK logisch aus einem anderen folgt, ist es redundant.
 ❌ KEINE Halbsatz-Konstrukte mit Gedankenstrich (—) — ein AK ist ein vollständiger, einfacher Aussagesatz. Der Gedankenstrich wird oft als Krücke benutzt, um einen vagen ersten Teil mit einer Erklärung oder Einschränkung zu retten. Stattdessen: den Gedanken zu Ende denken und als eigenständigen Satz formulieren. Wenn ein AK zwei Aussagen enthält, in zwei AKs aufteilen.
+❌ KEINE konkreten Wertelisten oder Enums in AKs — Aufzählungen wie "(PERSON, ORT, DATUM, KONTAKT, ORGANISATION, MEDIZINISCH, SONSTIGES)" oder "wählt aus A, B, C, D" sind Lösungsdaten. Das konkrete Set gehört ins Datenmodell der späteren Spec oder in eine Anmerkung — niemals auf Anforderungsebene. Das AK beschreibt die Fähigkeit, nicht den Inhalt der Auswahl.
+❌ KEINE Klammer-Beispiele oder Klammer-Aufzählungen in AKs — Klammern wie "(z.B. X, Y, Z)", "(Aktion A, Aktion B, ...)" oder konkrete Display-Strings wie '("1 Eintrag" / "{n} Einträge")' sind Mechanik bzw. Beispiele aus der Spec. Sie überspezifizieren die Anforderung, sind fehleranfällig (vergessenes Element verfälscht die Aussage) und blähen den Satz auf. Streiche die Klammer und prüfe: Trägt der Satz davor allein? Wenn ja → fertig. Wenn nein → der Klammer-Inhalt war der eigentliche funktionale Kern; formuliere DAS als AK.
+❌ KEINE Selbstverständlichkeiten/universellen Qualitätsstandards als AK — Aussagen wie "Text ist grammatikalisch korrekt" sind Standards, keine Story-AKs. Wenn dahinter ein funktionaler Kern steckt (z.B. dynamische Einzahl/Mehrzahl, Live-Validierung, Breakpoint-Logik), formuliere DEN als AK — nicht das Qualitätsmerkmal "verziert" mit Beispielen in Klammern als Beweis.
+❌ KEIN explizit aufgezähltes Komplement — wenn ein AK "ausschliesslich X" oder "nur wenn X" sagt, ist alles andere logisch bereits ausgeschlossen. Das Komplement zusätzlich aufzulisten ("nicht Y, nicht Z, nicht W") liefert keinen Mehrwert und ist fehleranfällig: ein vergessenes Element verfälscht die Aussage. Vertraue auf die Logik von "ausschliesslich" / "nur".
+❌ KEINE Sonderfall-Implikate — wenn AK B nur einen Spezialfall einer allgemeineren Regel in AK A formuliert, ist B redundant. Beispiel: A "Anzahl wird nur angezeigt wenn > 0" deckt B "keine Anzeige bei 0 Wörtern" zwingend ab (0 Wörter → 0 Treffer → durch A bereits ausgeschlossen). Der einfache Duplikat-Test ("können beide unterschiedliche Wahrheitswerte haben?") greift hier nicht — weil A und B unterschiedliche Bedingungen prüfen, B aber durch A garantiert wird. Schärferer Test siehe unten.
+❌ KEINE Mechanik der Lösung im AK — Zusätze wie "der aktuelle Typ wird ausgeblendet", "ohne ein Menü zu öffnen", "als Supporting-Text", "mit einem Klick", "über einen Quick-Action-Button" beschreiben wie die Lösung sich verhält, nicht was der USER können muss. Litmus: Bleibt die Anforderung intakt, wenn alles nach dem ersten Komma oder Semikolon gestrichen wird? Wenn ja → den Zusatz streichen. Mechanik gehört in die Spec, nicht in die Anforderung.
+❌ KEINE UI-Vergleichsreferenzen ("identisch zum Inline-Chip-Menü", "analog zum X", "wie im Y", "gleich wie in Z") — das sind Konsistenzregeln für Design/Spec, nicht für Anforderungen. Die Anforderung beschreibt, was der USER braucht, nicht woher er es kennt.
 
-Duplikat-Litmus-Test: "Kann dieses AK wahr sein, während das andere falsch ist?" → Nein = Duplikat, eines streichen.
+Litmus-Test gegen Lösungstext (für jedes AK durchziehen):
+- "Würde ein PO diesen Satz auch ohne Designvorlage genau so schreiben?" → Nein = zu lösungsgetrieben, runterstrippen.
+- "Bleibt der testbare Kern intakt, wenn ich alles nach dem Verb des USERs streiche?" → Ja = den Rest streichen.
+- "Steht ein konkretes Set, eine UI-Bezeichnung in Anführungszeichen, ein Vergleich zu einem anderen Element drin?" → meist raus.
+- "Steht eine Klammer im Satz?" → Klammer streichen und prüfen, ob der Satz davor allein trägt. Wenn ja → fertig. Wenn nein → der Klammerinhalt war der eigentliche Kern; den verbalisieren, nicht den Rahmen.
+- "Ist das, was ich als AK schreibe, in jeder UI ohnehin Pflicht (grammatikalisch korrekt, barrierefrei, validiert, responsiv)?" → Ja = Selbstverständlichkeit, raus. Wenn ein Mechanismus dahinter steckt (dynamische Einzahl/Mehrzahl, Live-Validierung), DEN formulieren.
+- "Zähle ich nach 'ausschliesslich' / 'nur' das Komplement explizit auf?" → Komplement-Aufzählung streichen; die Logik des Quantors trägt die Aussage.
+
+Statt (Lösung im AK):
+  Der USER kann unter "Typ ändern" aus PERSON, ORT, DATUM, KONTAKT, ORGANISATION wählen; der aktuelle Typ wird ausgeblendet
+Richtig (Anforderung pur):
+  Der USER kann den Typ ändern
+
+Statt (UI-Vergleich + Mechanik):
+  Der USER sieht beim Eintrag "Pseudonym entfernen" den Originaltext und die Vorkommenshäufigkeit als Supporting-Text, identisch zum Inline-Chip-Menü
+Richtig (Bedürfnis):
+  Der USER erkennt den Originaltext und die Vorkommenshäufigkeit
+
+Statt (Quick-Action-Mechanik):
+  Der USER kann die Pseudonymisierung über einen Quick-Action-Button auf der Listen-Zeile mit einem Klick zurücknehmen, ohne ein Menü zu öffnen
+Richtig:
+  Der USER kann die Pseudonymisierung schnell und einfach rückgängig machen
+
+Duplikat-Litmus-Test (zweistufig):
+1. **Symmetrischer Test** — "Kann AK A wahr sein, während AK B falsch ist (und umgekehrt)?" → Nein in beide Richtungen = identische Aussage, eines streichen.
+2. **Implikations-Test** — "Wenn AK A gilt, ist dann AK B automatisch erfüllt, ohne dass B etwas Eigenständiges hinzufügt?" → Ja = B ist Sonderfall/Implikat von A, B streichen.
+
+Der Implikations-Test fängt den Fall, in dem zwei AKs unterschiedliche Bedingungen prüfen, B aber durch A garantiert wird (z.B. A "nur wenn > 0" deckt B "0 Wörter → nicht angezeigt" zwingend ab — 0 Wörter erzwingt 0 Treffer, das ist bereits durch A geregelt). Solche AKs liefern keinen testbaren Mehrwert.
+
+Statt (Selbstverständlichkeit + Klammer-Beispiel als Beweis):
+  Der USER sieht die Anzahl in grammatikalisch korrektem Deutsch ("1 Pseudonymisierung" im Singular, "{n} Pseudonymisierungen" ab 2)
+Richtig (funktionaler Kern):
+  Der USER sieht die Anzahl mit dynamischer Einzahl/Mehrzahl-Unterscheidung
+
+Statt (Klammer-Aufzählung als Beispielcontainer + überflüssige "nachdem"-Erklärung):
+  Der USER sieht eine aktualisierte Anzahl, nachdem sich der Inhalt der Session im Review-Editor durch eine seiner Aktionen verändert hat (Chip-Entfernung, Quick-Add zur Sperrliste, Batch-Revert, Typ-Wechsel, Undo)
+Richtig (Kern):
+  Der USER sieht jederzeit die aktuelle Anzahl zum Inhalt der Session
+
+Statt (explizit aufgezähltes Komplement nach "ausschliesslich"):
+  Der USER sieht die Anzahl ausschliesslich bei Sessions im Status "review", nicht bei Sessions in den Status "recording", "queued", "processing" oder "error"
+Richtig (Komplement implizit):
+  Der USER sieht die Anzahl ausschliesslich bei Sessions im Status "review"
+
+Statt (Sonderfall-Implikat — durch allgemeineres AK bereits abgedeckt):
+  AK 4. Der USER sieht die Anzahl nur, wenn sie grösser als 0 ist
+  AK 8. Der USER sieht keine Pseudonymisierungs-Anzahl, wenn die Session 0 Wörter hat
+Richtig (allgemeineres AK behalten, Sonderfall streichen):
+  AK 4. Der USER sieht die Anzahl nur, wenn sie grösser als 0 ist
 
 Statt (Zwischenüberschriften in AKs — unnötige Gruppierung):
   Erstellen
@@ -326,6 +381,9 @@ Examples:
 - "Das SYSTEM entfernt das PDF endgültig WENN der USER die Löschaktion bestätigt"
 - "Das SYSTEM speichert die Vorgangserstellung WENN der USER die Erstellung bestätigt UND alle Eingaben valide sind"
 - "Das SYSTEM informiert den USER über das Ergebnis der Verarbeitung"
+
+**Anti-Patterns in Postconditions**
+Postconditions unterliegen DERSELBEN WAS-vs-WIE-Disziplin wie AKs. Sie beschreiben beobachtbare System-Ergebnisse, nicht Implementierungsmechanismen. Lösungstext rutscht hier besonders oft rein, weil "das SYSTEM" als Akteur einlädt, technisch zu denken — bewusst gegensteuern. Alle AK-Antipatterns gelten analog.
 
 **Out of Scope**
 Out of Scope enthält nur Punkte, die ein Leser beim Lesen der Erfolgskriterien oder AKs fälschlicherweise mit hineininterpretieren könnte und die zu erheblichem Mehraufwand führen würden.
@@ -421,6 +479,28 @@ Examples:
 
 NFR-Kategorien als Denkstütze (nicht als Pflichtstruktur): Performance, Security, Compliance, Usability, Reliability, Scalability, Maintainability, Compatibility.
 
+**Anti-Patterns in NFRs**
+NFRs beschreiben Qualitätsmerkmale (wie gut, wie schnell, wie sicher, wie konsistent), nicht den technischen Weg. Wenn eine NFR sich liest wie eine Architekturskizze, ist sie keine NFR mehr.
+
+❌ KEINE Architektur-Entscheide — "im Main-Prozess", "via IPC", "validiert mit Zod", "über REST/GraphQL", "im Backend/Frontend" sind Architektur, kein Qualitätsmerkmal. Formuliere das Qualitätsziel ("Antwortzeit unter X", "Eingabevalidierung am Systemrand"), nicht den technischen Weg.
+❌ KEINE Datei-, Klassen- oder Komponentennamen — "respektiert ReviewSidePanel.tsx", "konsistent mit SecondaryTabs" sind Implementierungs-Verweise. Konsistenz benennen, nicht das Artefakt referenzieren.
+❌ KEINE Framework-/Library-Namen — "Tailwind-Tokens", "React-Hooks", "Zod-Schema" sind Tool-Entscheide. Wenn Theme-Konsistenz oder Schema-Validierung gemeint ist: das Qualitätsmerkmal benennen.
+
+Statt (Architektur als NFR):
+  Die Aggregation erfolgt im Main-Prozess; der Renderer erhält ein flaches Objekt über die bestehende IPC-Payload, validiert mit Zod
+Richtig (Qualitätsmerkmal):
+  Die Audio-Stats sind beim Öffnen des Editors ohne spürbare Verzögerung verfügbar und vor der Anzeige auf Plausibilität geprüft
+
+Statt (Dateinamen als NFR):
+  Die Audio-Sektion respektiert das Spacing- und Indicator-Verhalten von ReviewSidePanel.tsx und SecondaryTabs.tsx
+Richtig (Qualitätsmerkmal):
+  Die Audio-Sektion fügt sich visuell und im Interaktionsverhalten konsistent in das bestehende Provenance-Panel ein
+
+Statt (Framework-Namen als NFR):
+  Light- und Dark-Mode werden ohne separates Styling unterstützt (Wiederverwendung der bestehenden Tailwind-Tokens)
+Richtig (Qualitätsmerkmal):
+  Die Audio-Sektion folgt dem aktiven Theme der Anwendung (Light und Dark) ohne Abweichung
+
 ---
 
 **STOP — Dokumentation ist NICHT fertig.** Phase 4 ist jetzt zwingend, bevor du ausgibst. Rationalisierungen wie "offene Fragen decken's ab" oder "Epic ist klar genug" sind das Signal, Phase 4 gerade JETZT durchzuführen — du kannst nicht validieren was du selbst geschrieben hast.
@@ -429,17 +509,18 @@ NFR-Kategorien als Denkstütze (nicht als Pflichtstruktur): Performance, Securit
 ### Perspektivenbasiertes Lesen
 
 > **MANDATORY:** Verwende das **Task-Tool** mit `subagent_type="general-purpose"` und `model="sonnet"`.
-> Spawne alle 5 in **einem einzigen Message-Block** (parallel).
+> Spawne alle 6 in **einem einzigen Message-Block** (parallel).
 > Übergib jedem Agent die fertige Requirements-Dokumentation aus Phase 3 als Kontext.
 > Jeder Agent liefert maximal 5 Findings — priorisiert nach Impact.
 
 | Agent | Perspektive | Prompt |
 |-------|-------------|--------|
 | 1 | Kunde/Nutzer | "Prüfe diese Requirements aus Kundensicht. Welche WAS-Fragen kann ein User/PO nicht beantworten? Liefere max. 5 Findings als: Requirement sagt '[Zitat]', aber unklar: [konkrete Frage]. Keine Lösungsvorschläge." |
-| 2 | Softwarearchitekt | "Prüfe diese Requirements aus Architektensicht. Genug Info für einen Architekturentwurf? Liefere max. 5 Findings: fehlende Einschränkungen, Konflikte zwischen Requirements, fehlende NFRs. Kein Architektur-Design." |
+| 2 | Softwarearchitekt / Software Engineer | "Prüfe diese Requirements aus Architekten- bzw. Engineer-Sicht. Zwei Dimensionen, beide gleichgewichtig: (A) **Vollständigkeit** — Habe ich genug Info für einen Architekturentwurf? Achte auf fehlende Einschränkungen, Konflikte zwischen Requirements, fehlende NFRs, ungeklärte Abhängigkeiten. (B) **Lösungsoffenheit** — Kann ich auf Basis dieser Anforderung eine pragmatische, effiziente, für das System konsistente und nachhaltige Lösung implementieren, ohne durch unnötige Vorgaben eingeengt zu werden? Übersteuerung kostet Optionalität; jede vorzeitige Vorgabe schliesst eine bessere Lösung aus. Achte auf vorzeitige Lösungsvorgaben in AKs, Postconditions und NFRs: Datenquellen/Feldpfade, Dateinamen, Framework-/Library-Namen, Architektur-Entscheide ('im Main-Prozess', 'via IPC', 'keine DB-Migration'), Format-Mechanik (Locale-Identifier, Display-Strings, Rundungsdetails), UI-Vergleichsreferenzen, Berechnungsformeln. Liefere max. 5 Findings — markiere pro Finding ob es (A) Lücke oder (B) Übersteuerung ist. Kein Architektur-Design, keine Lösungsvorschläge." |
 | 3 | Tester | "Prüfe diese Requirements aus Testersicht. Können Testfälle abgeleitet werden? Liefere max. 5 Findings: Welche Requirements sind zu vage zum Testen? Was fehlt für Testbarkeit? Kein Test-Code." |
-| 4 | Business Analyst | "Prüfe diese Requirements aus BA-Sicht. Dein Fokus: Ist das tatsächliche Problem und der Bedarf des Stakeholders klar genug formuliert, damit ein Entwicklungsteam es versteht? Prüfe anhand dieser Leitfragen: (1) Welches Problem versuchen wir zu lösen — ist es benannt oder nur implizit? (2) Wie bringt diese Story der Organisation einen Wert? (3) Wer sind die Endnutzer und was ist ihr konkreter Nutzen? (4) Woran erkennen wir, dass wir fertig sind? Liefere max. 5 Findings. Achte besonders auf: vorzeitige Lösungsvorgaben (UI-Details, technische Vorgaben) die statt des Problems eine Lösung beschreiben, fehlende Problemkontexte, unklare Wertversprechen. Keine Lösungsvorschläge." |
+| 4 | Business Analyst | "Prüfe diese Requirements aus BA-Sicht. Dein Fokus: Ist das tatsächliche Problem und der Bedarf des Stakeholders klar genug formuliert, damit ein Entwicklungsteam es versteht? Prüfe anhand dieser Leitfragen: (1) Welches Problem versuchen wir zu lösen — ist es benannt oder nur implizit? (2) Wie bringt diese Story der Organisation einen Wert? (3) Wer sind die Endnutzer und was ist ihr konkreter Nutzen? (4) Woran erkennen wir, dass wir fertig sind? Liefere max. 5 Findings. Achte besonders auf: vorzeitige Lösungsvorgaben (UI-Details, technische Vorgaben) die statt des Problems eine Lösung beschreiben, fehlende Problemkontexte, unklare Wertversprechen. Prüfe technische Drift NICHT NUR in AKs, sondern auch in Postconditions und NFRs — typische Drift-Marker dort: Datenquellen/Feldpfade ('transcript.metadata.x'), Dateinamen ('Component.tsx'), Framework-/Library-Namen (Tailwind, Zod, IPC), Architektur-Entscheide ('im Main-Prozess', 'keine DB-Migration'), Format-Mechanik (Locale-Identifier, konkrete Display-Strings, Rundungsdetails). Keine Lösungsvorschläge." |
 | 5 | Fachexperte (Domain Expert) | "Du bist Fachexperte in der Domäne dieser Story. Leite aus dem Kontext ab, welche Fachdomäne betroffen ist (z.B. Pharma, Logistik, Finanzwesen, Gesundheitswesen). Prüfe aus dieser Fachperspektive: (1) Werden Fachbegriffe korrekt und konsistent verwendet? (2) Fehlen domänenspezifische Geschäftsregeln, die ein Fachexperte als selbstverständlich voraussetzen würde, die aber für ein Entwicklungsteam nicht offensichtlich sind? (3) Gibt es fachliche Annahmen, die in dieser Domäne falsch oder unvollständig sind? (4) Fehlen regulatorische oder branchenspezifische Anforderungen? Liefere max. 5 Findings. Keine Lösungsvorschläge." |
+| 6 | UX Designer / UX Architekt | "Prüfe diese Requirements aus UX-Sicht. Zwei Dimensionen, beide gleichgewichtig: (A) **Vollständigkeit** — Habe ich genug prozessuale Information, um ein grobes UX-Konzept zu skizzieren? Achte auf fehlende oder unklare Auslöser/Trigger, Aktionen und Konsequenzen. (B) **Lösungsoffenheit** — Lässt die Anforderung die UX-Gestaltung offen, oder ist sie bereits in Richtung einer konkreten UI-Lösung gekippt? Achte auf vorzeitige UI-Vorgaben: konkrete Komponenten-Namen ('Dropdown', 'Modal', 'Sidebar', 'Stepper'), Layouts ('links die Liste, rechts das Detail'), Reihenfolgen-Vorgaben in der Darstellung, konkrete Wordings/Microcopy in Anführungszeichen, Vergleichsreferenzen zu bestehenden Screens, Mechanik wie 'mit einem Klick', 'als Tooltip', 'beim Hover'. Solche Vorgaben schneiden UX-Optionen ab, bevor das Konzept überhaupt diskutiert ist. Liefere max. 5 Findings — markiere pro Finding ob es (A) Lücke oder (B) Übersteuerung ist. Kein UX-Konzept entwerfen, keine Wireframes, keine Lösungsvorschläge." |
 
 **Output-Format pro Perspektive:**
 

@@ -184,6 +184,16 @@ Richtig (konzeptbasiert gebündelt):
   "Berechtigte User können Dokumente an einen Vorgang anhängen und entfernen"
   "Jede Änderung ist in einem rechtegesteuerten Aktivitätsprotokoll rekonstruierbar"
 
+**6. Keine impliziten Duplikate**
+
+Wie bei AKs: Wenn ein Kriterium logisch aus einem anderen folgt, ist es redundant. Litmus-Test: "Kann Kriterium A wahr sein, während Kriterium B falsch ist?" → Nein → Duplikat, eines streichen. Einschränkungen gehören als Qualifikator in den bestehenden Satz, nicht als separates Kriterium.
+
+Statt (Einschränkung als separates Kriterium):
+  "Eine Störungsmeldung kann digital von Erfassung bis Abschluss durchlaufen werden für ein meldepflichtiges Produkt"
+  "Störungsmeldungen können ausschliesslich für meldepflichtige Produkte erfasst werden"
+Richtig (Einschränkung ist bereits im ersten Satz enthalten — zweiter Satz entfällt):
+  "Eine Störungsmeldung für ein meldepflichtiges Produkt kann digital von Erfassung bis Abschluss durchlaufen werden"
+
 ### Erfolgskriterien bei Epics (Business Epics)
 
 Erfolgskriterien beschreiben, was sich für den Nutzer ändert — das beobachtbare Outcome, nicht das technische Artefakt.
