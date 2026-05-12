@@ -385,32 +385,6 @@ Examples:
 **Anti-Patterns in Postconditions**
 Postconditions unterliegen DERSELBEN WAS-vs-WIE-Disziplin wie AKs. Sie beschreiben beobachtbare System-Ergebnisse, nicht Implementierungsmechanismen. Lösungstext rutscht hier besonders oft rein, weil "das SYSTEM" als Akteur einlädt, technisch zu denken — bewusst gegensteuern. Alle AK-Antipatterns gelten analog.
 
-❌ KEINE Datenquellen, Feldpfade, Dateien oder Schema-Details — "transcript.metadata.stitchMap", "<sessionId>.json", Tabellen- oder Spaltennamen sind Implementierung.
-❌ KEINE negativen Architektur-Constraints — "keine zusätzliche DB-Spalte", "keine Schema-Migration", "ohne neuen Service" sind Architekturentscheide. Wenn das Bedürfnis fachlich zwingend ist (z.B. keine Datenduplikation), formuliere das fachliche Bedürfnis.
-❌ KEINE Format-/Display-Mechanik — "rendert in Minuten und Sekunden", "gerundet auf 1 Nachkommastelle", konkrete Display-Strings wie '"5 min 29 s"' oder Locale-Identifier wie "de-CH" sind Format-Entscheide. Falls Locale-Konformität fachlich relevant ist, gehört sie in eine NFR ("folgt Schweizer Konventionen"), nicht in eine PC.
-❌ KEINE UI-Vergleichsreferenzen — "im selben Stil wie X", "analog zu Y", "konsistent mit Z" gehört in Spec/Design. (Gleicher Antipattern wie bei AKs — gilt analog für PCs.)
-❌ KEINE Render-/Komponentenmechanik — "rendert die Sektion ...", "blendet ein", "zeigt im Tab Y" sind UI-Mechanik. Frage: Was IST das fachliche Ergebnis für den User? — das ist die Postcondition.
-
-Statt (Datenquellen + negative Architektur-Constraints in PC):
-  Das SYSTEM aggregiert die Audio-Stats beim Laden der Review-Payload aus transcript.metadata.stitchMap und der persistierten Diarization-Datei — keine zusätzliche DB-Spalte und keine Schema-Migration
-Richtig (fachliches Ergebnis):
-  Das SYSTEM zeigt die Audio-Stats aus den bereits vorhandenen Verarbeitungsdaten — ohne zusätzliche Datenhaltung
-
-Statt (Berechnungsformel + Rundungsdetail im PC):
-  Das SYSTEM berechnet den Stille-Anteil als Differenz aus Original-Dauer und Sprach-Dauer und den Prozent-Wert daraus, gerundet auf eine Nachkommastelle
-Richtig (fachliche Definition, ohne Format):
-  Das SYSTEM weist als Stille-Anteil den Teil der Original-Aufnahme aus, der keine Sprache enthält
-
-Statt (Display-Format als PC):
-  Das SYSTEM rendert Zeitwerte ausgeschrieben in Minuten und Sekunden (z. B. "5 min 29 s")
-Richtig (PC weglassen — falls Locale-Konformität fachlich relevant, in NFR verschieben):
-  → NFR: "Zahlen- und Zeitformate folgen den Konventionen der Schweizer Locale"
-
-Statt (UI-Stilreferenz im PC):
-  Das SYSTEM rendert die Audio-Sektion im selben visuellen Stil wie die Modell-Sektionen
-Richtig (PC streichen — Stilkonsistenz ist Spec/Design, höchstens als NFR):
-  → NFR: "Die Audio-Sektion fügt sich visuell konsistent in das bestehende Panel ein"
-
 **Out of Scope**
 Out of Scope enthält nur Punkte, die ein Leser beim Lesen der Erfolgskriterien oder AKs fälschlicherweise mit hineininterpretieren könnte und die zu erheblichem Mehraufwand führen würden.
 
@@ -511,7 +485,6 @@ NFRs beschreiben Qualitätsmerkmale (wie gut, wie schnell, wie sicher, wie konsi
 ❌ KEINE Architektur-Entscheide — "im Main-Prozess", "via IPC", "validiert mit Zod", "über REST/GraphQL", "im Backend/Frontend" sind Architektur, kein Qualitätsmerkmal. Formuliere das Qualitätsziel ("Antwortzeit unter X", "Eingabevalidierung am Systemrand"), nicht den technischen Weg.
 ❌ KEINE Datei-, Klassen- oder Komponentennamen — "respektiert ReviewSidePanel.tsx", "konsistent mit SecondaryTabs" sind Implementierungs-Verweise. Konsistenz benennen, nicht das Artefakt referenzieren.
 ❌ KEINE Framework-/Library-Namen — "Tailwind-Tokens", "React-Hooks", "Zod-Schema" sind Tool-Entscheide. Wenn Theme-Konsistenz oder Schema-Validierung gemeint ist: das Qualitätsmerkmal benennen.
-❌ KEINE Selbstverständlichkeiten als NFR — "Light/Dark wird ohne separates Styling unterstützt" ist Implementierungsdetail; das Qualitätsmerkmal ist "Light- und Dark-Mode werden konsistent unterstützt".
 
 Statt (Architektur als NFR):
   Die Aggregation erfolgt im Main-Prozess; der Renderer erhält ein flaches Objekt über die bestehende IPC-Payload, validiert mit Zod
@@ -543,7 +516,7 @@ Richtig (Qualitätsmerkmal):
 | Agent | Perspektive | Prompt |
 |-------|-------------|--------|
 | 1 | Kunde/Nutzer | "Prüfe diese Requirements aus Kundensicht. Welche WAS-Fragen kann ein User/PO nicht beantworten? Liefere max. 5 Findings als: Requirement sagt '[Zitat]', aber unklar: [konkrete Frage]. Keine Lösungsvorschläge." |
-| 2 | Softwarearchitekt | "Prüfe diese Requirements aus Architektensicht. Genug Info für einen Architekturentwurf? Liefere max. 5 Findings: fehlende Einschränkungen, Konflikte zwischen Requirements, fehlende NFRs. Kein Architektur-Design." |
+| 2 | Softwarearchitekt / Software Engineer | "Prüfe diese Requirements aus Architekten- bzw. Engineer-Sicht. Zwei Dimensionen, beide gleichgewichtig: (A) **Vollständigkeit** — Habe ich genug Info für einen Architekturentwurf? Achte auf fehlende Einschränkungen, Konflikte zwischen Requirements, fehlende NFRs, ungeklärte Abhängigkeiten. (B) **Lösungsoffenheit** — Kann ich auf Basis dieser Anforderung eine pragmatische, effiziente, für das System konsistente und nachhaltige Lösung implementieren, ohne durch unnötige Vorgaben eingeengt zu werden? Übersteuerung kostet Optionalität; jede vorzeitige Vorgabe schliesst eine bessere Lösung aus. Achte auf vorzeitige Lösungsvorgaben in AKs, Postconditions und NFRs: Datenquellen/Feldpfade, Dateinamen, Framework-/Library-Namen, Architektur-Entscheide ('im Main-Prozess', 'via IPC', 'keine DB-Migration'), Format-Mechanik (Locale-Identifier, Display-Strings, Rundungsdetails), UI-Vergleichsreferenzen, Berechnungsformeln. Liefere max. 5 Findings — markiere pro Finding ob es (A) Lücke oder (B) Übersteuerung ist. Kein Architektur-Design, keine Lösungsvorschläge." |
 | 3 | Tester | "Prüfe diese Requirements aus Testersicht. Können Testfälle abgeleitet werden? Liefere max. 5 Findings: Welche Requirements sind zu vage zum Testen? Was fehlt für Testbarkeit? Kein Test-Code." |
 | 4 | Business Analyst | "Prüfe diese Requirements aus BA-Sicht. Dein Fokus: Ist das tatsächliche Problem und der Bedarf des Stakeholders klar genug formuliert, damit ein Entwicklungsteam es versteht? Prüfe anhand dieser Leitfragen: (1) Welches Problem versuchen wir zu lösen — ist es benannt oder nur implizit? (2) Wie bringt diese Story der Organisation einen Wert? (3) Wer sind die Endnutzer und was ist ihr konkreter Nutzen? (4) Woran erkennen wir, dass wir fertig sind? Liefere max. 5 Findings. Achte besonders auf: vorzeitige Lösungsvorgaben (UI-Details, technische Vorgaben) die statt des Problems eine Lösung beschreiben, fehlende Problemkontexte, unklare Wertversprechen. Prüfe technische Drift NICHT NUR in AKs, sondern auch in Postconditions und NFRs — typische Drift-Marker dort: Datenquellen/Feldpfade ('transcript.metadata.x'), Dateinamen ('Component.tsx'), Framework-/Library-Namen (Tailwind, Zod, IPC), Architektur-Entscheide ('im Main-Prozess', 'keine DB-Migration'), Format-Mechanik (Locale-Identifier, konkrete Display-Strings, Rundungsdetails). Keine Lösungsvorschläge." |
 | 5 | Fachexperte (Domain Expert) | "Du bist Fachexperte in der Domäne dieser Story. Leite aus dem Kontext ab, welche Fachdomäne betroffen ist (z.B. Pharma, Logistik, Finanzwesen, Gesundheitswesen). Prüfe aus dieser Fachperspektive: (1) Werden Fachbegriffe korrekt und konsistent verwendet? (2) Fehlen domänenspezifische Geschäftsregeln, die ein Fachexperte als selbstverständlich voraussetzen würde, die aber für ein Entwicklungsteam nicht offensichtlich sind? (3) Gibt es fachliche Annahmen, die in dieser Domäne falsch oder unvollständig sind? (4) Fehlen regulatorische oder branchenspezifische Anforderungen? Liefere max. 5 Findings. Keine Lösungsvorschläge." |
