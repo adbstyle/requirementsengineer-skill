@@ -29,7 +29,7 @@ Erstelle vor allem anderen eine TodoWrite-Liste mit allen Pflicht-Phasen als sep
 1. **Phase 2 SOLL** — Anforderungskontext (Agenten 1-4)
 2. **Phase 2 IST** — Codebase-Analyse (3 Agenten, falls Codebase vorhanden)
 3. **Phase 3** — Requirements dokumentieren
-4. **Phase 4** — Perspektivenbasiertes Lesen (5 Agenten)
+4. **Phase 4** — Perspektivenbasiertes Lesen (6 Agenten)
 5. **Phase 4** — 🔴 und 🟡 Findings via AskUserQuestion
 
 Items streichen nur mit expliziter Begründung (z.B. "keine Codebase").
@@ -509,7 +509,7 @@ Richtig (Qualitätsmerkmal):
 ### Perspektivenbasiertes Lesen
 
 > **MANDATORY:** Verwende das **Task-Tool** mit `subagent_type="general-purpose"` und `model="sonnet"`.
-> Spawne alle 5 in **einem einzigen Message-Block** (parallel).
+> Spawne alle 6 in **einem einzigen Message-Block** (parallel).
 > Übergib jedem Agent die fertige Requirements-Dokumentation aus Phase 3 als Kontext.
 > Jeder Agent liefert maximal 5 Findings — priorisiert nach Impact.
 
@@ -520,6 +520,7 @@ Richtig (Qualitätsmerkmal):
 | 3 | Tester | "Prüfe diese Requirements aus Testersicht. Können Testfälle abgeleitet werden? Liefere max. 5 Findings: Welche Requirements sind zu vage zum Testen? Was fehlt für Testbarkeit? Kein Test-Code." |
 | 4 | Business Analyst | "Prüfe diese Requirements aus BA-Sicht. Dein Fokus: Ist das tatsächliche Problem und der Bedarf des Stakeholders klar genug formuliert, damit ein Entwicklungsteam es versteht? Prüfe anhand dieser Leitfragen: (1) Welches Problem versuchen wir zu lösen — ist es benannt oder nur implizit? (2) Wie bringt diese Story der Organisation einen Wert? (3) Wer sind die Endnutzer und was ist ihr konkreter Nutzen? (4) Woran erkennen wir, dass wir fertig sind? Liefere max. 5 Findings. Achte besonders auf: vorzeitige Lösungsvorgaben (UI-Details, technische Vorgaben) die statt des Problems eine Lösung beschreiben, fehlende Problemkontexte, unklare Wertversprechen. Prüfe technische Drift NICHT NUR in AKs, sondern auch in Postconditions und NFRs — typische Drift-Marker dort: Datenquellen/Feldpfade ('transcript.metadata.x'), Dateinamen ('Component.tsx'), Framework-/Library-Namen (Tailwind, Zod, IPC), Architektur-Entscheide ('im Main-Prozess', 'keine DB-Migration'), Format-Mechanik (Locale-Identifier, konkrete Display-Strings, Rundungsdetails). Keine Lösungsvorschläge." |
 | 5 | Fachexperte (Domain Expert) | "Du bist Fachexperte in der Domäne dieser Story. Leite aus dem Kontext ab, welche Fachdomäne betroffen ist (z.B. Pharma, Logistik, Finanzwesen, Gesundheitswesen). Prüfe aus dieser Fachperspektive: (1) Werden Fachbegriffe korrekt und konsistent verwendet? (2) Fehlen domänenspezifische Geschäftsregeln, die ein Fachexperte als selbstverständlich voraussetzen würde, die aber für ein Entwicklungsteam nicht offensichtlich sind? (3) Gibt es fachliche Annahmen, die in dieser Domäne falsch oder unvollständig sind? (4) Fehlen regulatorische oder branchenspezifische Anforderungen? Liefere max. 5 Findings. Keine Lösungsvorschläge." |
+| 6 | UX Designer / UX Architekt | "Prüfe diese Requirements aus UX-Sicht. Zwei Dimensionen, beide gleichgewichtig: (A) **Vollständigkeit** — Habe ich genug prozessuale Information, um ein grobes UX-Konzept (User-Flow, Entry-Points, Zustände, Übergänge) zu skizzieren? Achte auf fehlende oder unklare Auslöser/Trigger ('woher kommt der User in diesen Flow?'), fehlende Zustände (Leer-, Lade-, Erfolg-, Fehler-, Berechtigungs-Zustand), ungeklärte Abbruch-/Wiederaufnahme-Szenarien, fehlende Hinweise auf parallele oder konkurrierende User-Aktionen, unklare Reihenfolge von Schritten in mehrstufigen Flows. (B) **Lösungsoffenheit** — Lässt die Anforderung die UX-Gestaltung offen, oder ist sie bereits in Richtung einer konkreten UI-Lösung gekippt? Achte auf vorzeitige UI-Vorgaben: konkrete Komponenten-Namen ('Dropdown', 'Modal', 'Sidebar', 'Stepper'), Layouts ('links die Liste, rechts das Detail'), Reihenfolgen-Vorgaben in der Darstellung, konkrete Wordings/Microcopy in Anführungszeichen, Vergleichsreferenzen zu bestehenden Screens, Mechanik wie 'mit einem Klick', 'als Tooltip', 'beim Hover'. Solche Vorgaben schneiden UX-Optionen ab, bevor das Konzept überhaupt diskutiert ist. Liefere max. 5 Findings — markiere pro Finding ob es (A) Lücke oder (B) Übersteuerung ist. Kein UX-Konzept entwerfen, keine Wireframes, keine Lösungsvorschläge." |
 
 **Output-Format pro Perspektive:**
 
