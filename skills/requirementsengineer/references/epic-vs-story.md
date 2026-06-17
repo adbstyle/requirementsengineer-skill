@@ -216,6 +216,32 @@ Richtig (spezifisch — Qualitätsniveau definiert):
   "Für jedes swissdamed-Pflichtfeld ist dokumentiert, ob es ins MHP-Zieldatenformat übernommen, transformiert oder ignoriert wird, inklusive Begründung"
   "Die Produktidentifikation ist als Entscheidungsdokument festgehalten mit Begründung, warum der gewählte Schlüssel gegenüber Alternativen bevorzugt wird"
 
+### Anti-Pattern: Story-AKs als Erfolgskriterien recyceln
+
+Der häufigste Fehler beim Dokumentieren eines Epics, für das schon eine detaillierte Story-Ebene existiert (Story und oder Specs): die vorhandenen Acceptance Criteria werden eins-zu-eins umformuliert und als Erfolgskriterien ausgegeben — eines pro Story, mit aller Mechanik. Das Ergebnis sind Story-AKs in Epic-Kleidung. Erfolgskriterien werden top-down aus dem beobachtbaren Outcome abgeleitet, nicht bottom-up aus den vorhandenen AKs hochgehoben.
+
+Erkennungsmerkmale, dass dir das gerade passiert:
+- Die Anzahl Erfolgskriterien entspricht ungefähr der Anzahl Stories
+- Ein Kriterium beschreibt eine einzelne Oberfläche oder Geste (Positiv-Wisch, Lösch-Dialog)
+- Ein Kriterium enthält Mechanik: Dialog-Wortlaut, Undo-Semantik, Sync-Verhalten, Bestätigungs-Toast
+- Semikolons oder Gedankenstriche bündeln mehrere Aussagen in einem Kriterium
+
+Statt (5 Story-Funktionen als "Erfolgskriterien" — Mechanik, je mehrere Gedanken):
+  "Rezepte lassen sich von jedem Bildschirm, im Tinder und im Chat als Favorit markieren; eine Markierung schlägt sofort und überall durch"
+  "Ein positives Wischen markiert als Favorit; ein Rückgängig hebt die Markierung nur auf, wenn sie durch dieses Wischen entstand"
+  "Das Entfernen eines KI-Rezepts ist bestätigungspflichtig mit Hinweis, dass es in Eigene Rezepte bleibt"
+  "Eine Rezeptserie aus dem Chat lässt sich in einem Schritt hinzufügen, bestätigt durch eine Meldung mit Anzahl und Sprung in die Liste"
+  "Favoriten überstehen App-Neustart und Neuinstallation, soweit die Plattform die Geräte-Identität erhält"
+Richtig (Outcomes top-down, je ein Gedanke, Oberflächen kollabiert):
+  "Ein oder mehrere Rezepte lassen sich, wenn angezeigt, als Favorit markieren und wieder entfernen
+  "Die Markierung ist überall konsistent sichtbar"
+  "Favoriten lassen sich auch offline markieren und entfernen"
+  "Favoriten bleiben erhalten und sind nach App-Neustart und Neuinstallation wieder verfügbar."
+
+Die Mechanik (Positiv-Wisch als eine Markier-Oberfläche, Undo-Semantik, Bestätigungs-Dialog, Sync-Verhalten, Plattform-Identität) verschwindet aus dem Epic — sie lebt in den Story-AKs. Aus fünf funktionsbezogenen Pseudo-Kriterien werden vier outcome-orientierte: Tinder und Chat sind nur Oberflächen des ersten Outcomes, das Sync- und Persistenz-Detail kollabiert in "ohne Verbindung" und "bleiben erhalten".
+
+Beachte: Auch das "Sammeln aus dem Chat" bekommt KEIN eigenes Erfolgskriterium. Es ist eine Komfortvariante des Markierens ("mehrere auf einmal statt einzeln") und damit kanalgebunden — der Test "fiele das Kriterium weg, wenn es diesen Kanal nicht gäbe?" ist mit Ja zu beantworten. Solche Effizienz-/Kanalvarianten gehören als Story-AK in die SPIDR-Zerlegung. Ein Epic-Erfolgskriterium beschreibt das Ziel ("Rezepte zentral sammeln"), nicht den Weg dorthin (per Wisch, per Chat-Block, per Herz-Toggle).
+
 ## Golden Example: Epic (Business Epic)
 
 Marktrückzugsverwaltung
