@@ -54,7 +54,10 @@ Erkennungsmerkmale für Enabler: technische/organisatorische Rolle im Story-Skel
 
 Wenn du erkennst, dass der Input Epic-Level ist, frage den User via AskUserQuestion: "Das klingt nach einem Epic — soll ich es als Epic mit Story-Zerlegung dokumentieren, oder eine einzelne Story daraus schneiden?"
 
-Bei **Epic**: Grobgranulare Dokumentation (Story-Skelett, Preconditions, Erfolgskriterien, Out of Scope, Offene Fragen). Keine detaillierten AKs, kein "In Scope". Erfolgskriterien ohne Akteur formulieren (Outcome beschreiben, nicht wer es herbeiführt) — Akteur nur wenn Verantwortung explizit geklärt ist (z.B. Der Auftragnehmer dokumeniert Konzept). **Business Epic** — Erfolgskriterien outcome-orientiert und selbst-verifizierend. **Enabler Epic** — Output und Outcome fallen zusammen, Spezifität kommt aus dem Qualitätsniveau des Artefakts. Story-Zerlegung erfolgt nachgelagert — dafür SPIDR (Spike, Paths, Interface, Data, Rules) nutzen.
+Bei **Epic**: Grobgranulare Dokumentation (User Story Satz Schablone, Preconditions, Erfolgskriterien, Out of Scope, Offene Fragen). Keine detaillierten AKs, kein "In Scope". Erfolgskriterien ohne Akteur formulieren (Outcome beschreiben, nicht wer es herbeiführt) — Akteur nur wenn Verantwortung explizit geklärt ist (z.B. Der Auftragnehmer dokumeniert Konzept). **Business Epic** — Erfolgskriterien outcome-orientiert und selbst-verifizierend. **Enabler Epic** — Output und Outcome fallen zusammen, Spezifität kommt aus dem Qualitätsniveau des Artefakts. Story-Zerlegung erfolgt nachgelagert — dafür SPIDR (Spike, Paths, Interface, Data, Rules) nutzen.
+
+**Epic-Revers-Engineering** Wenn bereits eine detaillierte Quelle existiert (Stories und/oder Specs), ist die Versuchung gross, deren Acceptance Criteria umzuformulieren und als Erfolgskriterien auszugeben. Das ist FALSCH — es erzeugt Story-AKs in Epic-Kleidung. Erfolgskriterien werden top-down aus dem Outcome abgeleitet, nicht bottom-up aus vorhandenen AKs. Lies references/epic-vs-story.md → Abschnitt „Erfolgskriterien auf Epic-Ebene" BEVOR du sie schreibst — gerade dann, wenn die Quelle schon fertig wirkt und du dich nicht unsicher fühlst. Dort stehen der vollständige Litmus pro Kriterium und das Anti-Pattern „Story-AKs als Erfolgskriterien recyceln".
+
 Bei **User Story (Business)**: Detaillierter Output mit AKs aus Nutzersicht (USER als Akteur), Preconditions, Postconditions.
 Bei **Enabler Story**: Detaillierter Output mit AKs, aber TEAM oder SYSTEM als Akteur statt USER. Kein Endnutzer direkt betroffen.
 
@@ -240,6 +243,7 @@ Anti-Patterns in Acceptance Criteria & Stories:
 ❌ AVOID GIVEN-WHEN-THEN notation or Gherkin syntax
 ❌ KEINE Implementierungsdetails in AKs — AKs beschreiben WAS das System tut, nicht WIE es das intern löst. Typischer Fehler: Codebase-Analyse liefert technische Details, die ungefiltert in AKs landen.
 ❌ KEINE impliziten Duplikate — dasselbe Verhalten nicht einmal positiv und einmal negativ (oder aus System- und User-Perspektive) formulieren. Jedes AK muss einen eigenständigen, testbaren Wert liefern. Wenn ein AK logisch aus einem anderen folgt, ist es redundant.
+❌ KEINE Wiederholung einer Precondition als Qualifier im AK — wenn ein AK seine Aktion durch einen Relativsatz oder Einschub einschränkt ("..., in dem/der er X ist", "..., sofern er X ist", "..., wenn er X hat"), der bereits als Precondition steht, ist der Zusatz redundant. Die Preconditions gelten für die ganze Story; ein AK muss sie nicht erneut qualifizieren. Litmus: Streiche den Nebensatz — bleibt die Aktion testbar UND steht die Bedingung schon in den Preconditions? Dann gehört der Nebensatz nicht ins AK. Steht die Bedingung NICHT oben, ist sie eine fehlende Precondition — dorthin verschieben, nicht ins AK packen.
 ❌ KEINE Halbsatz-Konstrukte mit Gedankenstrich (—) — ein AK ist ein vollständiger, einfacher Aussagesatz. Der Gedankenstrich wird oft als Krücke benutzt, um einen vagen ersten Teil mit einer Erklärung oder Einschränkung zu retten. Stattdessen: den Gedanken zu Ende denken und als eigenständigen Satz formulieren. Wenn ein AK zwei Aussagen enthält, in zwei AKs aufteilen.
 ❌ KEINE konkreten Wertelisten oder Enums in AKs — Aufzählungen wie "(PERSON, ORT, DATUM, KONTAKT, ORGANISATION, MEDIZINISCH, SONSTIGES)" oder "wählt aus A, B, C, D" sind Lösungsdaten. Das konkrete Set gehört ins Datenmodell der späteren Spec oder in eine Anmerkung — niemals auf Anforderungsebene. Das AK beschreibt die Fähigkeit, nicht den Inhalt der Auswahl.
 ❌ KEINE Klammer-Beispiele oder Klammer-Aufzählungen in AKs — Klammern wie "(z.B. X, Y, Z)", "(Aktion A, Aktion B, ...)" oder konkrete Display-Strings wie '("1 Eintrag" / "{n} Einträge")' sind Mechanik bzw. Beispiele aus der Spec. Sie überspezifizieren die Anforderung, sind fehleranfällig (vergessenes Element verfälscht die Aussage) und blähen den Satz auf. Streiche die Klammer und prüfe: Trägt der Satz davor allein? Wenn ja → fertig. Wenn nein → der Klammer-Inhalt war der eigentliche funktionale Kern; formuliere DAS als AK.
@@ -256,6 +260,13 @@ Litmus-Test gegen Lösungstext (für jedes AK durchziehen):
 - "Steht eine Klammer im Satz?" → Klammer streichen und prüfen, ob der Satz davor allein trägt. Wenn ja → fertig. Wenn nein → der Klammerinhalt war der eigentliche Kern; den verbalisieren, nicht den Rahmen.
 - "Ist das, was ich als AK schreibe, in jeder UI ohnehin Pflicht (grammatikalisch korrekt, barrierefrei, validiert, responsiv)?" → Ja = Selbstverständlichkeit, raus. Wenn ein Mechanismus dahinter steckt (dynamische Einzahl/Mehrzahl, Live-Validierung), DEN formulieren.
 - "Zähle ich nach 'ausschliesslich' / 'nur' das Komplement explizit auf?" → Komplement-Aufzählung streichen; die Logik des Quantors trägt die Aussage.
+- "Hängt ein Relativsatz/Einschub die Ausgangslage an ('..., in dem/der/sofern/wenn er X ist')?" → Prüfen ob X schon Precondition ist. Wenn ja → Nebensatz streichen. Wenn nein → X als Precondition ergänzen, AK trotzdem entschlacken.
+
+Statt (Precondition als Qualifier im AK wiederholt):
+  Precondition: Der USER ist als aufgenommene*r Freiwillige*r im Freiwilligenkreis des Angebots geführt
+  AK: Der USER kann aus dem Freiwilligenkreis eines Angebots austreten, in dem er als aufgenommene*r Freiwillige*r geführt ist
+Richtig (AK nur die Aktion, Bedingung bleibt in der Precondition):
+  Der USER kann aus dem Freiwilligenkreis eines Angebots austreten
 
 Statt (Lösung im AK):
   Der USER kann unter "Typ ändern" aus PERSON, ORT, DATUM, KONTAKT, ORGANISATION wählen; der aktuelle Typ wird ausgeblendet

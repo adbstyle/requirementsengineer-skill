@@ -29,3 +29,6 @@ node_modules/
 
 # Project instructions (local dev context, not part of plugin)
 CLAUDE.md
+
+# Skill-creator test workspaces
+skills/requirementsengineer-workspace/
