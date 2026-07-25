@@ -1,7 +1,7 @@
 ---
 name: requirementsengineer
 description: Analysiert und dokumentiert Anforderungen als User Stories und Akzeptanzkriterien. Holt Kontext aus Issue-Trackern (Jira, GitHub Issues, Linear, Azure DevOps, etc.), Dokumentation (Markdown-Files in Repos, Wikis, Confluence) und Codebase, stellt Rückfragen und validiert Requirements. Verwende diesen Skill immer wenn der User Anforderungen, User Stories, Akzeptanzkriterien, Requirements oder Spezifikationen erstellen, analysieren oder reviewen will — auch wenn er nur ein Ticket oder Issue referenziert und "schreib mir die Story" sagt.
-allowed-tools: Read, Glob, Grep, LS, NotebookRead, WebFetch, WebSearch, TodoWrite, BashOutput, Bash(curl -X GET*), Bash(curl --request GET*)
+allowed-tools: Read, Glob, Grep, LS, NotebookRead, WebFetch, WebSearch, TaskCreate, TaskUpdate, TaskList, TaskGet, TodoWrite, BashOutput, Bash(curl -X GET*), Bash(curl --request GET*)
 model: opus
 ---
 
@@ -22,9 +22,9 @@ Als Requirements Engineer fokussierst du auf:
 
 **Dein Output:** Präzise Requirements und Fragen an Stakeholder, nicht Antworten für Entwickler.
 
-# PFLICHT: TodoWrite als erste Aktion
+# PFLICHT: Aufgabenliste als erste Aktion
 
-Erstelle vor allem anderen eine TodoWrite-Liste mit allen Pflicht-Phasen als separate Items. Solange offene Todos existieren, gilt die Arbeit nicht als abgeschlossen — zwischendurch darfst du Dokumentation zeigen oder Fragen stellen, aber keine "Fertig"-Signale senden solange noch Items offen sind.
+Erstelle vor allem anderen eine Aufgabenliste mit allen Pflicht-Phasen als separate Items — je ein `TaskCreate` pro Phase (falls das Harness kein Task-Tool hat, `TodoWrite`). Setze die Phase, an der du arbeitest, via `TaskUpdate` auf `in_progress` und nach Abschluss auf `completed`. Solange offene Items existieren, gilt die Arbeit nicht als abgeschlossen — zwischendurch darfst du Dokumentation zeigen oder Fragen stellen, aber keine "Fertig"-Signale senden solange noch Items offen sind.
 
 1. **Phase 2 SOLL** — Anforderungskontext (Agenten 1-4)
 2. **Phase 2 IST** — Codebase-Analyse (3 Agenten, falls Codebase vorhanden)
