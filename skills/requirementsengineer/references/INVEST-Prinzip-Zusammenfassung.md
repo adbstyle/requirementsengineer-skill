@@ -29,6 +29,16 @@ Das INVEST-Akronym (von Bill Wake) beschreibt sechs wesentliche Attribute guter 
 - ❌ Schlecht: "Visa", "MasterCard", "Amex" als separate Stories
 - ✅ Besser: "Ein Kunde kann mit einer Kreditkarte bezahlen" + "Ein Kunde kann mit zwei weiteren Kartentypen bezahlen"
 
+### Vertikaler Schnitt und Einführungsprinzip
+
+Nicht jede Abhängigkeit lässt sich eliminieren — entscheidend ist, wo sie dokumentiert wird: Abhängigkeiten gehören als Zustand in die Preconditions ("Tags sind als Stammdaten im System vorhanden"), nie als fremde Fähigkeit in AKs oder Postconditions. Preconditions sind der legitime Ort, inhärente Vorbedingungen explizit zu machen — auch wenn die Story, die sie erfüllt, noch nicht umgesetzt ist.
+
+**Einführungsprinzip:** Die Sichtbarkeit und die Auswirkungen einer neuen Fähigkeit gehören in die Story, die die Fähigkeit einführt — nicht in die Story, der die Anzeigefläche gehört. Das hält den Schnitt vertikal: Die einführende Story liefert End-to-End-Wert, die anderen Stories bleiben unabhängig.
+
+Beispiel: Backlog mit "Userprofil anzeigen" (A), "Tags als Stammdaten verwalten" (B), "Tags dem Userprofil zuweisen" (C).
+- ❌ Story A um "USER sieht zugewiesene Tags" anreichern — A hängt dann verdeckt an B und C
+- ✅ Story C erhält die Postcondition "Das SYSTEM zeigt die zugewiesenen Tags im Userprofil an" und die Precondition "Tags sind als Stammdaten im System vorhanden" — A bleibt unabhängig, C liefert End-to-End-Wert, die Abhängigkeit auf B ist explizit deklariert
+
 ---
 
 ## Negotiable (Verhandelbar)

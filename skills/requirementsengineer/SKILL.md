@@ -109,6 +109,7 @@ Die 2-Ebenen-Traversierung liefert Wissen über die Nachbarschaft. Dieses Wissen
 - **Offene Fragen** — An die richtigen Stakeholder adressieren, weil du weisst wer woran arbeitet
 - **Story-Zerlegung** — Abhängigkeiten in der SPIDR-Tabelle erkennen
 - **Eigene Orientierung** — Verstehen was die Nachbar-Epics abdecken, damit du sie NICHT in Out of Scope auflistest
+- **Unabhängigkeits-Check** — Erkennen, welche Daten und Funktionen erst durch Nachbar-Stories entstehen, damit du sie NICHT in die aktuelle Story hineinziehst (siehe "Story-Unabhängigkeit: Vertikaler Schnitt und Einführungsprinzip" in Phase 3)
 
 Die Traversierungsdaten werden NICHT genutzt für:
 - Out-of-Scope-Punkte — Dass etwas in einem anderen Epic steckt, ist kein Out-of-Scope-Punkt
@@ -163,6 +164,31 @@ WARNUNG: Die Codebase-Analyse liefert technische Details (Spaltennamen, Algorith
   Weitere Splitting-Dimension: Nach User-Rolle ("Admin erstellt" / "User beantragt")
   NICHT nach technischem Layer splitten: "Backend-API" / "Frontend-Form" / "DB-Migration"
 - Define acceptance criteria
+
+### Story-Unabhängigkeit: Vertikaler Schnitt und Einführungsprinzip (INVEST "I")
+
+Kontextwissen über Nachbar-Stories (Agent 3/4, Backlog-Dokumente) verführt dazu, eine Story "vollständig" zu machen, indem Inhalte anderer Stories hineingezogen werden. Das erzeugt eine verdeckte Abhängigkeit — verdeckt, weil sie nicht als Precondition deklariert ist, sondern im Scope versteckt: Die Story ist dann erst umsetzbar und abnehmbar, wenn eine andere Story fertig ist, obwohl sie ohne diesen Inhalt vollständig lieferbar wäre.
+
+Zwei Regeln halten den Schnitt vertikal:
+1. **Abhängigkeiten gehören in die Preconditions** — als Zustand formuliert ("Tags sind als Stammdaten im System vorhanden"), ohne Ticket-Referenz. Eine Precondition darf auf dem Ergebnis einer früher eingeplanten Story beruhen; genau dafür ist sie da: Sie macht die inhärente Abhängigkeit explizit, statt sie zu verstecken, und definiert die Ausgangslage, ab der die Story eigenständig funktioniert.
+2. **AKs und Postconditions enthalten ausschliesslich, was DIESE Story einführt.** Fähigkeiten, die eine andere Story einführt, werden nicht in AKs oder Postconditions hineingezogen — auch nicht "der Vollständigkeit halber". Die Vollständigkeit einer Story bemisst sich an ihren Preconditions plus dem, was sie selbst einführt.
+
+**Einführungsprinzip:** Die Sichtbarkeit und die Auswirkungen einer neuen Fähigkeit gehören in die Story, die die Fähigkeit einführt — nicht in die Story, der die Anzeigefläche gehört. Wer Daten ins System bringt (erfasst, zuweist, importiert), liefert auch deren Anzeige mit — als AK oder Postcondition. Das hält den Schnitt vertikal: Die einführende Story liefert End-to-End-Wert (eine Zuweisung ohne sichtbares Ergebnis wäre nicht abnehmbar), und die früher geplante Story bleibt unabhängig umsetzbar.
+
+Beispiel (Backlog mit drei Stories):
+- Story A: Der USER kann sein Userprofil anzeigen
+- Story B: Der ADMIN kann Tags als Stammdaten verwalten
+- Story C: Der USER kann Tags einem Userprofil zuweisen und entfernen
+
+Falsch: Story A um "Der USER sieht die zugewiesenen Tags" anreichern. Die Tag-Zuweisung wird durch Story C eingeführt — Story A wäre nicht mehr unabhängig umsetzbar und abnehmbar.
+Richtig: Story A bleibt ohne Tags. Story C trägt die Sichtbarkeit als Postcondition ("Das SYSTEM zeigt die zugewiesenen Tags im Userprofil an WENN der USER die Zuweisung gespeichert hat") und deklariert ihre Abhängigkeiten als Preconditions ("Tags sind als Stammdaten im System vorhanden" — legitime Abhängigkeit auf Story B, als Zustand formuliert).
+
+Litmus vor jedem Anreicherungs-Vorschlag ("sollte diese Story nicht auch X zeigen/können?"):
+1. "Führt DIESE Story X ein?" → Ja → als AK/Postcondition aufnehmen.
+2. "Setzt diese Story X nur voraus?" (X existiert bereits oder entsteht durch eine andere Story) → Dann ist X höchstens eine Precondition — niemals ein AK oder eine Postcondition.
+3. "Führt eine ANDERE Story X ein?" → DORT gehören Anzeige und Auswirkungen von X hinein. Die aktuelle Story unangetastet lassen und dem User den Platzierungshinweis geben ("Die Anzeige der Tags gehört als Postcondition in die Zuweisungs-Story").
+
+Abnahme-Litmus pro Story: "Kann diese Story umgesetzt und abgenommen werden, sobald ihre Preconditions erfüllt sind — ohne dass eine andere Story gleichzeitig fertig werden muss?" → Nein = ein AK oder eine Postcondition trägt fremden Scope; dorthin verschieben, wo die Fähigkeit eingeführt wird. Brauchen sich zwei Stories gegenseitig → kombinieren oder anders schneiden (SPIDR).
 
 **Outputs**:
 - User stories with acceptance criteria
@@ -239,6 +265,7 @@ Anti-Patterns in Acceptance Criteria & Stories:
 ❌ KEINE Fett-Formatierung (**bold**) in Story-Texten — Klartext, keine Markdown-Deko
 ❌ KEINE Zwischenüberschriften oder Kategorie-Titel innerhalb der Acceptance Criteria — die AKs sind eine flache, durchnummerierte Liste ohne Gruppierung. Subtitels wie "Erstellen", "Anzeigen", "Bearbeiten", "Löschen" etc. zwischen den AKs sind unnötig und stören den Lesefluss. Die Nummerierung allein gibt Struktur genug.
 ❌ KEINE Titel-Präfixe vor AKs wie "**Create:** Das SYSTEM..." oder "**Delete:** Das SYSTEM..." — jedes AK beginnt direkt mit dem Akteur
+❌ KEINE fremden Fähigkeiten in AKs oder Postconditions — AKs und Postconditions beschreiben ausschliesslich, was DIESE Story einführt. Setzt ein AK eine Fähigkeit voraus, die eine andere Story einführt, gehört das AK in jene Story (Einführungsprinzip). Abhängigkeiten selbst sind legitim — ihr Platz sind die Preconditions, als Zustand formuliert. Litmus: "Kann diese Story umgesetzt und abgenommen werden, sobald ihre Preconditions erfüllt sind — ohne dass eine andere Story gleichzeitig fertig werden muss?" → Nein = ein AK oder eine Postcondition trägt fremden Scope (siehe "Story-Unabhängigkeit: Vertikaler Schnitt und Einführungsprinzip")
 ❌ KEINE Referenzen in AKs — weder auf andere Stories/Tickets ("Story 11", "IES-12345"), noch auf offene Fragen ("gem. Q20", "gem. Q-NEU-1"), noch auf externe Dokumente. Der Leser muss jedes AK verstehen, ohne etwas nachzuschlagen. Information inline wiederholen. Wenn ein Detail noch ungeklärt ist: AK so weit formulieren wie möglich und das offene Detail als Frage in die Offene-Fragen-Tabelle verschieben — NICHT als "gem. Q-xyz"-Platzhalter im AK parken.
 ❌ AVOID GIVEN-WHEN-THEN notation or Gherkin syntax
 ❌ KEINE Implementierungsdetails in AKs — AKs beschreiben WAS das System tut, nicht WIE es das intern löst. Typischer Fehler: Codebase-Analyse liefert technische Details, die ungefiltert in AKs landen.
@@ -546,6 +573,8 @@ Richtig (Qualitätsmerkmal):
 **Fehlende NFRs:**
 1. [NFR-Kategorie] nicht spezifiziert → Frage: [Welche Anforderung?]
 
+> **Unabhängigkeits-Filter vor der Aggregation:** Findings der Art "Story erwähnt X nicht" oder "Story sollte auch X anzeigen" gegen das Backlog prüfen: Entsteht X erst durch eine Nachbar-Story, ist es KEINE Lücke dieser Story — die Vollständigkeit einer Story bemisst sich an ihren Preconditions plus dem, was sie selbst einführt. Solche Findings als Platzierungshinweis für die einführende Story ausgeben ("Anzeige von X gehört als AK/Postcondition in Story Y"), NICHT als Anreicherungs-Vorschlag für die geprüfte Story.
+>
 > Ergebnisse aggregieren und dem User vorlegen: 🔴 UND 🟡 Findings werden BEIDE via AskUserQuestion-Modal gefragt (gebündelt, max 4 pro Modal, erst 🔴 dann 🟡). Nicht nur die roten — gelbe sind wichtig genug zum Fragen, sonst landen sie in den offenen Fragen und müssten später wieder rausgelöscht werden wenn der User sie doch beantwortet. 🟢 Findings können direkt dokumentiert werden. Nur Fragen, die der User nicht beantworten kann, bleiben als Offene Fragen.
 
 ### Impact-Analyse bei Änderungen
