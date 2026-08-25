@@ -75,7 +75,7 @@ requirementsengineer-skill/
 
 ## Subagents
 
-The skill uses two types of subagents via Task tool:
+The skill uses two types of subagents via the harness subagent tool (`Agent`, called `Task` in older versions):
 
 **`general-purpose`** — For parallel data gathering:
 - Fetch Jira issues, parent issues, linked issues

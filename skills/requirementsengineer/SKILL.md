@@ -1,7 +1,7 @@
 ---
 name: requirementsengineer
 description: Analysiert und dokumentiert Anforderungen als User Stories und Akzeptanzkriterien. Holt Kontext aus Issue-Trackern (Jira, GitHub Issues, Linear, Azure DevOps, etc.), Dokumentation (Markdown-Files in Repos, Wikis, Confluence) und Codebase, stellt Rückfragen und validiert Requirements. Verwende diesen Skill immer wenn der User Anforderungen, User Stories, Akzeptanzkriterien, Requirements oder Spezifikationen erstellen, analysieren oder reviewen will — auch wenn er nur ein Ticket oder Issue referenziert und "schreib mir die Story" sagt.
-allowed-tools: Read, Glob, Grep, LS, NotebookRead, WebFetch, WebSearch, TaskCreate, TaskUpdate, TaskList, TaskGet, TodoWrite, BashOutput, Bash(curl -X GET*), Bash(curl --request GET*)
+allowed-tools: Agent, Task, AskUserQuestion, Read, Glob, Grep, LS, NotebookRead, WebFetch, WebSearch, TaskCreate, TaskUpdate, TaskList, TaskGet, TodoWrite, BashOutput, Bash(curl -X GET*), Bash(curl --request GET*), mcp__plugin_atlassian_atlassian
 model: opus
 ---
 
@@ -24,7 +24,11 @@ Als Requirements Engineer fokussierst du auf:
 
 # PFLICHT: Aufgabenliste als erste Aktion
 
-Erstelle vor allem anderen eine Aufgabenliste mit allen Pflicht-Phasen als separate Items — je ein `TaskCreate` pro Phase (falls das Harness kein Task-Tool hat, `TodoWrite`). Setze die Phase, an der du arbeitest, via `TaskUpdate` auf `in_progress` und nach Abschluss auf `completed`. Solange offene Items existieren, gilt die Arbeit nicht als abgeschlossen — zwischendurch darfst du Dokumentation zeigen oder Fragen stellen, aber keine "Fertig"-Signale senden solange noch Items offen sind.
+Erstelle vor allem anderen eine Aufgabenliste mit allen Pflicht-Phasen als separate Items — je ein Item pro Phase. Nutze dafür das Aufgabenlisten-Tool deines Harness; es heisst je nach Version `TaskCreate`/`TaskUpdate` oder `TodoWrite`. Setze die Phase, an der du arbeitest, auf `in_progress` und nach Abschluss auf `completed`.
+
+**Fallback, falls keines dieser Tools existiert:** Führe die Phasenliste als Checkliste im Antworttext und gib sie in JEDER Antwort aktualisiert erneut aus. Wähle den Fallback still — melde dem User nicht, dass ein Tool fehlt.
+
+Solange offene Items existieren, gilt die Arbeit nicht als abgeschlossen — zwischendurch darfst du Dokumentation zeigen oder Fragen stellen, aber keine "Fertig"-Signale senden solange noch Items offen sind.
 
 1. **Phase 2 SOLL** — Anforderungskontext (Agenten 1-4)
 2. **Phase 2 IST** — Codebase-Analyse (3 Agenten, falls Codebase vorhanden)
@@ -33,6 +37,8 @@ Erstelle vor allem anderen eine Aufgabenliste mit allen Pflicht-Phasen als separ
 5. **Phase 4** — 🔴 und 🟡 Findings via AskUserQuestion
 
 Items streichen nur mit expliziter Begründung (z.B. "keine Codebase").
+
+**Tool-Verfügbarkeit:** Die Freigaben in der Frontmatter gelten nur für den Turn, der den Skill startet, und verfallen mit der nächsten User-Nachricht. Permission-Prompts mitten im Lauf sind normal. Weder ein Prompt noch ein fehlendes Tool ist ein Grund, eine Pflicht-Phase zu überspringen oder abzukürzen — nimm den nächstbesten Weg (anderer Toolname, Fallback oben) und mach weiter.
 
 # Leitprinzipien
 1. **Nutzerzentriert** — Anforderungen beginnen mit echten Nutzerbedürfnissen
@@ -91,7 +97,7 @@ Sammle NICHT erst 10 Fragen um sie dann als Tabelle auszugeben. Stelle sie laufe
 ## Phase 2: Analysis
 ### Sammle Anforderungskontext (SOLL)
 
-> **MANDATORY:** Verwende das **Task-Tool** mit `subagent_type="general-purpose"`
+> **MANDATORY:** Verwende das **Subagent-Tool** deines Harness (heisst `Agent`, in älteren Versionen `Task`) mit `subagent_type="general-purpose"`
 > für diese Agenten. Spawne alle in **einem einzigen Message-Block** (parallel).
 
 | # | tier | description | prompt |
@@ -129,7 +135,7 @@ Die Traversierungsdaten werden NICHT genutzt für:
 **STOP — SOLL-Kontext allein reicht nicht.** Wenn eine Codebase vorhanden ist, ist die IST-Analyse (nächster Abschnitt) zwingend. Rationalisierungen wie "Issue-Kontext reicht" oder "ist eh nur ein Epic" sind das Signal, sie JETZT zu machen.
 
 ### Sammle Ist-Zustand für Requirements-Lücken-Analyse
-**MANDATORY:** Verwende das **Task-Tool** mit `subagent_type="requirementsengineer:code-explorer"`
+**MANDATORY:** Verwende das **Subagent-Tool** deines Harness (heisst `Agent`, in älteren Versionen `Task`) mit `subagent_type="requirementsengineer:code-explorer"`
 > für diese 3 Agenten. Spawne alle 3 in **einem einzigen Message-Block** (parallel).
 > Ziel: Einschränkungen und Konflikte aus Codebase gegenüber Anfoderung identifizieren → daraus Offene Fragen und Out-of-Scope-Punkte ableiten, NICHT Lösungen designen
 > Nutze `model="sonnet"` für standard-tier Analyse.
@@ -546,7 +552,7 @@ Richtig (Qualitätsmerkmal):
 ## Phase 4: Validation
 ### Perspektivenbasiertes Lesen
 
-> **MANDATORY:** Verwende das **Task-Tool** mit `subagent_type="general-purpose"` und `model="sonnet"`.
+> **MANDATORY:** Verwende das **Subagent-Tool** deines Harness (heisst `Agent`, in älteren Versionen `Task`) mit `subagent_type="general-purpose"` und `model="sonnet"`.
 > Spawne alle 6 in **einem einzigen Message-Block** (parallel).
 > Übergib jedem Agent die fertige Requirements-Dokumentation aus Phase 3 als Kontext.
 > Jeder Agent liefert maximal 5 Findings — priorisiert nach Impact.
