@@ -558,6 +558,13 @@ Richtig (Qualitätsmerkmal):
 > Spawne alle 6 in **einem einzigen Message-Block** (parallel).
 > Übergib jedem Agent die fertige Requirements-Dokumentation aus Phase 3 als Kontext.
 > Jeder Agent liefert maximal 5 Findings — priorisiert nach Impact.
+>
+> **Hausregeln mitgeben:** Hänge an JEDEN der 6 Prompts den Satz an: "Lies zuerst
+> `references/validation-house-rules.md` und halte dich an die dortigen Regeln — melde
+> nichts, was dort als Nicht-Finding aufgeführt ist, und markiere jedes Finding mit 🔴, 🟡
+> oder 🟢." Ohne diese Regeln melden die Agenten die Konventionen des Skills als Mangel
+> (vorgeschriebene AK-Form als untestbar, bewusst weggelassene UI-Details als Lücke,
+> Architekturfragen als Anforderungslücke) und wiederholen bereits erfasste Offene Fragen.
 
 | Agent | Perspektive | Prompt |
 |-------|-------------|--------|
@@ -580,6 +587,8 @@ Richtig (Qualitätsmerkmal):
 
 **Fehlende NFRs:**
 1. [NFR-Kategorie] nicht spezifiziert → Frage: [Welche Anforderung?]
+
+Jedes Finding trägt eine Markierung: 🔴 blockierend, 🟡 klärungsbedürftig, 🟢 dokumentierbar.
 
 > **Unabhängigkeits-Filter vor der Aggregation:** Findings der Art "Story erwähnt X nicht" oder "Story sollte auch X anzeigen" gegen das Backlog prüfen: Entsteht X erst durch eine Nachbar-Story, ist es KEINE Lücke dieser Story — die Vollständigkeit einer Story bemisst sich an ihren Preconditions plus dem, was sie selbst einführt. Solche Findings als Platzierungshinweis für die einführende Story ausgeben ("Anzeige von X gehört als AK/Postcondition in Story Y"), NICHT als Anreicherungs-Vorschlag für die geprüfte Story.
 >
