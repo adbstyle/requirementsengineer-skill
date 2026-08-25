@@ -26,6 +26,7 @@ node_modules/
 # Local dev symlinks (not part of plugin)
 /SKILL.md
 /agents
+/references
 
 # Project instructions (local dev context, not part of plugin)
 CLAUDE.md
