@@ -1,7 +1,7 @@
 ---
 name: requirementsengineer
 description: Analysiert und dokumentiert Anforderungen als User Stories und Akzeptanzkriterien. Holt Kontext aus Issue-Trackern (Jira, GitHub Issues, Linear, Azure DevOps, etc.), Dokumentation (Markdown-Files in Repos, Wikis, Confluence) und Codebase, stellt Rückfragen und validiert Requirements. Verwende diesen Skill immer wenn der User Anforderungen, User Stories, Akzeptanzkriterien, Requirements oder Spezifikationen erstellen, analysieren oder reviewen will — auch wenn er nur ein Ticket oder Issue referenziert und "schreib mir die Story" sagt.
-allowed-tools: Read, Glob, Grep, LS, NotebookRead, WebFetch, WebSearch, TaskCreate, TaskUpdate, TaskList, TaskGet, TodoWrite, BashOutput, Bash(curl -X GET*), Bash(curl --request GET*)
+allowed-tools: Agent, Task, AskUserQuestion, Read, Glob, Grep, LS, NotebookRead, WebFetch, WebSearch, TaskCreate, TaskUpdate, TaskList, TaskGet, TodoWrite, BashOutput
 model: opus
 ---
 
@@ -24,7 +24,11 @@ Als Requirements Engineer fokussierst du auf:
 
 # PFLICHT: Aufgabenliste als erste Aktion
 
-Erstelle vor allem anderen eine Aufgabenliste mit allen Pflicht-Phasen als separate Items — je ein `TaskCreate` pro Phase (falls das Harness kein Task-Tool hat, `TodoWrite`). Setze die Phase, an der du arbeitest, via `TaskUpdate` auf `in_progress` und nach Abschluss auf `completed`. Solange offene Items existieren, gilt die Arbeit nicht als abgeschlossen — zwischendurch darfst du Dokumentation zeigen oder Fragen stellen, aber keine "Fertig"-Signale senden solange noch Items offen sind.
+Erstelle vor allem anderen eine Aufgabenliste mit allen Pflicht-Phasen als separate Items — je ein Item pro Phase. Nutze dafür das Aufgabenlisten-Tool deines Harness; es heisst je nach Version `TaskCreate`/`TaskUpdate` oder `TodoWrite`. Setze die Phase, an der du arbeitest, auf `in_progress` und nach Abschluss auf `completed`.
+
+**Fallback, falls keines dieser Tools existiert:** Führe die Phasenliste als Checkliste im Antworttext und gib sie in JEDER Antwort aktualisiert erneut aus. Wähle den Fallback still — melde dem User nicht, dass ein Tool fehlt.
+
+Solange offene Items existieren, gilt die Arbeit nicht als abgeschlossen — zwischendurch darfst du Dokumentation zeigen oder Fragen stellen, aber keine "Fertig"-Signale senden solange noch Items offen sind.
 
 1. **Phase 2 SOLL** — Anforderungskontext (Agenten 1-4)
 2. **Phase 2 IST** — Codebase-Analyse (3 Agenten, falls Codebase vorhanden)
@@ -33,6 +37,8 @@ Erstelle vor allem anderen eine Aufgabenliste mit allen Pflicht-Phasen als separ
 5. **Phase 4** — 🔴 und 🟡 Findings via AskUserQuestion
 
 Items streichen nur mit expliziter Begründung (z.B. "keine Codebase").
+
+**Tool-Verfügbarkeit:** Die Freigaben in der Frontmatter gelten nur für den Turn, der den Skill startet, und verfallen mit der nächsten User-Nachricht. Permission-Prompts mitten im Lauf sind normal. Weder ein Prompt noch ein fehlendes Tool ist ein Grund, eine Pflicht-Phase zu überspringen oder abzukürzen — nimm den nächstbesten Weg (anderer Toolname, Fallback oben) und mach weiter.
 
 # Leitprinzipien
 1. **Nutzerzentriert** — Anforderungen beginnen mit echten Nutzerbedürfnissen
@@ -91,8 +97,10 @@ Sammle NICHT erst 10 Fragen um sie dann als Tabelle auszugeben. Stelle sie laufe
 ## Phase 2: Analysis
 ### Sammle Anforderungskontext (SOLL)
 
-> **MANDATORY:** Verwende das **Task-Tool** mit `subagent_type="general-purpose"`
+> **MANDATORY:** Verwende das **Subagent-Tool** deines Harness (heisst `Agent`, in älteren Versionen `Task`) mit `subagent_type="general-purpose"`
 > für diese Agenten. Spawne alle in **einem einzigen Message-Block** (parallel).
+
+**Abrufweg:** Nutze den Zugang, der in dieser Session tatsächlich verfügbar ist — MCP-Tools des Trackers, eine Issue-CLI (`twg`, `jira`, `gh`, `glab`, `az boards`) oder die REST-API. Prüfe in dieser Reihenfolge, statt eine Variante anzunehmen. Der Skill setzt keinen bestimmten Tracker und keine bestimmte CLI voraus; die Freigabe dafür gehört in die Permission-Regeln des Users, nicht in diesen Skill.
 
 | # | tier | description | prompt |
 |---|------|-------------|--------|
@@ -109,6 +117,7 @@ Die 2-Ebenen-Traversierung liefert Wissen über die Nachbarschaft. Dieses Wissen
 - **Offene Fragen** — An die richtigen Stakeholder adressieren, weil du weisst wer woran arbeitet
 - **Story-Zerlegung** — Abhängigkeiten in der SPIDR-Tabelle erkennen
 - **Eigene Orientierung** — Verstehen was die Nachbar-Epics abdecken, damit du sie NICHT in Out of Scope auflistest
+- **Unabhängigkeits-Check** — Erkennen, welche Daten und Funktionen erst durch Nachbar-Stories entstehen, damit du sie NICHT in die aktuelle Story hineinziehst (siehe "Story-Unabhängigkeit: Vertikaler Schnitt und Einführungsprinzip" in Phase 3)
 
 Die Traversierungsdaten werden NICHT genutzt für:
 - Out-of-Scope-Punkte — Dass etwas in einem anderen Epic steckt, ist kein Out-of-Scope-Punkt
@@ -128,7 +137,7 @@ Die Traversierungsdaten werden NICHT genutzt für:
 **STOP — SOLL-Kontext allein reicht nicht.** Wenn eine Codebase vorhanden ist, ist die IST-Analyse (nächster Abschnitt) zwingend. Rationalisierungen wie "Issue-Kontext reicht" oder "ist eh nur ein Epic" sind das Signal, sie JETZT zu machen.
 
 ### Sammle Ist-Zustand für Requirements-Lücken-Analyse
-**MANDATORY:** Verwende das **Task-Tool** mit `subagent_type="requirementsengineer:code-explorer"`
+**MANDATORY:** Verwende das **Subagent-Tool** deines Harness (heisst `Agent`, in älteren Versionen `Task`) mit `subagent_type="requirementsengineer:code-explorer"`
 > für diese 3 Agenten. Spawne alle 3 in **einem einzigen Message-Block** (parallel).
 > Ziel: Einschränkungen und Konflikte aus Codebase gegenüber Anfoderung identifizieren → daraus Offene Fragen und Out-of-Scope-Punkte ableiten, NICHT Lösungen designen
 > Nutze `model="sonnet"` für standard-tier Analyse.
@@ -163,6 +172,31 @@ WARNUNG: Die Codebase-Analyse liefert technische Details (Spaltennamen, Algorith
   Weitere Splitting-Dimension: Nach User-Rolle ("Admin erstellt" / "User beantragt")
   NICHT nach technischem Layer splitten: "Backend-API" / "Frontend-Form" / "DB-Migration"
 - Define acceptance criteria
+
+### Story-Unabhängigkeit: Vertikaler Schnitt und Einführungsprinzip (INVEST "I")
+
+Kontextwissen über Nachbar-Stories (Agent 3/4, Backlog-Dokumente) verführt dazu, eine Story "vollständig" zu machen, indem Inhalte anderer Stories hineingezogen werden. Das erzeugt eine verdeckte Abhängigkeit — verdeckt, weil sie nicht als Precondition deklariert ist, sondern im Scope versteckt: Die Story ist dann erst umsetzbar und abnehmbar, wenn eine andere Story fertig ist, obwohl sie ohne diesen Inhalt vollständig lieferbar wäre.
+
+Zwei Regeln halten den Schnitt vertikal:
+1. **Abhängigkeiten gehören in die Preconditions** — als Zustand formuliert ("Tags sind als Stammdaten im System vorhanden"), ohne Ticket-Referenz. Eine Precondition darf auf dem Ergebnis einer früher eingeplanten Story beruhen; genau dafür ist sie da: Sie macht die inhärente Abhängigkeit explizit, statt sie zu verstecken, und definiert die Ausgangslage, ab der die Story eigenständig funktioniert.
+2. **AKs und Postconditions enthalten ausschliesslich, was DIESE Story einführt.** Fähigkeiten, die eine andere Story einführt, werden nicht in AKs oder Postconditions hineingezogen — auch nicht "der Vollständigkeit halber". Die Vollständigkeit einer Story bemisst sich an ihren Preconditions plus dem, was sie selbst einführt.
+
+**Einführungsprinzip:** Die Sichtbarkeit und die Auswirkungen einer neuen Fähigkeit gehören in die Story, die die Fähigkeit einführt — nicht in die Story, der die Anzeigefläche gehört. Wer Daten ins System bringt (erfasst, zuweist, importiert), liefert auch deren Anzeige mit — als AK oder Postcondition. Das hält den Schnitt vertikal: Die einführende Story liefert End-to-End-Wert (eine Zuweisung ohne sichtbares Ergebnis wäre nicht abnehmbar), und die früher geplante Story bleibt unabhängig umsetzbar.
+
+Beispiel (Backlog mit drei Stories):
+- Story A: Der USER kann sein Userprofil anzeigen
+- Story B: Der ADMIN kann Tags als Stammdaten verwalten
+- Story C: Der USER kann Tags einem Userprofil zuweisen und entfernen
+
+Falsch: Story A um "Der USER sieht die zugewiesenen Tags" anreichern. Die Tag-Zuweisung wird durch Story C eingeführt — Story A wäre nicht mehr unabhängig umsetzbar und abnehmbar.
+Richtig: Story A bleibt ohne Tags. Story C trägt die Sichtbarkeit als Postcondition ("Das SYSTEM zeigt die zugewiesenen Tags im Userprofil an WENN der USER die Zuweisung gespeichert hat") und deklariert ihre Abhängigkeiten als Preconditions ("Tags sind als Stammdaten im System vorhanden" — legitime Abhängigkeit auf Story B, als Zustand formuliert).
+
+Litmus vor jedem Anreicherungs-Vorschlag ("sollte diese Story nicht auch X zeigen/können?"):
+1. "Führt DIESE Story X ein?" → Ja → als AK/Postcondition aufnehmen.
+2. "Setzt diese Story X nur voraus?" (X existiert bereits oder entsteht durch eine andere Story) → Dann ist X höchstens eine Precondition — niemals ein AK oder eine Postcondition.
+3. "Führt eine ANDERE Story X ein?" → DORT gehören Anzeige und Auswirkungen von X hinein. Die aktuelle Story unangetastet lassen und dem User den Platzierungshinweis geben ("Die Anzeige der Tags gehört als Postcondition in die Zuweisungs-Story").
+
+Abnahme-Litmus pro Story: "Kann diese Story umgesetzt und abgenommen werden, sobald ihre Preconditions erfüllt sind — ohne dass eine andere Story gleichzeitig fertig werden muss?" → Nein = ein AK oder eine Postcondition trägt fremden Scope; dorthin verschieben, wo die Fähigkeit eingeführt wird. Brauchen sich zwei Stories gegenseitig → kombinieren oder anders schneiden (SPIDR).
 
 **Outputs**:
 - User stories with acceptance criteria
@@ -239,6 +273,7 @@ Anti-Patterns in Acceptance Criteria & Stories:
 ❌ KEINE Fett-Formatierung (**bold**) in Story-Texten — Klartext, keine Markdown-Deko
 ❌ KEINE Zwischenüberschriften oder Kategorie-Titel innerhalb der Acceptance Criteria — die AKs sind eine flache, durchnummerierte Liste ohne Gruppierung. Subtitels wie "Erstellen", "Anzeigen", "Bearbeiten", "Löschen" etc. zwischen den AKs sind unnötig und stören den Lesefluss. Die Nummerierung allein gibt Struktur genug.
 ❌ KEINE Titel-Präfixe vor AKs wie "**Create:** Das SYSTEM..." oder "**Delete:** Das SYSTEM..." — jedes AK beginnt direkt mit dem Akteur
+❌ KEINE fremden Fähigkeiten in AKs oder Postconditions — AKs und Postconditions beschreiben ausschliesslich, was DIESE Story einführt. Setzt ein AK eine Fähigkeit voraus, die eine andere Story einführt, gehört das AK in jene Story (Einführungsprinzip). Abhängigkeiten selbst sind legitim — ihr Platz sind die Preconditions, als Zustand formuliert. Litmus: "Kann diese Story umgesetzt und abgenommen werden, sobald ihre Preconditions erfüllt sind — ohne dass eine andere Story gleichzeitig fertig werden muss?" → Nein = ein AK oder eine Postcondition trägt fremden Scope (siehe "Story-Unabhängigkeit: Vertikaler Schnitt und Einführungsprinzip")
 ❌ KEINE Referenzen in AKs — weder auf andere Stories/Tickets ("Story 11", "IES-12345"), noch auf offene Fragen ("gem. Q20", "gem. Q-NEU-1"), noch auf externe Dokumente. Der Leser muss jedes AK verstehen, ohne etwas nachzuschlagen. Information inline wiederholen. Wenn ein Detail noch ungeklärt ist: AK so weit formulieren wie möglich und das offene Detail als Frage in die Offene-Fragen-Tabelle verschieben — NICHT als "gem. Q-xyz"-Platzhalter im AK parken.
 ❌ AVOID GIVEN-WHEN-THEN notation or Gherkin syntax
 ❌ KEINE Implementierungsdetails in AKs — AKs beschreiben WAS das System tut, nicht WIE es das intern löst. Typischer Fehler: Codebase-Analyse liefert technische Details, die ungefiltert in AKs landen.
@@ -519,10 +554,17 @@ Richtig (Qualitätsmerkmal):
 ## Phase 4: Validation
 ### Perspektivenbasiertes Lesen
 
-> **MANDATORY:** Verwende das **Task-Tool** mit `subagent_type="general-purpose"` und `model="sonnet"`.
+> **MANDATORY:** Verwende das **Subagent-Tool** deines Harness (heisst `Agent`, in älteren Versionen `Task`) mit `subagent_type="general-purpose"` und `model="sonnet"`.
 > Spawne alle 6 in **einem einzigen Message-Block** (parallel).
 > Übergib jedem Agent die fertige Requirements-Dokumentation aus Phase 3 als Kontext.
 > Jeder Agent liefert maximal 5 Findings — priorisiert nach Impact.
+>
+> **Hausregeln mitgeben:** Hänge an JEDEN der 6 Prompts den Satz an: "Lies zuerst
+> `references/validation-house-rules.md` und halte dich an die dortigen Regeln — melde
+> nichts, was dort als Nicht-Finding aufgeführt ist, und markiere jedes Finding mit 🔴, 🟡
+> oder 🟢." Ohne diese Regeln melden die Agenten die Konventionen des Skills als Mangel
+> (vorgeschriebene AK-Form als untestbar, bewusst weggelassene UI-Details als Lücke,
+> Architekturfragen als Anforderungslücke) und wiederholen bereits erfasste Offene Fragen.
 
 | Agent | Perspektive | Prompt |
 |-------|-------------|--------|
@@ -546,6 +588,10 @@ Richtig (Qualitätsmerkmal):
 **Fehlende NFRs:**
 1. [NFR-Kategorie] nicht spezifiziert → Frage: [Welche Anforderung?]
 
+Jedes Finding trägt eine Markierung: 🔴 blockierend, 🟡 klärungsbedürftig, 🟢 dokumentierbar.
+
+> **Unabhängigkeits-Filter vor der Aggregation:** Findings der Art "Story erwähnt X nicht" oder "Story sollte auch X anzeigen" gegen das Backlog prüfen: Entsteht X erst durch eine Nachbar-Story, ist es KEINE Lücke dieser Story — die Vollständigkeit einer Story bemisst sich an ihren Preconditions plus dem, was sie selbst einführt. Solche Findings als Platzierungshinweis für die einführende Story ausgeben ("Anzeige von X gehört als AK/Postcondition in Story Y"), NICHT als Anreicherungs-Vorschlag für die geprüfte Story.
+>
 > Ergebnisse aggregieren und dem User vorlegen: 🔴 UND 🟡 Findings werden BEIDE via AskUserQuestion-Modal gefragt (gebündelt, max 4 pro Modal, erst 🔴 dann 🟡). Nicht nur die roten — gelbe sind wichtig genug zum Fragen, sonst landen sie in den offenen Fragen und müssten später wieder rausgelöscht werden wenn der User sie doch beantwortet. 🟢 Findings können direkt dokumentiert werden. Nur Fragen, die der User nicht beantworten kann, bleiben als Offene Fragen.
 
 ### Impact-Analyse bei Änderungen
