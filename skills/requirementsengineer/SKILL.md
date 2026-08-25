@@ -1,7 +1,7 @@
 ---
 name: requirementsengineer
 description: Analysiert und dokumentiert Anforderungen als User Stories und Akzeptanzkriterien. Holt Kontext aus Issue-Trackern (Jira, GitHub Issues, Linear, Azure DevOps, etc.), Dokumentation (Markdown-Files in Repos, Wikis, Confluence) und Codebase, stellt Rückfragen und validiert Requirements. Verwende diesen Skill immer wenn der User Anforderungen, User Stories, Akzeptanzkriterien, Requirements oder Spezifikationen erstellen, analysieren oder reviewen will — auch wenn er nur ein Ticket oder Issue referenziert und "schreib mir die Story" sagt.
-allowed-tools: Agent, Task, AskUserQuestion, Read, Glob, Grep, LS, NotebookRead, WebFetch, WebSearch, TaskCreate, TaskUpdate, TaskList, TaskGet, TodoWrite, BashOutput, Bash(curl -X GET*), Bash(curl --request GET*), mcp__plugin_atlassian_atlassian
+allowed-tools: Agent, Task, AskUserQuestion, Read, Glob, Grep, LS, NotebookRead, WebFetch, WebSearch, TaskCreate, TaskUpdate, TaskList, TaskGet, TodoWrite, BashOutput
 model: opus
 ---
 
@@ -99,6 +99,8 @@ Sammle NICHT erst 10 Fragen um sie dann als Tabelle auszugeben. Stelle sie laufe
 
 > **MANDATORY:** Verwende das **Subagent-Tool** deines Harness (heisst `Agent`, in älteren Versionen `Task`) mit `subagent_type="general-purpose"`
 > für diese Agenten. Spawne alle in **einem einzigen Message-Block** (parallel).
+
+**Abrufweg:** Nutze den Zugang, der in dieser Session tatsächlich verfügbar ist — MCP-Tools des Trackers, eine Issue-CLI (`twg`, `jira`, `gh`, `glab`, `az boards`) oder die REST-API. Prüfe in dieser Reihenfolge, statt eine Variante anzunehmen. Der Skill setzt keinen bestimmten Tracker und keine bestimmte CLI voraus; die Freigabe dafür gehört in die Permission-Regeln des Users, nicht in diesen Skill.
 
 | # | tier | description | prompt |
 |---|------|-------------|--------|
