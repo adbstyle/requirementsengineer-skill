@@ -233,7 +233,7 @@ Implizite Bedingungen NICHT auflisten:
 - Zustände, die sich direkt aus der Story ergeben (z.B. "Die Organisation hat mindestens einen zugewiesenen User" bei einer Story über Entfernung von Usern — das ist trivial)
 
 Nur Preconditions auflisten, die ein Leser nicht selbst ableiten kann:
-- "Der USER besitzt das Recht 'Bewirtschaftung der Zuweisung von Benutzern zu Organisationen'"
+- "Der USER besitzt das Recht 'Bewirtschaftung der Zuweisung von Benutzern zu Organisationen'" — nur wenn eine frühere Story dieses Recht eingeführt hat. Die erste Story eines Features, die ein Recht braucht, führt es selbst ein: dort ist das Recht ein AK ("Das SYSTEM provisioniert ein Recht zur ...") und die folgenden AKs sprechen vom berechtigten USER.
 - "Das SYSTEM kennt mindestens 1 weitere Meldung, welche mit der Organisation des USERs geteilt ist UND das Arzneimittel mindestens einen gleichen Wirkstoff aufweist"
 - "Der USER zeigt eine Meldung im Detail an"
 
@@ -297,6 +297,7 @@ Litmus-Test gegen Lösungstext (für jedes AK durchziehen):
 - "Ist das, was ich als AK schreibe, in jeder UI ohnehin Pflicht (grammatikalisch korrekt, barrierefrei, validiert, responsiv)?" → Ja = Selbstverständlichkeit, raus. Wenn ein Mechanismus dahinter steckt (dynamische Einzahl/Mehrzahl, Live-Validierung), DEN formulieren.
 - "Zähle ich nach 'ausschliesslich' / 'nur' das Komplement explizit auf?" → Komplement-Aufzählung streichen; die Logik des Quantors trägt die Aussage.
 - "Hängt ein Relativsatz/Einschub die Ausgangslage an ('..., in dem/der/sofern/wenn er X ist')?" → Prüfen ob X schon Precondition ist. Wenn ja → Nebensatz streichen. Wenn nein → X als Precondition ergänzen, AK trotzdem entschlacken.
+- "Kommt ein Begriff sowohl in den Preconditions als auch in einem AK oder einer Postcondition vor (typisch: ein Recht, ein Filter, ein Abonnement)?" → Dann führt die Story ihn ein. Precondition streichen, der Begriff bleibt nur im AK.
 
 Statt (Precondition als Qualifier im AK wiederholt):
   Precondition: Der USER ist als aufgenommene*r Freiwillige*r im Freiwilligenkreis des Angebots geführt

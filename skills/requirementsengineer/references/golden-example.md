@@ -9,7 +9,7 @@ Dieses Beispiel zeigt den erwarteten Stil und die Form einer fertigen User Story
 - Kein Bold, keine Zwischenüberschriften, keine Referenzen in AKs
 - **User Stories (Business):** AKs aus User-Sicht: Der USER ist der aktive Akteur ("Der USER kann...", "Der USER muss..."). Das SYSTEM in AKs nur bei Einschränkungen/Validierungen, die der User nicht steuert.
 - **Enabler Stories:** AKs mit TEAM oder SYSTEM als Akteur ("Das TEAM hat...", "Das SYSTEM validiert..."). Kein USER als Akteur, weil der Endnutzer nicht direkt betroffen ist.
-- Preconditions: nur nicht-offensichtliche Voraussetzungen ("User ist angemeldet" ist implizit)
+- Preconditions: nur nicht-offensichtliche Voraussetzungen ("User ist angemeldet" ist implizit). Nie etwas, das die Story selbst einführt: das Recht in Beispiel 1 ist AK, nicht Precondition
 - Postconditions: System-Ergebnisse mit WENN-Bedingungen, keine Wiederholung der AKs
 - Offene Fragen enthalten nur unbeantwortete Fragen an andere Stakeholder
 
@@ -24,18 +24,19 @@ möchte ich Word-Vorlagen für Bescheide hochladen, einsehen und entfernen könn
 damit ich die Korrespondenz mit aktuellen Dokumentvorlagen führen kann
 
 Preconditions
-1. Der USER besitzt die Rolle Vorlagenverwaltung
+1. Das SYSTEM kann Word-Dateien im Format .docx speichern
 
 Acceptance Criteria
-1. Der USER kann eine Word-Datei im Format .docx hochladen
-2. Der USER muss beim Hochladen einen eindeutigen Titel für die Vorlage angeben
-3. Der USER kann alle verfügbaren Vorlagen in einer Liste einsehen
-4. Der USER kann eine Vorlage aus der Liste löschen
-5. Der USER muss das Löschen einer Vorlage explizit bestätigen
-6. Das SYSTEM lehnt den Upload ab, wenn der Titel bereits vergeben ist oder die Datei grösser als 10 MB ist
+1. Das SYSTEM provisioniert ein Recht zur Verwaltung von Dokumentvorlagen, das Rollen zugewiesen werden kann
+2. Der berechtigte USER kann eine Word-Datei im Format .docx hochladen
+3. Der berechtigte USER muss beim Hochladen einen eindeutigen Titel für die Vorlage angeben
+4. Der berechtigte USER kann alle verfügbaren Vorlagen in einer Liste einsehen
+5. Der berechtigte USER kann eine Vorlage aus der Liste löschen
+6. Der berechtigte USER muss das Löschen einer Vorlage explizit bestätigen
+7. Das SYSTEM lehnt den Upload ab, wenn der Titel bereits vergeben ist oder die Datei grösser als 10 MB ist
 
 Postconditions
-1. Das SYSTEM speichert eine hochgeladene Vorlage und stellt sie allen Sachbearbeitern mit der Rolle Vorlagenverwaltung zur Verfügung
+1. Das SYSTEM speichert eine hochgeladene Vorlage und stellt sie allen berechtigten Sachbearbeitern zur Verfügung
 2. Das SYSTEM entfernt die Vorlage endgültig WENN der USER das Löschen bestätigt hat
 3. Das SYSTEM verändert keine bereits erstellten Bescheide, die auf einer gelöschten Vorlage basieren
 
