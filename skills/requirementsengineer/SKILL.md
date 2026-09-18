@@ -35,9 +35,10 @@ Solange offene Items existieren, gilt die Arbeit nicht als abgeschlossen — zwi
 3. **Phase 3** — Requirements dokumentieren
 4. **Phase 4** — Perspektivenbasiertes Lesen (6 Agenten)
 5. **Phase 4** — 🔴 und 🟡 Findings via AskUserQuestion
-6. **Phase 5** — Rückschreiben in den Tracker (nur wenn beauftragt)
 
 Items streichen nur mit expliziter Begründung (z.B. "keine Codebase").
+
+**Phase 5 — Rückschreiben in den Tracker** steht nicht von Anfang an in der Liste, weil ihr Auslöser ein Auftrag des Users ist, kein Merkmal der Aufgabe. Sobald der User das Schreiben ins Ticket beauftragt — egal wann im Gespräch, oft erst nachdem er die Story im Chat gesehen hat — ergänze das Item und arbeite es wie jede Pflicht-Phase ab.
 
 **Tool-Verfügbarkeit:** Die Freigaben in der Frontmatter gelten nur für den Turn, der den Skill startet, und verfallen mit der nächsten User-Nachricht. Permission-Prompts mitten im Lauf sind normal. Weder ein Prompt noch ein fehlendes Tool ist ein Grund, eine Pflicht-Phase zu überspringen oder abzukürzen — nimm den nächstbesten Weg (anderer Toolname, Fallback oben) und mach weiter.
 
@@ -204,7 +205,7 @@ Abnahme-Litmus pro Story: "Kann diese Story umgesetzt und abgenommen werden, sob
 - Non-functional requirements
 
 ### Referenz: Golden Example
-`references/golden-example.md` definiert die **verbindliche Struktur und Formatierung** jeder Story. Sektionsreihenfolge, Sektionsnamen und Formatierung (flache nummerierte Listen, keine Tabellen, keine Überschriften innerhalb von Sektionen) exakt übernehmen. Keine Sektionen hinzufügen oder weglassen. Gilt für jeden Output-Kanal — nur technisches Markup ans Zielsystem anpassen. Bei einem bestehenden Ticket regelt Phase 5, *wie* die Struktur dorthin kommt: Struktur-Treue rechtfertigt kein Neurendern eines Feldes, das die Struktur schon hat.
+`references/golden-example.md` definiert die **verbindliche Struktur und Formatierung** jeder Story. Sektionsreihenfolge, Sektionsnamen und Formatierung (flache nummerierte Listen, keine Tabellen, keine Überschriften innerhalb von Sektionen) exakt übernehmen. Keine Sektionen hinzufügen oder weglassen. Gilt für jeden Output-Kanal — nur technisches Markup ans Zielsystem anpassen. Das gilt für die Story-Sektionen. Blöcke im Ticket, die nicht zur Story gehören (Dev Notes, Testhinweise, Schätzungen), sind keine Story-Sektionen: Sie bleiben beim Rückschreiben unangetastet, unabhängig davon, ob das Golden Example sie kennt. Bei einem bestehenden Ticket regelt Phase 5, *wie* die Struktur dorthin kommt: Struktur-Treue rechtfertigt kein Neurendern eines Feldes, das die Struktur schon hat.
 
 ### User Story Format Template:
 ```
@@ -233,7 +234,7 @@ Implizite Bedingungen NICHT auflisten:
 - Zustände, die sich direkt aus der Story ergeben (z.B. "Die Organisation hat mindestens einen zugewiesenen User" bei einer Story über Entfernung von Usern — das ist trivial)
 
 Nur Preconditions auflisten, die ein Leser nicht selbst ableiten kann:
-- "Der USER besitzt das Recht 'Bewirtschaftung der Zuweisung von Benutzern zu Organisationen'" — nur wenn eine frühere Story dieses Recht eingeführt hat. Die erste Story eines Features, die ein Recht braucht, führt es selbst ein: dort ist das Recht ein AK ("Das SYSTEM provisioniert ein Recht zur ...") und die folgenden AKs sprechen vom berechtigten USER.
+- "Der USER besitzt das Recht 'Bewirtschaftung der Zuweisung von Benutzern zu Organisationen'" — nur wenn eine frühere Story dieses Recht eingeführt hat. Die erste Story eines Features, die ein Recht braucht, führt es selbst ein: dort ist die Berechtigung ein Constraint-AK ("Das SYSTEM lässt X nur für USER zu, denen die Berechtigung dafür zugewiesen ist") plus eine Postcondition, die sie zur Zuweisung bereitstellt — siehe Beispiel 1 im Golden Example. Ob das Recht schon existiert, ist eine Phase-2-Frage: Nachbar-Stories (Agent 3) und Codebase geben Auskunft; im Zweifel den User via AskUserQuestion fragen, statt zu raten.
 - "Das SYSTEM kennt mindestens 1 weitere Meldung, welche mit der Organisation des USERs geteilt ist UND das Arzneimittel mindestens einen gleichen Wirkstoff aufweist"
 - "Der USER zeigt eine Meldung im Detail an"
 
@@ -297,7 +298,7 @@ Litmus-Test gegen Lösungstext (für jedes AK durchziehen):
 - "Ist das, was ich als AK schreibe, in jeder UI ohnehin Pflicht (grammatikalisch korrekt, barrierefrei, validiert, responsiv)?" → Ja = Selbstverständlichkeit, raus. Wenn ein Mechanismus dahinter steckt (dynamische Einzahl/Mehrzahl, Live-Validierung), DEN formulieren.
 - "Zähle ich nach 'ausschliesslich' / 'nur' das Komplement explizit auf?" → Komplement-Aufzählung streichen; die Logik des Quantors trägt die Aussage.
 - "Hängt ein Relativsatz/Einschub die Ausgangslage an ('..., in dem/der/sofern/wenn er X ist')?" → Prüfen ob X schon Precondition ist. Wenn ja → Nebensatz streichen. Wenn nein → X als Precondition ergänzen, AK trotzdem entschlacken.
-- "Kommt ein Begriff sowohl in den Preconditions als auch in einem AK oder einer Postcondition vor (typisch: ein Recht, ein Filter, ein Abonnement)?" → Dann führt die Story ihn ein. Precondition streichen, der Begriff bleibt nur im AK.
+- "Setzt eine Precondition etwas voraus, das ein AK oder eine Postcondition DIESER Story erst schafft (typisch: ein Recht, ein Filter, ein Abonnement)?" → Dann führt die Story es ein und die Precondition ist eine Abhängigkeit auf sich selbst. Precondition streichen, die Fähigkeit bleibt im AK. Blosse Wortüberschneidung ist kein Treffer: Eine Precondition kann die Rollenverwaltung voraussetzen, während die Story eine bestimmte Berechtigung einführt.
 
 Statt (Precondition als Qualifier im AK wiederholt):
   Precondition: Der USER ist als aufgenommene*r Freiwillige*r im Freiwilligenkreis des Angebots geführt
