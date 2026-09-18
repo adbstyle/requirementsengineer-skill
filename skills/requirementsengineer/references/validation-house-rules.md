@@ -45,6 +45,13 @@ Entsteht X erst durch eine Nachbar-Story, gehört es dorthin. Formuliere solche 
 Platzierungshinweis („Anzeige von X gehört in die Story, die X einführt"), nicht als
 Anreicherungs-Vorschlag.
 
+## Pflichtprüfung für jeden Agenten
+
+Prüfe jede Precondition gegen den Lieferumfang derselben Story: Setzt sie etwas voraus,
+das ein AK oder eine Postcondition dieser Story erst einführt (typisch: ein Recht, ein
+Filter, ein Abonnement)? Dann ist das ein 🔴 Finding — die Precondition gehört gestrichen,
+die Fähigkeit bleibt nur im AK.
+
 ## Was ein gutes Finding ausmacht
 
 - Es zitiert die geprüfte Stelle wörtlich.

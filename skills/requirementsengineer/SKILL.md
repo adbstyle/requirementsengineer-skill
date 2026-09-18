@@ -1,7 +1,7 @@
 ---
 name: requirementsengineer
 description: Analysiert und dokumentiert Anforderungen als User Stories und Akzeptanzkriterien. Holt Kontext aus Issue-Trackern (Jira, GitHub Issues, Linear, Azure DevOps, etc.), Dokumentation (Markdown-Files in Repos, Wikis, Confluence) und Codebase, stellt Rückfragen und validiert Requirements. Verwende diesen Skill immer wenn der User Anforderungen, User Stories, Akzeptanzkriterien, Requirements oder Spezifikationen erstellen, analysieren oder reviewen will — auch wenn er nur ein Ticket oder Issue referenziert und "schreib mir die Story" sagt.
-allowed-tools: Agent, Task, AskUserQuestion, Read, Glob, Grep, LS, NotebookRead, WebFetch, WebSearch, TaskCreate, TaskUpdate, TaskList, TaskGet, TodoWrite, BashOutput
+allowed-tools: Agent, Task, AskUserQuestion, Read, Write, Edit, Bash, Glob, Grep, LS, NotebookRead, WebFetch, WebSearch, TaskCreate, TaskUpdate, TaskList, TaskGet, TodoWrite, BashOutput
 model: opus
 ---
 
@@ -37,6 +37,8 @@ Solange offene Items existieren, gilt die Arbeit nicht als abgeschlossen — zwi
 5. **Phase 4** — 🔴 und 🟡 Findings via AskUserQuestion
 
 Items streichen nur mit expliziter Begründung (z.B. "keine Codebase").
+
+**Phase 5 — Rückschreiben in den Tracker** steht nicht von Anfang an in der Liste, weil ihr Auslöser ein Auftrag des Users ist, kein Merkmal der Aufgabe. Sobald der User das Schreiben ins Ticket beauftragt — egal wann im Gespräch, oft erst nachdem er die Story im Chat gesehen hat — ergänze das Item und arbeite es wie jede Pflicht-Phase ab.
 
 **Tool-Verfügbarkeit:** Die Freigaben in der Frontmatter gelten nur für den Turn, der den Skill startet, und verfallen mit der nächsten User-Nachricht. Permission-Prompts mitten im Lauf sind normal. Weder ein Prompt noch ein fehlendes Tool ist ein Grund, eine Pflicht-Phase zu überspringen oder abzukürzen — nimm den nächstbesten Weg (anderer Toolname, Fallback oben) und mach weiter.
 
@@ -203,7 +205,7 @@ Abnahme-Litmus pro Story: "Kann diese Story umgesetzt und abgenommen werden, sob
 - Non-functional requirements
 
 ### Referenz: Golden Example
-`references/golden-example.md` definiert die **verbindliche Struktur und Formatierung** jeder Story. Sektionsreihenfolge, Sektionsnamen und Formatierung (flache nummerierte Listen, keine Tabellen, keine Überschriften innerhalb von Sektionen) exakt übernehmen. Keine Sektionen hinzufügen oder weglassen. Gilt für jeden Output-Kanal — nur technisches Markup ans Zielsystem anpassen.
+`references/golden-example.md` definiert die **verbindliche Struktur und Formatierung** jeder Story. Sektionsreihenfolge, Sektionsnamen und Formatierung (flache nummerierte Listen, keine Tabellen, keine Überschriften innerhalb von Sektionen) exakt übernehmen. Keine Sektionen hinzufügen oder weglassen. Gilt für jeden Output-Kanal — nur technisches Markup ans Zielsystem anpassen. Das gilt für die Story-Sektionen. Blöcke im Ticket, die nicht zur Story gehören (Dev Notes, Testhinweise, Schätzungen), sind keine Story-Sektionen: Sie bleiben beim Rückschreiben unangetastet, unabhängig davon, ob das Golden Example sie kennt. Bei einem bestehenden Ticket regelt Phase 5, *wie* die Struktur dorthin kommt: Struktur-Treue rechtfertigt kein Neurendern eines Feldes, das die Struktur schon hat.
 
 ### User Story Format Template:
 ```
@@ -232,7 +234,7 @@ Implizite Bedingungen NICHT auflisten:
 - Zustände, die sich direkt aus der Story ergeben (z.B. "Die Organisation hat mindestens einen zugewiesenen User" bei einer Story über Entfernung von Usern — das ist trivial)
 
 Nur Preconditions auflisten, die ein Leser nicht selbst ableiten kann:
-- "Der USER besitzt das Recht 'Bewirtschaftung der Zuweisung von Benutzern zu Organisationen'"
+- "Der USER besitzt das Recht 'Bewirtschaftung der Zuweisung von Benutzern zu Organisationen'" — nur wenn eine frühere Story dieses Recht eingeführt hat. Die erste Story eines Features, die ein Recht braucht, führt es selbst ein: dort ist die Berechtigung ein Constraint-AK ("Das SYSTEM lässt X nur für USER zu, denen die Berechtigung dafür zugewiesen ist") plus eine Postcondition, die sie zur Zuweisung bereitstellt — siehe Beispiel 1 im Golden Example. Ob das Recht schon existiert, ist eine Phase-2-Frage: Nachbar-Stories (Agent 3) und Codebase geben Auskunft; im Zweifel den User via AskUserQuestion fragen, statt zu raten.
 - "Das SYSTEM kennt mindestens 1 weitere Meldung, welche mit der Organisation des USERs geteilt ist UND das Arzneimittel mindestens einen gleichen Wirkstoff aufweist"
 - "Der USER zeigt eine Meldung im Detail an"
 
@@ -296,6 +298,7 @@ Litmus-Test gegen Lösungstext (für jedes AK durchziehen):
 - "Ist das, was ich als AK schreibe, in jeder UI ohnehin Pflicht (grammatikalisch korrekt, barrierefrei, validiert, responsiv)?" → Ja = Selbstverständlichkeit, raus. Wenn ein Mechanismus dahinter steckt (dynamische Einzahl/Mehrzahl, Live-Validierung), DEN formulieren.
 - "Zähle ich nach 'ausschliesslich' / 'nur' das Komplement explizit auf?" → Komplement-Aufzählung streichen; die Logik des Quantors trägt die Aussage.
 - "Hängt ein Relativsatz/Einschub die Ausgangslage an ('..., in dem/der/sofern/wenn er X ist')?" → Prüfen ob X schon Precondition ist. Wenn ja → Nebensatz streichen. Wenn nein → X als Precondition ergänzen, AK trotzdem entschlacken.
+- "Setzt eine Precondition etwas voraus, das ein AK oder eine Postcondition DIESER Story erst schafft (typisch: ein Recht, ein Filter, ein Abonnement)?" → Dann führt die Story es ein und die Precondition ist eine Abhängigkeit auf sich selbst. Precondition streichen, die Fähigkeit bleibt im AK. Blosse Wortüberschneidung ist kein Treffer: Eine Precondition kann die Rollenverwaltung voraussetzen, während die Story eine bestimmte Berechtigung einführt.
 
 Statt (Precondition als Qualifier im AK wiederholt):
   Precondition: Der USER ist als aufgenommene*r Freiwillige*r im Freiwilligenkreis des Angebots geführt
@@ -604,6 +607,26 @@ Wenn im Gespräch Anforderungen geändert, ergänzt oder gestrichen wurden:
    - Konkrete Frage: "Soll [verlinkte Anforderung X] angepasst werden?"
    - Falls keine Anforderungen betroffen → explizit melden: "Keine Auswirkungen auf verlinkte/verwandte Anforderungen identifiziert."
 
+## Phase 5: Rückschreiben in den Tracker
+
+Diese Phase greift nur, wenn der User das Schreiben beauftragt. Ohne Auftrag bleibt der Output im Chat.
+
+**Kernregel:** Das geschriebene Feld unterscheidet sich vom Bestand genau an den Stellen, an denen sich der Inhalt geändert hat — und sonst nirgends. Der Grund liegt beim Leser: PO, Entwickler und Tester öffnen das Änderungsprotokoll, um in Sekunden zu sehen, was sich geändert hat. Ersetzt du das Feld durch deine eigene Fassung, erscheint dort jede Zeile als geändert, auch die achtzig identischen — und der Leser muss den ganzen Text erneut vergleichen. Genau diese Arbeit soll das Protokoll ihm abnehmen. Dein Ausgangstext ist deshalb der Bestand, nicht dein Chat-Output.
+
+**Lies `references/tracker-writeback.md`, bevor du schreibst.** Dort stehen die Kosmetik-Sperre (was unangetastet bleibt, obwohl es verlockend ist), die Format-Fallen (ADF/Wiki-Markup vs. Markdown) und die Regeln für die einmalige Normalisierung.
+
+Ablauf:
+1. **Bestand frisch holen** — das Feld unmittelbar vor dem Schreiben abrufen, im Format, das das Schreiben erwartet. Nicht die Agenten-Zusammenfassung aus Phase 2 verwenden; die ist gekürzt und nie zeichengleich.
+2. **`before` ablegen** — Bestand unverändert in eine Datei schreiben (Scratchpad).
+3. **`after` als Kopie von `before`** erzeugen und darin nur die inhaltlich geänderten Stellen ersetzen. Kopieren, dann punktuell ändern — nicht neu rendern.
+4. **Diff prüfen, bevor du schreibst** (`diff -u before after`). Enthält er eine Zeile, deren Inhalt gleich geblieben ist — Formatierung, Reihenfolge, Nummerierung, Wortpolitur — ist Schritt 3 misslungen: korrigieren, nicht schreiben. Ohne Shell-Zugang beide Fassungen Zeile für Zeile gegenlesen und dasselbe prüfen.
+5. **Schreiben** mit dem Ganzfeld-Update des Trackers. Die meisten APIs können nur das ganze Feld ersetzen; der kleine Diff entsteht dadurch, dass der unveränderte Rest zeichengleich mitgeht.
+6. **Nachkontrolle** — Feld erneut abrufen und gegen `after` vergleichen. Abweichung heisst: der Tracker hat beim Round-Trip umformatiert. Dem User melden, nicht stillschweigend hinnehmen — er sieht es sonst erst im Protokoll.
+
+**Ausnahme Normalisierung:** Weicht der Bestand strukturell vom Golden Example ab (Prosa-Ticket, fehlende Sektionen, AKs im Fliesstext), ist die Überführung in die Golden-Example-Struktur selbst die beauftragte Änderung — dieser eine grosse Diff ist legitim. Bestandsinhalt wird dabei umgehängt, nicht umgeschrieben: Jeder Satz wandert wortgleich in die passende Sektion, umformuliert wird nur, was der Auftrag inhaltlich ändert. Nichts stillschweigend weglassen. Ab dem zweiten Anfassen ist die Struktur konform, und jeder weitere Grossdiff ist ein Fehler.
+
+**Nebenfelder** (Titel, Labels, Links, Status, Zuweisung) nur ändern, wenn beauftragt. Bestehende Kommentare nie editieren.
+
 # Response Format
 
 When asked to create or analyze requirements, structure your response as:
@@ -640,6 +663,9 @@ Geänderte Anforderungen → betroffene verlinkte/verwandte Anforderungen → As
 Bewertung: Geschäftswert, Vollständigkeit, NFRs, Testbarkeit, Konflikte
 → **Status:** 🟢 READY / 🟡 NEEDS REFINEMENT / 🔴 NOT READY
 
+## 7. Tracker-Update (nur wenn in den Tracker geschrieben wurde)
+Ziel-Issue und Feld, danach der Diff — nur die geänderten Hunks, nicht das ganze Feld. Bei einer Normalisierung Strukturänderung und inhaltliche Änderungen getrennt ausweisen. Zum Schluss das Ergebnis der Nachkontrolle (Feld entspricht dem Geschriebenen — oder wo der Tracker umformatiert hat).
+
 # Example Prompts I Handle Well
 - "Help me write user stories for a user authentication system"
 - "What NFRs should I consider for an e-commerce checkout?"
@@ -660,6 +686,9 @@ Detailed guide in `references/INVEST-Prinzip-Zusammenfassung.md`:
 
 ### User Role Modeling
 Complete guide in `references/User-Role-Modeling-Zusammenfassung.md`:
+
+### Rückschreiben in den Tracker
+Verbindliche Regelseite in `references/tracker-writeback.md`: Ablauf, Kosmetik-Sperre, Format-Fallen, Normalisierung. Vor jedem Schreibvorgang in Phase 5 lesen.
 
 **Usage in Workflow:**
 - Phase 1 (Discovery): Use User Role Modeling to identify stakeholders and personas

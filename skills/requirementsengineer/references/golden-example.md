@@ -9,7 +9,7 @@ Dieses Beispiel zeigt den erwarteten Stil und die Form einer fertigen User Story
 - Kein Bold, keine Zwischenüberschriften, keine Referenzen in AKs
 - **User Stories (Business):** AKs aus User-Sicht: Der USER ist der aktive Akteur ("Der USER kann...", "Der USER muss..."). Das SYSTEM in AKs nur bei Einschränkungen/Validierungen, die der User nicht steuert.
 - **Enabler Stories:** AKs mit TEAM oder SYSTEM als Akteur ("Das TEAM hat...", "Das SYSTEM validiert..."). Kein USER als Akteur, weil der Endnutzer nicht direkt betroffen ist.
-- Preconditions: nur nicht-offensichtliche Voraussetzungen ("User ist angemeldet" ist implizit)
+- Preconditions: nur nicht-offensichtliche Voraussetzungen ("User ist angemeldet" ist implizit). Nie etwas, das die Story selbst einführt: In Beispiel 1 wird die Rollenverwaltung vorausgesetzt (Precondition), die Berechtigung zur Vorlagenverwaltung dagegen eingeführt (Constraint-AK 7 und Postcondition 1)
 - Postconditions: System-Ergebnisse mit WENN-Bedingungen, keine Wiederholung der AKs
 - Offene Fragen enthalten nur unbeantwortete Fragen an andere Stakeholder
 
@@ -24,7 +24,7 @@ möchte ich Word-Vorlagen für Bescheide hochladen, einsehen und entfernen könn
 damit ich die Korrespondenz mit aktuellen Dokumentvorlagen führen kann
 
 Preconditions
-1. Der USER besitzt die Rolle Vorlagenverwaltung
+1. Das SYSTEM verfügt über eine Rollenverwaltung, in der Berechtigungen Rollen zugewiesen werden
 
 Acceptance Criteria
 1. Der USER kann eine Word-Datei im Format .docx hochladen
@@ -33,11 +33,13 @@ Acceptance Criteria
 4. Der USER kann eine Vorlage aus der Liste löschen
 5. Der USER muss das Löschen einer Vorlage explizit bestätigen
 6. Das SYSTEM lehnt den Upload ab, wenn der Titel bereits vergeben ist oder die Datei grösser als 10 MB ist
+7. Das SYSTEM lässt das Verwalten von Dokumentvorlagen nur für USER zu, denen die Berechtigung dafür zugewiesen ist
 
 Postconditions
-1. Das SYSTEM speichert eine hochgeladene Vorlage und stellt sie allen Sachbearbeitern mit der Rolle Vorlagenverwaltung zur Verfügung
-2. Das SYSTEM entfernt die Vorlage endgültig WENN der USER das Löschen bestätigt hat
-3. Das SYSTEM verändert keine bereits erstellten Bescheide, die auf einer gelöschten Vorlage basieren
+1. Das SYSTEM stellt die Berechtigung zur Verwaltung von Dokumentvorlagen in der Rollenverwaltung zur Zuweisung bereit
+2. Das SYSTEM speichert eine hochgeladene Vorlage und stellt sie allen berechtigten USERn zur Verfügung
+3. Das SYSTEM entfernt die Vorlage endgültig WENN der USER das Löschen bestätigt hat
+4. Das SYSTEM verändert keine bereits erstellten Bescheide, die auf einer gelöschten Vorlage basieren
 
 Out of Scope
 1. Das SYSTEM unterstützt keine Versionierung von Vorlagen — eine neue Version wird als separate Vorlage hochgeladen
