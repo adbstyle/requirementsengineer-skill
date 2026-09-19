@@ -234,9 +234,20 @@ Implizite Bedingungen NICHT auflisten:
 - Zustände, die sich direkt aus der Story ergeben (z.B. "Die Organisation hat mindestens einen zugewiesenen User" bei einer Story über Entfernung von Usern — das ist trivial)
 
 Nur Preconditions auflisten, die ein Leser nicht selbst ableiten kann:
-- "Der USER besitzt das Recht 'Bewirtschaftung der Zuweisung von Benutzern zu Organisationen'" — nur wenn eine frühere Story dieses Recht eingeführt hat. Die erste Story eines Features, die ein Recht braucht, führt es selbst ein: dort ist die Berechtigung ein Constraint-AK ("Das SYSTEM lässt X nur für USER zu, denen die Berechtigung dafür zugewiesen ist") plus eine Postcondition, die sie zur Zuweisung bereitstellt — siehe Beispiel 1 im Golden Example. Ob das Recht schon existiert, ist eine Phase-2-Frage: Nachbar-Stories (Agent 3) und Codebase geben Auskunft; im Zweifel den User via AskUserQuestion fragen, statt zu raten.
+- "Der USER besitzt das Recht 'Bewirtschaftung der Zuweisung von Benutzern zu Organisationen'" — nur wenn eine frühere Story dieses Recht eingeführt hat (siehe Herkunftsregel)
 - "Das SYSTEM kennt mindestens 1 weitere Meldung, welche mit der Organisation des USERs geteilt ist UND das Arzneimittel mindestens einen gleichen Wirkstoff aufweist"
 - "Der USER zeigt eine Meldung im Detail an"
+
+**Herkunftsregel:** Eine Precondition ist die Behauptung, dass etwas von anderswo kommt. Sie darf nur stehen, wenn du sagen kannst, woher. Frage für jede Precondition: "Wer führt das ein?"
+1. **Eine frühere Story** → Precondition ist legitim, als Zustand formuliert.
+2. **Diese Story** → gehört in AK oder Postcondition, nicht in die Preconditions. Eine Story kann nicht von sich selbst abhängen.
+3. **Niemand** → Phantom. Die Story muss es selbst einführen, oder es braucht eine eigene Story. Nie als Precondition parken — die Precondition macht dann eine Lieferung unsichtbar, die jemand erbringen muss.
+
+Ohne Precondition gilt der Default: Die Story liefert, was ihre AKs beobachtbar machen. Lässt ein AK den USER aus Störungskategorien wählen, bringt die Story die Kategorien mit — ein zusätzliches "Das SYSTEM stellt Kategorien bereit"-AK ist nicht nötig, der konkrete Inhalt gehört in die Spec oder in eine Offene Frage. Die Regel gilt für alles, was eine fachliche Festlegung ist und nicht das Ergebnis eines Datenflusses: Rechte, Stammdaten, Codelisten, Kategorien, Rollen, Vorlagen, Status. "Produktdaten sind importiert" kommt aus einem anderen Prozess und ist eine echte Voraussetzung; "Störungskategorien sind hinterlegt" ist eine Entscheidung, die eine Story liefern muss — und sieht trotzdem gleich aus.
+
+Wenn diese Story das Recht einführt: Die Berechtigung ist ein Constraint-AK ("Das SYSTEM lässt X nur für USER zu, denen die Berechtigung dafür zugewiesen ist") plus eine Postcondition, die sie zur Zuweisung bereitstellt — siehe Beispiel 1 im Golden Example.
+
+Woher etwas kommt, ist eine Phase-2-Frage: Nachbar-Stories (Agent 3), Backlog-Dokument (Agent 4) und Codebase geben Auskunft. Im Zweifel den User via AskUserQuestion fragen — er kennt das Backlog. Nicht aus dem Klang der Precondition raten.
 
 **Acceptance Criteria**
 
@@ -298,7 +309,8 @@ Litmus-Test gegen Lösungstext (für jedes AK durchziehen):
 - "Ist das, was ich als AK schreibe, in jeder UI ohnehin Pflicht (grammatikalisch korrekt, barrierefrei, validiert, responsiv)?" → Ja = Selbstverständlichkeit, raus. Wenn ein Mechanismus dahinter steckt (dynamische Einzahl/Mehrzahl, Live-Validierung), DEN formulieren.
 - "Zähle ich nach 'ausschliesslich' / 'nur' das Komplement explizit auf?" → Komplement-Aufzählung streichen; die Logik des Quantors trägt die Aussage.
 - "Hängt ein Relativsatz/Einschub die Ausgangslage an ('..., in dem/der/sofern/wenn er X ist')?" → Prüfen ob X schon Precondition ist. Wenn ja → Nebensatz streichen. Wenn nein → X als Precondition ergänzen, AK trotzdem entschlacken.
-- "Setzt eine Precondition etwas voraus, das ein AK oder eine Postcondition DIESER Story erst schafft (typisch: ein Recht, ein Filter, ein Abonnement)?" → Dann führt die Story es ein und die Precondition ist eine Abhängigkeit auf sich selbst. Precondition streichen, die Fähigkeit bleibt im AK. Blosse Wortüberschneidung ist kein Treffer: Eine Precondition kann die Rollenverwaltung voraussetzen, während die Story eine bestimmte Berechtigung einführt.
+- "Wer führt ein, was diese Precondition voraussetzt?" → Eine frühere Story: bleibt. Diese Story: streichen, die Fähigkeit bleibt im AK. Niemand: streichen — die Story liefert es dann selbst (Default), oder eine eigene Story ist nötig. Blosse Wortüberschneidung ist kein Treffer: Eine Precondition kann die Rollenverwaltung voraussetzen, während die Story eine bestimmte Berechtigung einführt (siehe Herkunftsregel bei den Preconditions).
+- "Frage ich in den Offenen Fragen nach dem INHALT von etwas, das eine Precondition als vorhanden behauptet?" ("Welche Kategorien sollen hinterlegt werden?" neben "Kategorien sind im System hinterlegt") → Widerspruch. Wenn du fragst, welche es sein sollen, existieren sie nicht. Precondition streichen, die Frage bleibt.
 
 Statt (Precondition als Qualifier im AK wiederholt):
   Precondition: Der USER ist als aufgenommene*r Freiwillige*r im Freiwilligenkreis des Angebots geführt

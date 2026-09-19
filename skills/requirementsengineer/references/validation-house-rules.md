@@ -47,10 +47,22 @@ Anreicherungs-Vorschlag.
 
 ## Pflichtprüfung für jeden Agenten
 
-Prüfe jede Precondition gegen den Lieferumfang derselben Story: Setzt sie etwas voraus,
-das ein AK oder eine Postcondition dieser Story erst einführt (typisch: ein Recht, ein
-Filter, ein Abonnement)? Dann ist das ein 🔴 Finding — die Precondition gehört gestrichen,
-die Fähigkeit bleibt nur im AK.
+Frage für jede Precondition: Wer führt das ein, was sie voraussetzt? Zwei Antworten sind
+ein 🔴 Finding:
+- **Diese Story selbst** — ein AK oder eine Postcondition schafft es erst. Die Precondition
+  gehört gestrichen, die Fähigkeit bleibt im AK.
+- **Niemand** — keine Nachbar-Story, kein Kontext aus Phase 2 liefert es, und die Story
+  benutzt es nur. Typisch bei Stammdaten, Kategorien, Codelisten, Rollen, Vorlagen: "X ist
+  im System hinterlegt", ohne dass irgendwo steht, wer X hinterlegt. Die Precondition
+  versteckt eine Lieferung. Streichen; die Story bringt X dann selbst mit.
+
+Sicherer Indikator für "niemand": Eine Offene Frage fragt nach dem Inhalt von X ("Welche
+Kategorien sollen hinterlegt werden?"), während eine Precondition X als vorhanden behauptet.
+
+Nur "eine frühere Story führt es ein" ist kein Finding. Woher etwas kommt, steht nicht im
+Wortlaut der Precondition — "Produktdaten sind importiert" und "Kategorien sind hinterlegt"
+klingen gleich. Wenn der Phase-2-Kontext keine Quelle nennt, formuliere das Finding als
+Frage an den Requirements Engineer: "Welche Story liefert X?"
 
 ## Was ein gutes Finding ausmacht
 
