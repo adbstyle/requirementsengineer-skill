@@ -22,6 +22,21 @@ Bei der Auswertung Einträge nach Bereich gruppieren und fragen: Wiederholt sich
 
 ---
 
+## #3 Postconditions, die Selbstverständliches oder anderswo Geregeltes wiederholen
+
+- **Datum / Projekt / Artefakt:** 29.10.2026 · Freiwilligenplattform Stadt Zürich · Epic #53, Story 4 «Rapport für Freiwillige erfassen» (zwei Doc-Kommentare)
+- **Bereich:** Postconditions
+- **Was der Skill tat:** Zwei Postconditions bestätigten nur, was schon feststand:
+  - «Das SYSTEM führt den erfassten Rapport als eigenen Rapport neben bestehenden Rapporten derselben Person zum selben Einsatz». Das sagen bereits AK 11 und das Glossar («mehrere Rapporte pro Person und Einsatz sind möglich»).
+  - «Das SYSTEM behandelt einen beim Erfassen als kontrolliert markierten Rapport wie jeden anderen kontrollierten Rapport». Was «kontrolliert» bewirkt, regeln die Nachbar-Story #175 und das Glossar.
+  Beide waren als Antwort auf Findings aus dem perspektivenbasierten Lesen entstanden (Tester: «Endzustand prüfbar?», BA: «Redundanz»).
+- **Feedback:** «Was denn sonst … es stimmt, aber ist es nötig, dies zu sagen?» und zur zweiten: «gleiches hier». Beide gestrichen.
+- **Regel-Vorschlag:** Eine Postcondition muss einen Zustand beschreiben, den diese Story neu herbeiführt und der nicht schon aus einem AK, dem Glossar oder einer Nachbar-Story folgt. Litmus pro Postcondition:
+  1. Gibt es eine plausible Alternative, die ein Team ohne diesen Satz umsetzen würde? Wenn nein, streichen.
+  2. Wiederholt sie ein AK dieser Story oder eine Regel, die eine andere Story einführt? Wenn ja, streichen.
+  Ergänzend für Phase 4: Findings der Art «Verhalten X ist hier nicht explizit» nicht mit einer neuen Postcondition beantworten, wenn X in der einführenden Story oder im Glossar steht. Das passt zum Unabhängigkeits-Filter.
+- **Status:** offen
+
 ## #2 Positives und negatives AK für dieselbe Regel
 
 - **Datum / Projekt / Artefakt:** 29.10.2026 · Freiwilligenplattform Stadt Zürich · Epic #53, Story 4 «Rapport für Freiwillige erfassen» (Doc-Kommentar)
