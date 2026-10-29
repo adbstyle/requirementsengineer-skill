@@ -22,6 +22,15 @@ Bei der Auswertung Einträge nach Bereich gruppieren und fragen: Wiederholt sich
 
 ---
 
+## #4 AK aus der Schwester-Story übernommen, obwohl ein anderes AK ihn schon impliziert
+
+- **Datum / Projekt / Artefakt:** 29.10.2026 · Freiwilligenplattform Stadt Zürich · Epic #53, Story 5 «Eigenen Rapport erfassen» (Doc-Kommentar)
+- **Bereich:** AK-Formulierung
+- **Was der Skill tat:** Story 5 (FW erfasst) übernahm aus der parallel geschnittenen Story #176 (ADMIN/KO erfasst) das AK «Das SYSTEM lässt das Erfassen nur zu publizierten und archivierten Einsätzen zu». In #176 ist es nötig, weil ADMIN/KO auch ohne Zuweisung erfassen und sonst Entwürfe wählbar wären. In Story 5 sagt AK 1 «nur zu einem Einsatz, dem er zugewiesen ist». Zuweisen geht laut Nachbar-Story #96 aber nur bei publizierten Einsätzen, und archivierte behalten ihre Zuweisungen. Das Status-AK war damit leer.
+- **Feedback:** «Ist das nicht überflüssig zu erwähnen, weil bei einem Entwurf gar kein FW zugewiesen werden kann?» AK gestrichen.
+- **Regel-Vorschlag:** Werden Stories nach Rolle geschnitten (SPIDR «nach User-Rolle») und eine aus der anderen abgeleitet, prüft der Skill jedes übernommene AK neu im Kontext der neuen Rolle. Litmus: Folgt die Regel schon aus einem anderen AK dieser Story zusammen mit einer Regel der einführenden Nachbar-Story (hier Zuweisung nur bei publizierten Einsätzen)? Wenn ja, weglassen. Ein AK, das in der Schwester-Story eine Lücke schliesst, kann in der abgeleiteten Story leer sein. Verwandt mit #2 und #3 (Redundanz).
+- **Status:** offen
+
 ## #3 Postconditions, die Selbstverständliches oder anderswo Geregeltes wiederholen
 
 - **Datum / Projekt / Artefakt:** 29.10.2026 · Freiwilligenplattform Stadt Zürich · Epic #53, Story 4 «Rapport für Freiwillige erfassen» (zwei Doc-Kommentare)
