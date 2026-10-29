@@ -22,6 +22,15 @@ Bei der Auswertung Einträge nach Bereich gruppieren und fragen: Wiederholt sich
 
 ---
 
+## #2 Positives und negatives AK für dieselbe Regel
+
+- **Datum / Projekt / Artefakt:** 29.10.2026 · Freiwilligenplattform Stadt Zürich · Epic #53, Story 4 «Rapport für Freiwillige erfassen» (Doc-Kommentar)
+- **Bereich:** AK-Formulierung
+- **Was der Skill tat:** Zwei aufeinanderfolgende AKs drückten dieselbe Regel aus. AK 4 lautete «Der ADMIN/KO kann den Rapport für eine*n Freiwillige*n aus dem Freiwilligenkreis des Angebots erfassen, auch wenn …». AK 5 lautete «Der ADMIN/KO kann keinen Rapport für eine Person erfassen, die dem Freiwilligenkreis des Angebots nicht angehört».
+- **Feedback:** «Ist das nicht dasselbe, einmal positiv und einmal negativ ausgedrückt?»
+- **Regel-Vorschlag:** Eine Regel wird in genau einem AK formuliert. Die Abgrenzung kommt mit «nur» in dasselbe AK, statt ein zweites, verneintes AK anzuhängen. Beispiel: «Der ADMIN/KO kann den Rapport nur für … erfassen». Litmus vor jedem «kann nicht»- oder «lehnt ab»-AK: Ist es die Umkehrung eines anderen AKs? Wenn ja, mit «nur» zusammenlegen. Eigenständig bleibt ein Negativ-AK nur, wenn es einen Fall abdeckt, den kein positives AK berührt.
+- **Status:** offen
+
 ## #1 «sieht alle» statt «kann alle anzeigen»
 
 - **Datum / Projekt / Artefakt:** 29.10.2026 · Freiwilligenplattform Stadt Zürich · Epic #53, Story 2 «Eigene Rapporte anzeigen» (Doc-Kommentar)
