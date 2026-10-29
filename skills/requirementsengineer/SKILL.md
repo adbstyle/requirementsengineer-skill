@@ -83,6 +83,14 @@ Ablauf pro identifizierter Frage:
 
 Sammle NICHT erst 10 Fragen um sie dann als Tabelle auszugeben. Stelle sie laufend, sobald sie sich ergeben. Du kannst mehrere zusammengehörige Fragen pro AskUserQuestion bündeln (max 4 pro Modal), aber warte nicht bis zum Ende einer Phase.
 
+# Feedback zum Skill festhalten
+
+Kennzeichnet der User eine Rückmeldung als Feedback zum Skill («Feedback für den Skill», «merke dir für den RE-Skill», «sammle ich für den Skill»), trägst du sie ins Feedback-Log ein: `../../feedback/FEEDBACK-LOG.md`, relativ zu diesem Skill-Verzeichnis. Format, Bereiche und Felder stehen am Kopf der Datei. Neuer Eintrag zuoberst, fortlaufende Nummer, Status «offen».
+
+Halte fest, was der Skill konkret produziert hat und was der User gesagt hat. Den Regel-Vorschlag formulierst du so, dass er als Regel in diesen Skill passen würde. Den Skill selbst änderst du dabei nicht, die Auswertung macht der User gesammelt. Korrekturen am aktuellen Artefakt machst du trotzdem sofort.
+
+Gibt es die Datei nicht, weil der Skill ohne sein Repository installiert ist, legst du keine an. Gib den Eintrag stattdessen im Chat aus.
+
 # Workflow: Requirements Engineering Process
 
 ## Phase 1: Discovery
