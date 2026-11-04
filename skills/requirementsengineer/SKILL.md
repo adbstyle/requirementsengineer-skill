@@ -88,32 +88,38 @@ Sammle NICHT erst 10 Fragen um sie dann als Tabelle auszugeben. Stelle sie laufe
 Feedback zum Skill wird ein GitHub Issue in `adbstyle/requirementsengineer-skill`. Dort sammelt sich das Feedback aller User, damit über viele Einträge hinweg Muster sichtbar werden. Korrekturen am aktuellen Artefakt machst du trotzdem sofort. Den Skill selbst änderst du dabei nicht, die Auswertung geschieht gesammelt.
 
 Zwei Wege führen zum Issue:
-- **Der User kennzeichnet es selbst** («Feedback für den Skill», «merke dir für den RE-Skill», «sammle ich für den Skill»). Weiter mit Schritt 1 unten.
-- **Du bietest es an**, weil der User deine Vorschläge wiederholt aus demselben Grund verwirft. Die meisten User melden so etwas nicht von sich aus; sie korrigieren und arbeiten weiter. Genau diese Korrekturen zeigen aber, wo dem Skill eine Regel fehlt oder eine falsch greift.
+- **Der User kennzeichnet es selbst** («Feedback für den Skill», «merke dir für den RE-Skill», «sammle ich für den Skill»). Weiter mit «Issue erstellen».
+- **Du bietest es an**, weil der User deine Vorschläge wiederholt aus demselben Grund verwirft. Die meisten User melden so etwas nicht von sich aus; sie korrigieren und arbeiten weiter. Genau diese Korrekturen zeigen aber, wo dem Skill eine Regel fehlt oder eine nicht greift.
 
 ## Feedback anbieten, wenn der User wiederholt korrigiert
 
-**Was zählt:** Der User widerspricht einem Vorschlag von dir klar oder muss ihn grösser umbauen, und der Grund liegt in der Arbeitsweise des Skills: Formulierung, Struktur, Ebene, Schnitt, Anwendung einer Regel. Beispiele: Er streicht Lösungsdetails aus einem AK, schreibt eine Precondition um, weil sie fremden Scope trägt, oder verwirft deinen Story-Schnitt.
+**Wo das passiert: im Review des Users.** Nach Phase 4 präsentierst du das Artefakt, und der User liest es genau durch. Dort widerspricht er deinen Vorschlägen oder baut sie um, und dort zeigt sich, wo der Skill danebenliegt. In den Phasen davor beantwortet er vor allem deine Fragen, und das zählt nicht. Der Review kann über viele Runden gehen, auch lange nach der Ausgabe; die folgenden Regeln gelten in jeder Runde.
 
-**Was nicht zählt:** Fachwissen, das du nicht haben konntest (Rollenname, Geschäftsregel, Entscheid des PO), Antworten auf deine Rückfragen, kleine Umformulierungen und neue Wünsche des Users an die Anforderung selbst. Das ist normales Arbeiten, kein Fehler des Skills.
+**Was zählt:** Der User widerspricht einem Vorschlag von dir klar oder baut ihn grundlegend um, und der Grund liegt in der Arbeitsweise des Skills: Formulierung, Struktur, Ebene, Schnitt, Anwendung einer Regel. Beispiele: Er streicht Lösungsdetails aus einem AK, schreibt eine Precondition um, weil sie fremden Scope trägt, oder verwirft deinen Story-Schnitt. Auch wenn er eine deiner Rückfragen als unnötig oder falsch gestellt zurückweist, zählt das.
 
-**Schwelle: zwei Korrekturen mit demselben Muster.** Ein Muster ist der gemeinsame Grund, nicht die Stelle: Lösungsdetails in zwei verschiedenen AKs sind ein Muster. Eine einzelne Korrektur kann Zufall oder Geschmack sein, die zweite aus demselben Grund spricht für eine Lücke, die auch andere User trifft. Führ die Korrekturen still mit, ohne dem User davon zu erzählen.
+**Was nicht zählt:** Fachwissen, das du nicht haben konntest (Rollenname, Geschäftsregel, Entscheid des PO), der Inhalt seiner Antworten auf deine Rückfragen, kleine Umformulierungen und neue Wünsche des Users an die Anforderung selbst. Das ist normales Arbeiten, kein Fehler des Skills.
 
-**Zuerst die Story.** Ein erkanntes Muster hilft zuerst der Story, an der ihr gerade arbeitet: Setz die Korrektur so um, wie der User sie meint, nicht nur wörtlich, und prüf die übrigen Sätze der Story auf dasselbe Muster. Was du dabei findest, fragst du via AskUserQuestion nach, statt es still zu ändern oder zu übergehen. Das Feedback-Angebot ist der zweite Schritt und darf die Arbeit an der Story nicht ersetzen.
+**Erst die Regel, dann zählen.** Widerspricht die Korrektur einer Regel dieses Skills, etwa der Grenze bei Preconditions, gilt zuerst die Regel: Begründe deinen Vorschlag. Bleibt der User danach bei seiner Korrektur, zählt sie, denn dann passt womöglich die Regel nicht.
 
-**Zeitpunkt: die nächste Pause.** Arbeite die Korrektur und die Rückfragen aus der Musterprüfung zuerst ein. Biete das Feedback an, sobald keine andere Rückfrage offen ist, etwa nachdem du eine Antwortrunde eingearbeitet oder eine Phase abgeschlossen hast. Laufende Fragerunden und Agenten-Phasen unterbrichst du dafür nicht, aber spätestens vor der abschliessenden Ausgabe kommt das Angebot.
+**Schwelle: zwei Korrekturen mit demselben Muster, in zwei verschiedenen Nachrichten.** Ein Muster ist der gemeinsame Grund, nicht die Stelle: Lösungsdetails in zwei verschiedenen AKs sind ein Muster. Mehrere Stellen in derselben Nachricht zählen als eine Korrektur. Eine einzelne Korrektur kann Zufall oder Geschmack sein; kommt derselbe Grund in einer späteren Nachricht wieder, spricht das für eine Lücke, die auch andere User trifft. Zähl nicht laut mit, der User erfährt davon mit dem Angebot.
+
+**Zuerst das Artefakt.** Ist die Schwelle erreicht, hilft das Muster zuerst dem Artefakt, an dem ihr arbeitet, also der Story, dem Epic oder den Stories dieser Session. Setz die Korrektur so um, wie der User sie meint, nicht nur wörtlich, und prüf die übrigen Sätze auf dasselbe Muster. Treffer behandelst du wie Findings des Regel-Prüfers: Eindeutige übernimmst du direkt und weist sie aus (alt → neu). Trägt ein Satz etwas Eigenes, das verloren ginge, oder ist offen, ob die Festlegung fachlich gewollt ist, fragst du via AskUserQuestion. Das Feedback-Angebot ersetzt diese Arbeit nicht.
+
+**Zeitpunkt: am Ende der Antwort, die die zweite Korrektur einarbeitet.** Erst wenn die Korrektur und die Treffer der Musterprüfung eingearbeitet sind und keine andere Frage mehr offen ist, kommt das Angebot. Ist dort noch eine Frage offen, kommt es am Ende der nächsten Antwort, in der keine mehr offen ist. Rückfragen zum Artefakt gehen vor, weil sie die eigentliche Arbeit betreffen.
 
 **Häufigkeit:** Jedes Muster bietest du höchstens einmal an, ein Muster, das der User schon selbst als Feedback gemeldet hat, gar nicht. Wählt der User «Nicht mehr fragen», bietest du in dieser Session nichts mehr an.
 
-**Angebot und Einordnung in einem Modal.** Du schlägst die Einordnung vor, der User bestätigt oder korrigiert sie. Frag via AskUserQuestion und nenn im Fragetext:
-- was dir aufgefallen ist, konkret und ohne Vorwurf: «Du hast zweimal Lösungsdetails aus AKs gestrichen (Sortierung nach Datum, Export als CSV).»
-- den Bereich aus dem Issue-Formular
-- den Regel-Vorschlag, allgemein gefasst, nicht nur für diesen Fall: «Ein AK nennt das beobachtbare Ergebnis, nicht Format oder Reihenfolge, solange der User sie nicht verlangt.»
-- dass das Issue öffentlich wäre und du es vor dem Einreichen noch einmal zeigst
+**Regel-Vorschlag: fehlt die Regel, oder hat sie nicht gegriffen?** Prüf vor dem Angebot, ob dieses SKILL.md oder `references/anti-patterns.md` die Regel schon enthält. Wenn ja, ist der Befund nicht «Regel fehlt», sondern «Regel hat nicht gegriffen»: Nenn die Regel und was sie vermutlich übersehen liess. Für die Auswertung ist das der wertvollere Hinweis. Fehlt sie, formulier sie allgemein, nicht nur für diesen Fall.
 
-Optionen: «Ja, so einordnen», «Anders einordnen», «Nein, dieses nicht», «Nicht mehr fragen». Bei «Anders einordnen» oder einer freien Antwort übernimmst du die Sicht des User: Er weiss besser als du, was ihn gestört hat. Frag nach, wenn daraus Bereich oder Regel nicht klar werden.
+**Angebot und Einordnung in einem Modal.** Du schlägst die Einordnung vor, der User bestätigt sie oder ordnet anders ein. Frag via AskUserQuestion. Der Fragetext nennt, was dir aufgefallen ist, konkret und ohne Vorwurf, und dass das Issue öffentlich wäre und du den vollständigen Text vorher zeigst. Bereich und Regel-Vorschlag stehen in der Beschreibung der ersten Option, damit der Fragetext kurz bleibt. Beispiel:
+- Frage: «Du hast zweimal Lösungsdetails aus AKs gestrichen (Bedienelemente in AK2, Mail-Betreff in AK4). Soll ich daraus ein Feedback-Issue für den Skill machen? Es wäre öffentlich, den vollständigen Text zeige ich dir vorher.»
+- «Ja, so einordnen»: «Bereich AK-Formulierung. Die Prüfung auf Lösungstext hat UI-Elemente und Texte wie Betreffzeilen nicht erfasst.»
+- «Nein, dieses nicht»
+- «Nicht mehr fragen»: «In dieser Session kein Angebot mehr»
 
-Danach Schritte 1 bis 4. Ins Feld «Feedback» kommen die Korrekturen des Users, sinngemäss oder als Zitat, ins Feld «Was der Skill tat» deine ursprünglichen Vorschläge. Die Bestätigung in Schritt 3 bleibt nötig, denn erst dort sieht der User den vollständigen, anonymisierten Text.
+Eine freie Antwort, die das Modal von selbst anbietet, heisst: Der User ordnet es anders ein. Übernimm seine Sicht, er weiss besser als du, was ihn gestört hat. Frag nur nach, wenn daraus Bereich oder Regel nicht klar werden.
+
+Danach weiter mit «Issue erstellen». Ins Feld «Feedback» kommen die Korrekturen des Users, sinngemäss oder als Zitat, ins Feld «Was der Skill tat» deine ursprünglichen Vorschläge. Die Bestätigung in Schritt 3 bleibt nötig, denn erst dort sieht der User den vollständigen, anonymisierten Text.
 
 ## Issue erstellen
 
