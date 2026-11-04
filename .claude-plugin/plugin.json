@@ -1,6 +1,6 @@
 {
   "name": "requirementsengineer",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Analysiert und dokumentiert Anforderungen als User Stories und Akzeptanzkriterien nach IREB-Standards. Holt Kontext aus Issue-Trackern, Dokumentation und Codebase, stellt Rückfragen und validiert Requirements.",
   "author": {
     "name": "Adrian Bader",
@@ -8,5 +8,6 @@
   },
   "repository": "https://github.com/adbstyle/requirementsengineer-skill",
   "license": "MIT",
-  "keywords": ["requirements", "user-stories", "acceptance-criteria", "ireb"]
+  "keywords": ["requirements", "user-stories", "acceptance-criteria", "ireb"],
+  "agents": ["./skills/requirementsengineer/agents/code-explorer.md"]
 }
