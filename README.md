@@ -85,8 +85,9 @@ requirementsengineer-skill/
 │           ├── tracker-writeback.md      # Regeln für das Rückschreiben
 │           ├── INVEST-Prinzip-Zusammenfassung.md
 │           └── User-Role-Modeling-Zusammenfassung.md
-├── feedback/
-│   └── FEEDBACK-LOG.md                   # Gesammeltes Feedback, wird vom Skill nicht geladen
+├── .github/
+│   └── ISSUE_TEMPLATE/
+│       └── skill-feedback.yml            # Formular für Feedback zum Skill
 └── README.md
 ```
 
@@ -104,6 +105,17 @@ Der Skill startet Subagenten über das Subagent-Tool des Harness (`Agent`, in ä
 - Registriert über `plugin.json`. Ohne Plugin-Installation übernimmt ein `general-purpose`-Agent mit derselben Anleitung.
 
 Für den Tracker-Kontext nutzt der Skill, was in der Session verfügbar ist: MCP-Tools, eine CLI wie `gh` oder `jira`, oder die REST-API.
+
+## Feedback
+
+Feedback aus der Nutzung sammelt sich als GitHub Issues mit dem Label [`skill-feedback`](https://github.com/adbstyle/requirementsengineer-skill/issues?q=label%3Askill-feedback). Aus vielen Einträgen werden Muster sichtbar, und daraus entstehen neue Regeln für den Skill.
+
+- **Im Chat:** Sag «Feedback für den Skill: …». Der Skill formuliert einen anonymen Eintrag, zeigt ihn dir und reicht ihn erst nach deinem Ja ein: über `gh`, wenn es angemeldet ist, sonst als vorausgefüllten Link.
+- **Direkt:** [Feedback-Formular öffnen](https://github.com/adbstyle/requirementsengineer-skill/issues/new?template=skill-feedback.yml)
+
+Die Issues sind öffentlich. Bitte keine Projekt-, Kunden- oder Personennamen und keine Ticket-Nummern.
+
+Wer über `gh` einreicht und kein Schreibrecht im Repo hat, bekommt das Label nicht, weil GitHub es dann verwirft. Solche Issues sind am Titel «Feedback: » erkennbar.
 
 ## Author
 
