@@ -65,6 +65,7 @@ Als persönlicher Skill heisst der Befehl `/requirementsengineer`.
 - Rückschreiben in den Tracker mit minimalem Diff: Im Änderungsprotokoll erscheinen nur die geänderten Zeilen
 - Unabhängig vom Tracker: Jira, GitHub Issues, Linear, Azure DevOps und andere, über MCP, CLI oder API
 - Natürliche Sprache statt GIVEN-WHEN-THEN, NFRs als nummerierte Sätze
+- Feedback zum Skill als anonymes GitHub Issue, gesammelt über alle User (siehe [Feedback](#feedback))
 
 ## Structure
 
