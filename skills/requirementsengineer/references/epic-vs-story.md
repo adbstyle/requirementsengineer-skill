@@ -194,6 +194,25 @@ Statt (Einschränkung als separates Kriterium):
 Richtig (Einschränkung ist bereits im ersten Satz enthalten — zweiter Satz entfällt):
   "Eine Störungsmeldung für ein meldepflichtiges Produkt kann digital von Erfassung bis Abschluss durchlaufen werden"
 
+**7. Lösungsoffen: kein Ort, kein Weg, kein Zeitpunkt**
+
+Die Regeln gegen Lösungstext aus SKILL.md gelten für Erfolgskriterien genauso wie für AKs, insbesondere der Austauschbarkeits-Test: Erfüllen mindestens zwei verschiedene plausible Lösungen das Kriterium, ohne dass der Wortlaut eine davon nahelegt? Auf Epic-Ebene ist die Versuchung besonders gross, weil die Quelle oft schon eine Lösung kennt: eine bestehende Detailseite in der Codebase, «nach dem Login» im Story-Satz der Vorlage, einen vertraglich erlaubten Weg in einer Requirement-Abgrenzung. Das ist Kontextwissen, kein Auftrag. Eine Vorgabe, die eine Lösung erlaubt oder begrenzt, gehört in Out of Scope. Nur eine ausdrückliche Vorgabe des PO macht einen Weg zum Kriterium. Hängen Folgekriterien am Ort («erkennen auf der Startseite …»), fallen sie mit.
+
+Statt (Ort und Weg):
+  "Aus der Übersicht gelangen ADMINs zur Detailseite eines Eintrags"
+Richtig:
+  "ADMINs können von der Übersicht aus zu jedem angezeigten Eintrag Detailinformationen erreichen"
+
+Statt (Zeitpunkt und Einstieg, aus dem Story-Satz der Vorlage übernommen):
+  "ADMINs und USER gelangen nach dem Login auf eine Startseite mit den Inhalten ihrer Rolle"
+Richtig:
+  "ADMINs und USER können ein Dashboard mit den Inhalten ihrer Rolle anzeigen"
+
+Statt (erlaubter Lösungsweg als Anforderung):
+  "Die angezeigte Ansicht lässt sich über den Druckdialog des Browsers drucken und als PDF speichern"
+Richtig:
+  "Die angezeigte Ansicht kann gedruckt oder als PDF gespeichert werden"
+
 ### Erfolgskriterien bei Epics (Business Epics)
 
 Erfolgskriterien beschreiben, was sich für den Nutzer ändert — das beobachtbare Outcome, nicht das technische Artefakt.

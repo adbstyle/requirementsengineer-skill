@@ -20,6 +20,12 @@ Wording, Komponentenwahl, Platzhalter-Grafiken: alles bewusst ausgeschlossen. Ei
 Anforderung, die offen lässt, wie der USER zur Funktion gelangt, ist nicht unvollständig —
 sie ist lösungsoffen. Melde das nicht als Lücke.
 
+Umgekehrt ist eine *vorhandene* Vorgabe zu Ort, Weg oder Zeitpunkt ein Finding
+(Übersteuerung): «auf der Detailseite», «navigiert zu», «nach dem Login», «als Startseite».
+Das gilt auch, wenn die Vorgabe vertraglich oder fachlich begründet wirkt. Eine Abgrenzung,
+die einen Lösungsweg erlaubt, gehört in Out of Scope, nicht als Weg in die Anforderung.
+Billige einen solchen Weg nicht als «vertraglich bedingt».
+
 **3. Architektur- und Datenmodellfragen**
 Entitäten, Persistenz, Caching, Schnittstellen, Datenherkunft, Kardinalitäten im Schema:
 kein Finding. Steckt eine *fachliche* Unklarheit dahinter, formuliere die fachliche Frage
@@ -45,12 +51,30 @@ Entsteht X erst durch eine Nachbar-Story, gehört es dorthin. Formuliere solche 
 Platzierungshinweis („Anzeige von X gehört in die Story, die X einführt"), nicht als
 Anreicherungs-Vorschlag.
 
+**8. Verhalten, das schon anderswo geregelt ist**
+„X ist hier nicht explizit" oder „Endzustand nicht prüfbar" ist kein Finding, wenn X aus
+einem AK, einer Precondition, dem Glossar oder der Story folgt, die X einführt. Wer so ein
+Finding meldet, verleitet den Requirements Engineer zu einer Postcondition, die nur
+wiederholt, was schon feststeht. Prüfe vorher, ob X nicht bereits gilt.
+
 ## Pflichtprüfung für jeden Agenten
 
-Prüfe jede Precondition gegen den Lieferumfang derselben Story: Setzt sie etwas voraus,
-das ein AK oder eine Postcondition dieser Story erst einführt (typisch: ein Recht, ein
-Filter, ein Abonnement)? Dann ist das ein 🔴 Finding — die Precondition gehört gestrichen,
-die Fähigkeit bleibt nur im AK.
+Frage für jede Precondition: Wer führt das ein, was sie voraussetzt? Zwei Antworten sind
+ein 🔴 Finding:
+- **Diese Story selbst** — ein AK oder eine Postcondition schafft es erst. Die Precondition
+  gehört gestrichen, die Fähigkeit bleibt im AK.
+- **Niemand** — keine Nachbar-Story, kein Kontext aus Phase 2 liefert es, und die Story
+  benutzt es nur. Typisch bei Stammdaten, Kategorien, Codelisten, Rollen, Vorlagen: "X ist
+  im System hinterlegt", ohne dass irgendwo steht, wer X hinterlegt. Die Precondition
+  versteckt eine Lieferung. Streichen; die Story bringt X dann selbst mit.
+
+Sicherer Indikator für "niemand": Eine Offene Frage fragt nach dem Inhalt von X ("Welche
+Kategorien sollen hinterlegt werden?"), während eine Precondition X als vorhanden behauptet.
+
+Nur "eine frühere Story führt es ein" ist kein Finding. Woher etwas kommt, steht nicht im
+Wortlaut der Precondition — "Produktdaten sind importiert" und "Kategorien sind hinterlegt"
+klingen gleich. Wenn der Phase-2-Kontext keine Quelle nennt, formuliere das Finding als
+Frage an den Requirements Engineer: "Welche Story liefert X?"
 
 ## Was ein gutes Finding ausmacht
 

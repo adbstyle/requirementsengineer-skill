@@ -33,7 +33,7 @@ Solange offene Items existieren, gilt die Arbeit nicht als abgeschlossen — zwi
 1. **Phase 2 SOLL** — Anforderungskontext (Agenten 1-4)
 2. **Phase 2 IST** — Codebase-Analyse (3 Agenten, falls Codebase vorhanden)
 3. **Phase 3** — Requirements dokumentieren
-4. **Phase 4** — Perspektivenbasiertes Lesen (6 Agenten)
+4. **Phase 4** — Perspektivenbasiertes Lesen (6 Perspektiven + Regel-Prüfer)
 5. **Phase 4** — 🔴 und 🟡 Findings via AskUserQuestion
 
 Items streichen nur mit expliziter Begründung (z.B. "keine Codebase").
@@ -82,6 +82,14 @@ Ablauf pro identifizierter Frage:
 4. **Frage betrifft einen anderen Stakeholder**, den der User nicht vertreten kann → in die Offene-Fragen-Tabelle mit dem richtigen Verantwortlichen.
 
 Sammle NICHT erst 10 Fragen um sie dann als Tabelle auszugeben. Stelle sie laufend, sobald sie sich ergeben. Du kannst mehrere zusammengehörige Fragen pro AskUserQuestion bündeln (max 4 pro Modal), aber warte nicht bis zum Ende einer Phase.
+
+# Feedback zum Skill festhalten
+
+Kennzeichnet der User eine Rückmeldung als Feedback zum Skill («Feedback für den Skill», «merke dir für den RE-Skill», «sammle ich für den Skill»), trägst du sie ins Feedback-Log ein: `feedback/FEEDBACK-LOG.md` im Repository des Skills, also zwei Ebenen über dem aufgelösten Skill-Verzeichnis. Ist das Skill-Verzeichnis ein Symlink (z.B. unter `~/.claude/skills/`), löst du ihn zuerst auf (`readlink`), sonst landest du im falschen Ordner. Format, Bereiche und Felder stehen am Kopf der Datei. Neuer Eintrag zuoberst, fortlaufende Nummer, Status «offen».
+
+Halte fest, was der Skill konkret produziert hat und was der User gesagt hat. Das Repository ist öffentlich: Erfasse anonym, ohne Projekt-, Kunden- oder Personennamen, ohne Issue-Nummern und Story-Titel, und ersetze projekttypische Fachbegriffe durch neutrale. Das Beispiel bleibt nur so konkret, dass die Regel nachvollziehbar ist. Den Regel-Vorschlag formulierst du so, dass er als Regel in diesen Skill passen würde. Den Skill selbst änderst du dabei nicht, die Auswertung macht der User gesammelt. Korrekturen am aktuellen Artefakt machst du trotzdem sofort.
+
+Gibt es die Datei nicht, weil der Skill ohne sein Repository installiert ist, legst du keine an. Gib den Eintrag stattdessen im Chat aus.
 
 # Workflow: Requirements Engineering Process
 
@@ -234,16 +242,27 @@ Implizite Bedingungen NICHT auflisten:
 - Zustände, die sich direkt aus der Story ergeben (z.B. "Die Organisation hat mindestens einen zugewiesenen User" bei einer Story über Entfernung von Usern — das ist trivial)
 
 Nur Preconditions auflisten, die ein Leser nicht selbst ableiten kann:
-- "Der USER besitzt das Recht 'Bewirtschaftung der Zuweisung von Benutzern zu Organisationen'" — nur wenn eine frühere Story dieses Recht eingeführt hat. Die erste Story eines Features, die ein Recht braucht, führt es selbst ein: dort ist die Berechtigung ein Constraint-AK ("Das SYSTEM lässt X nur für USER zu, denen die Berechtigung dafür zugewiesen ist") plus eine Postcondition, die sie zur Zuweisung bereitstellt — siehe Beispiel 1 im Golden Example. Ob das Recht schon existiert, ist eine Phase-2-Frage: Nachbar-Stories (Agent 3) und Codebase geben Auskunft; im Zweifel den User via AskUserQuestion fragen, statt zu raten.
+- "Der USER besitzt das Recht 'Bewirtschaftung der Zuweisung von Benutzern zu Organisationen'" — nur wenn eine frühere Story dieses Recht eingeführt hat (siehe Herkunftsregel)
 - "Das SYSTEM kennt mindestens 1 weitere Meldung, welche mit der Organisation des USERs geteilt ist UND das Arzneimittel mindestens einen gleichen Wirkstoff aufweist"
 - "Der USER zeigt eine Meldung im Detail an"
+
+**Herkunftsregel:** Eine Precondition ist die Behauptung, dass etwas von anderswo kommt. Sie darf nur stehen, wenn du sagen kannst, woher. Frage für jede Precondition: "Wer führt das ein?"
+1. **Eine frühere Story** → Precondition ist legitim, als Zustand formuliert.
+2. **Diese Story** → gehört in AK oder Postcondition, nicht in die Preconditions. Eine Story kann nicht von sich selbst abhängen.
+3. **Niemand** → Phantom. Die Story muss es selbst einführen, oder es braucht eine eigene Story. Nie als Precondition parken — die Precondition macht dann eine Lieferung unsichtbar, die jemand erbringen muss.
+
+Ohne Precondition gilt der Default: Die Story liefert, was ihre AKs beobachtbar machen. Lässt ein AK den USER aus Störungskategorien wählen, bringt die Story die Kategorien mit — ein zusätzliches "Das SYSTEM stellt Kategorien bereit"-AK ist nicht nötig, der konkrete Inhalt gehört in die Spec oder in eine Offene Frage. Die Regel gilt für alles, was eine fachliche Festlegung ist und nicht das Ergebnis eines Datenflusses: Rechte, Stammdaten, Codelisten, Kategorien, Rollen, Vorlagen, Status. "Produktdaten sind importiert" kommt aus einem anderen Prozess und ist eine echte Voraussetzung; "Störungskategorien sind hinterlegt" ist eine Entscheidung, die eine Story liefern muss — und sieht trotzdem gleich aus.
+
+Wenn diese Story das Recht einführt, ist seine Bereitstellung AK 1 ("Das SYSTEM stellt die Berechtigung zu X in der Rollenverwaltung zur Zuweisung bereit"). Sie ist Voraussetzung für alle weiteren AKs und kein Ergebnis einer User-Aktion, deshalb keine Postcondition. Die folgenden AKs sprechen vom "berechtigten USER". Ein zusätzliches Constraint-AK "Das SYSTEM lässt X nur für USER zu, denen die Berechtigung zugewiesen ist" folgt daraus und entfällt. Siehe Beispiel 1 im Golden Example.
+
+Woher etwas kommt, ist eine Phase-2-Frage: Nachbar-Stories (Agent 3), Backlog-Dokument (Agent 4) und Codebase geben Auskunft. Im Zweifel den User via AskUserQuestion fragen — er kennt das Backlog. Nicht aus dem Klang der Precondition raten.
 
 **Acceptance Criteria**
 
 **Bei User Stories (Business):**
 1. [Aktion des USERs — was der USER tun kann, auslösen kann, bestätigen muss]
 
-AKs beschreiben die Interaktion aus der Perspektive des USERs. Der USER ist der aktive Akteur. Wo immer möglich, formuliere aus User-Sicht statt aus System-Sicht. Das SYSTEM ist in AKs nur als Akteur erlaubt, wenn es um Einschränkungen oder Validierungen geht, die der USER nicht direkt steuert (z.B. Berechtigungsprüfungen).
+AKs beschreiben die Interaktion aus der Perspektive des USERs. Der USER ist der aktive Akteur. Wo immer möglich, formuliere aus User-Sicht statt aus System-Sicht. Das SYSTEM ist in AKs nur als Akteur erlaubt, wenn es um Einschränkungen oder Validierungen geht, die der USER nicht direkt steuert (z.B. Berechtigungsprüfungen), oder wenn es ein Recht bereitstellt, das diese Story einführt (AK 1, siehe Herkunftsregel).
 
 **Bei Enabler Stories:**
 1. [Technisches Ergebnis oder Entscheid — was das TEAM erarbeitet hat oder das SYSTEM bereitstellt]
@@ -263,7 +282,7 @@ Richtig (→ gehört in Postconditions, weil es System-Reaktionen nach Abschluss
 
 Examples:
 - "Der USER kann eine Benachrichtigung für neue Pflichtlagerbefreiungsanträge abonnieren"
-- "Der USER kann zu den angezeigten ähnlichen Meldungen navigieren"
+- "Der USER kann zu jeder angezeigten ähnlichen Meldung Detailinformationen erreichen"
 - "Der USER muss die Ausführung der Löschaktion bestätigen"
 - "Das SYSTEM kann nur User entfernen, die in Organisationen liegen, auf die der ausführende USER Zugriff hat" (Einschränkung — SYSTEM als Akteur erlaubt)
 
@@ -271,147 +290,47 @@ IMPORTANT: Write acceptance criteria in natural, readable language using simple 
 
 Jeder AK-Satz beginnt mit einem Akteur und ist aktiv formuliert. Kein Passiv, kein akteurloser Satz. Wenn kein Akteur offensichtlich ist, stimmt die Formulierung nicht — umformulieren bis der Akteur klar ist. Typischer Fehler: "Die Einträge sind sortiert" → richtig: "Das SYSTEM sortiert die Einträge nach Datum".
 
-Anti-Patterns in Acceptance Criteria & Stories:
-❌ KEINE Fett-Formatierung (**bold**) in Story-Texten — Klartext, keine Markdown-Deko
-❌ KEINE Zwischenüberschriften oder Kategorie-Titel innerhalb der Acceptance Criteria — die AKs sind eine flache, durchnummerierte Liste ohne Gruppierung. Subtitels wie "Erstellen", "Anzeigen", "Bearbeiten", "Löschen" etc. zwischen den AKs sind unnötig und stören den Lesefluss. Die Nummerierung allein gibt Struktur genug.
-❌ KEINE Titel-Präfixe vor AKs wie "**Create:** Das SYSTEM..." oder "**Delete:** Das SYSTEM..." — jedes AK beginnt direkt mit dem Akteur
-❌ KEINE fremden Fähigkeiten in AKs oder Postconditions — AKs und Postconditions beschreiben ausschliesslich, was DIESE Story einführt. Setzt ein AK eine Fähigkeit voraus, die eine andere Story einführt, gehört das AK in jene Story (Einführungsprinzip). Abhängigkeiten selbst sind legitim — ihr Platz sind die Preconditions, als Zustand formuliert. Litmus: "Kann diese Story umgesetzt und abgenommen werden, sobald ihre Preconditions erfüllt sind — ohne dass eine andere Story gleichzeitig fertig werden muss?" → Nein = ein AK oder eine Postcondition trägt fremden Scope (siehe "Story-Unabhängigkeit: Vertikaler Schnitt und Einführungsprinzip")
-❌ KEINE Referenzen in AKs — weder auf andere Stories/Tickets ("Story 11", "IES-12345"), noch auf offene Fragen ("gem. Q20", "gem. Q-NEU-1"), noch auf externe Dokumente. Der Leser muss jedes AK verstehen, ohne etwas nachzuschlagen. Information inline wiederholen. Wenn ein Detail noch ungeklärt ist: AK so weit formulieren wie möglich und das offene Detail als Frage in die Offene-Fragen-Tabelle verschieben — NICHT als "gem. Q-xyz"-Platzhalter im AK parken.
-❌ AVOID GIVEN-WHEN-THEN notation or Gherkin syntax
-❌ KEINE Implementierungsdetails in AKs — AKs beschreiben WAS das System tut, nicht WIE es das intern löst. Typischer Fehler: Codebase-Analyse liefert technische Details, die ungefiltert in AKs landen.
-❌ KEINE impliziten Duplikate — dasselbe Verhalten nicht einmal positiv und einmal negativ (oder aus System- und User-Perspektive) formulieren. Jedes AK muss einen eigenständigen, testbaren Wert liefern. Wenn ein AK logisch aus einem anderen folgt, ist es redundant.
-❌ KEINE Wiederholung einer Precondition als Qualifier im AK — wenn ein AK seine Aktion durch einen Relativsatz oder Einschub einschränkt ("..., in dem/der er X ist", "..., sofern er X ist", "..., wenn er X hat"), der bereits als Precondition steht, ist der Zusatz redundant. Die Preconditions gelten für die ganze Story; ein AK muss sie nicht erneut qualifizieren. Litmus: Streiche den Nebensatz — bleibt die Aktion testbar UND steht die Bedingung schon in den Preconditions? Dann gehört der Nebensatz nicht ins AK. Steht die Bedingung NICHT oben, ist sie eine fehlende Precondition — dorthin verschieben, nicht ins AK packen.
-❌ KEINE Halbsatz-Konstrukte mit Gedankenstrich (—) — ein AK ist ein vollständiger, einfacher Aussagesatz. Der Gedankenstrich wird oft als Krücke benutzt, um einen vagen ersten Teil mit einer Erklärung oder Einschränkung zu retten. Stattdessen: den Gedanken zu Ende denken und als eigenständigen Satz formulieren. Wenn ein AK zwei Aussagen enthält, in zwei AKs aufteilen.
-❌ KEINE konkreten Wertelisten oder Enums in AKs — Aufzählungen wie "(PERSON, ORT, DATUM, KONTAKT, ORGANISATION, MEDIZINISCH, SONSTIGES)" oder "wählt aus A, B, C, D" sind Lösungsdaten. Das konkrete Set gehört ins Datenmodell der späteren Spec oder in eine Anmerkung — niemals auf Anforderungsebene. Das AK beschreibt die Fähigkeit, nicht den Inhalt der Auswahl.
-❌ KEINE Klammer-Beispiele oder Klammer-Aufzählungen in AKs — Klammern wie "(z.B. X, Y, Z)", "(Aktion A, Aktion B, ...)" oder konkrete Display-Strings wie '("1 Eintrag" / "{n} Einträge")' sind Mechanik bzw. Beispiele aus der Spec. Sie überspezifizieren die Anforderung, sind fehleranfällig (vergessenes Element verfälscht die Aussage) und blähen den Satz auf. Streiche die Klammer und prüfe: Trägt der Satz davor allein? Wenn ja → fertig. Wenn nein → der Klammer-Inhalt war der eigentliche funktionale Kern; formuliere DAS als AK.
-❌ KEINE Selbstverständlichkeiten/universellen Qualitätsstandards als AK — Aussagen wie "Text ist grammatikalisch korrekt" sind Standards, keine Story-AKs. Wenn dahinter ein funktionaler Kern steckt (z.B. dynamische Einzahl/Mehrzahl, Live-Validierung, Breakpoint-Logik), formuliere DEN als AK — nicht das Qualitätsmerkmal "verziert" mit Beispielen in Klammern als Beweis.
-❌ KEIN explizit aufgezähltes Komplement — wenn ein AK "ausschliesslich X" oder "nur wenn X" sagt, ist alles andere logisch bereits ausgeschlossen. Das Komplement zusätzlich aufzulisten ("nicht Y, nicht Z, nicht W") liefert keinen Mehrwert und ist fehleranfällig: ein vergessenes Element verfälscht die Aussage. Vertraue auf die Logik von "ausschliesslich" / "nur".
-❌ KEINE Sonderfall-Implikate — wenn AK B nur einen Spezialfall einer allgemeineren Regel in AK A formuliert, ist B redundant. Beispiel: A "Anzahl wird nur angezeigt wenn > 0" deckt B "keine Anzeige bei 0 Wörtern" zwingend ab (0 Wörter → 0 Treffer → durch A bereits ausgeschlossen). Der einfache Duplikat-Test ("können beide unterschiedliche Wahrheitswerte haben?") greift hier nicht — weil A und B unterschiedliche Bedingungen prüfen, B aber durch A garantiert wird. Schärferer Test siehe unten.
-❌ KEINE Mechanik der Lösung im AK — Zusätze wie "der aktuelle Typ wird ausgeblendet", "ohne ein Menü zu öffnen", "als Supporting-Text", "mit einem Klick", "über einen Quick-Action-Button" beschreiben wie die Lösung sich verhält, nicht was der USER können muss. Litmus: Bleibt die Anforderung intakt, wenn alles nach dem ersten Komma oder Semikolon gestrichen wird? Wenn ja → den Zusatz streichen. Mechanik gehört in die Spec, nicht in die Anforderung.
-❌ KEINE UI-Vergleichsreferenzen ("identisch zum Inline-Chip-Menü", "analog zum X", "wie im Y", "gleich wie in Z") — das sind Konsistenzregeln für Design/Spec, nicht für Anforderungen. Die Anforderung beschreibt, was der USER braucht, nicht woher er es kennt.
+### Drei Prüfungen für jeden Satz
 
-Litmus-Test gegen Lösungstext (für jedes AK durchziehen):
-- "Würde ein PO diesen Satz auch ohne Designvorlage genau so schreiben?" → Nein = zu lösungsgetrieben, runterstrippen.
-- "Bleibt der testbare Kern intakt, wenn ich alles nach dem Verb des USERs streiche?" → Ja = den Rest streichen.
-- "Steht ein konkretes Set, eine UI-Bezeichnung in Anführungszeichen, ein Vergleich zu einem anderen Element drin?" → meist raus.
-- "Steht eine Klammer im Satz?" → Klammer streichen und prüfen, ob der Satz davor allein trägt. Wenn ja → fertig. Wenn nein → der Klammerinhalt war der eigentliche Kern; den verbalisieren, nicht den Rahmen.
-- "Ist das, was ich als AK schreibe, in jeder UI ohnehin Pflicht (grammatikalisch korrekt, barrierefrei, validiert, responsiv)?" → Ja = Selbstverständlichkeit, raus. Wenn ein Mechanismus dahinter steckt (dynamische Einzahl/Mehrzahl, Live-Validierung), DEN formulieren.
-- "Zähle ich nach 'ausschliesslich' / 'nur' das Komplement explizit auf?" → Komplement-Aufzählung streichen; die Logik des Quantors trägt die Aussage.
-- "Hängt ein Relativsatz/Einschub die Ausgangslage an ('..., in dem/der/sofern/wenn er X ist')?" → Prüfen ob X schon Precondition ist. Wenn ja → Nebensatz streichen. Wenn nein → X als Precondition ergänzen, AK trotzdem entschlacken.
-- "Setzt eine Precondition etwas voraus, das ein AK oder eine Postcondition DIESER Story erst schafft (typisch: ein Recht, ein Filter, ein Abonnement)?" → Dann führt die Story es ein und die Precondition ist eine Abhängigkeit auf sich selbst. Precondition streichen, die Fähigkeit bleibt im AK. Blosse Wortüberschneidung ist kein Treffer: Eine Precondition kann die Rollenverwaltung voraussetzen, während die Story eine bestimmte Berechtigung einführt.
+Die meisten Korrekturen, die User an fertigen Stories vornehmen, fallen unter drei Fragen. Stelle sie für jeden Satz in Preconditions, AKs, Postconditions, Out of Scope und Erfolgskriterien, und zwar schon beim Schreiben, nicht erst in Phase 4.
 
-Statt (Precondition als Qualifier im AK wiederholt):
-  Precondition: Der USER ist als aufgenommene*r Freiwillige*r im Freiwilligenkreis des Angebots geführt
-  AK: Der USER kann aus dem Freiwilligenkreis eines Angebots austreten, in dem er als aufgenommene*r Freiwillige*r geführt ist
-Richtig (AK nur die Aktion, Bedingung bleibt in der Precondition):
-  Der USER kann aus dem Freiwilligenkreis eines Angebots austreten
+**1. Notwendigkeit: Was ginge verloren, wenn dieser Satz fehlt?**
+Vergleiche mit allem, was schon gilt: Preconditions, die übrigen AKs, Postconditions, Glossar und die Story, die das Verhalten einführt. Geht nichts verloren, streiche den Satz. Ein überflüssiger Satz ist nicht harmlos: Das Team sucht darin eine Bedeutung, die es nicht gibt, und fragt nach. Häufige Fälle:
+- Ein AK, dessen Ort aus einer Precondition und dessen Fähigkeit aus einem anderen AK folgt
+- Eine schwächere Fähigkeit neben einer stärkeren: Wer ändern darf, sieht den Wert. Wer löschen darf, findet den Eintrag. «Der berechtigte USER kann …» macht ein Constraint-AK «nur für berechtigte USER» überflüssig.
+- Eine Postcondition, die nur bestätigt, was ein AK, das Glossar oder die einführende Nachbar-Story schon regelt
+- Ein AK aus einer Schwester-Story, das hier schon aus einem anderen AK zusammen mit einer Regel der einführenden Story folgt
 
-Statt (Lösung im AK):
-  Der USER kann unter "Typ ändern" aus PERSON, ORT, DATUM, KONTAKT, ORGANISATION wählen; der aktuelle Typ wird ausgeblendet
-Richtig (Anforderung pur):
-  Der USER kann den Typ ändern
+Trägt der Satz einen eigenen Anteil (etwa «samt Typ»), verlagere diesen in einen bestehenden Satz, bevor du streichst. Der Vergleich läuft über alle Sektionen, nicht nur AK gegen AK. Der zweistufige Duplikat-Litmus im Katalog ist der Spezialfall innerhalb der AKs.
 
-Statt (UI-Vergleich + Mechanik):
-  Der USER sieht beim Eintrag "Pseudonym entfernen" den Originaltext und die Vorkommenshäufigkeit als Supporting-Text, identisch zum Inline-Chip-Menü
-Richtig (Bedürfnis):
-  Der USER erkennt den Originaltext und die Vorkommenshäufigkeit
+**Grenze bei Preconditions:** Eine Precondition ist erst dann überflüssig, wenn jede Aktion in den AKs ohne sie ausführbar bleibt, einschliesslich des Auffindens des Objekts, auf das die Aktion wirkt. Ein Recht auf eine Aktion an einem Objekt (herunterladen, ändern, exportieren, löschen) setzt voraus, dass der Akteur das Objekt sehen oder abfragen kann. Das gilt auf jedem Zugriffsweg, auch für einen technischen User: Ohne Anzeigerecht weiss er nicht, welche Objekte es gibt, und handelt blind. Steht diese Voraussetzung nirgends sonst, bleibt die Precondition, auch wenn sie selbstverständlich klingt. Das gilt ebenso, wenn der User selbst vorschlägt, sie zu streichen: Sein Vorschlag ist eine Prüffrage. Prüfe erst die Ausführbarkeit, dann stimme zu oder widersprich mit Begründung.
 
-Statt (Quick-Action-Mechanik):
-  Der USER kann die Pseudonymisierung über einen Quick-Action-Button auf der Listen-Zeile mit einem Klick zurücknehmen, ohne ein Menü zu öffnen
-Richtig:
-  Der USER kann die Pseudonymisierung schnell und einfach rückgängig machen
+**2. Eine Regel, ein Satz**
+Eine Regel steht mit ihren Grenzen in genau einem Satz. Die verneinte Umkehrung («kann keinen Eintrag für Personen ausserhalb … erfassen») und die Ausnahme («… nicht an den USER, der …») gehören mit «nur» oder «alle anderen» in denselben Satz. Aufgeteilte Regeln muss das Team selbst wieder zusammensetzen, und dabei entstehen Widersprüche. Prüffrage: «Ist dieser Satz nur verständlich, wenn man einen anderen daneben liest?» Ja heisst zusammenführen. Ein eigenständiges Negativ-AK bleibt nur, wenn es einen Fall abdeckt, den kein positiver Satz berührt.
 
-Duplikat-Litmus-Test (zweistufig):
-1. **Symmetrischer Test** — "Kann AK A wahr sein, während AK B falsch ist (und umgekehrt)?" → Nein in beide Richtungen = identische Aussage, eines streichen.
-2. **Implikations-Test** — "Wenn AK A gilt, ist dann AK B automatisch erfüllt, ohne dass B etwas Eigenständiges hinzufügt?" → Ja = B ist Sonderfall/Implikat von A, B streichen.
+Abgrenzung zu Prüfung 1: Dort ist ein Satz überflüssig. Hier ergänzen sich zwei Sätze und gehören deshalb in einen.
 
-Der Implikations-Test fängt den Fall, in dem zwei AKs unterschiedliche Bedingungen prüfen, B aber durch A garantiert wird (z.B. A "nur wenn > 0" deckt B "0 Wörter → nicht angezeigt" zwingend ab — 0 Wörter erzwingt 0 Treffer, das ist bereits durch A geregelt). Solche AKs liefern keinen testbaren Mehrwert.
+**3. Austauschbarkeit: Lässt der Satz mehrere Lösungen zu?**
+Prüffrage: «Erfüllen mindestens zwei verschiedene plausible Lösungen diesen Satz, ohne dass der Wortlaut eine davon nahelegt?» Nein heisst, der Satz schreibt eine Lösung vor. Über die Lösung entscheiden UX und Entwicklung. Legt die Anforderung sie fest, ist die Entscheidung gefallen, ohne dass jemand sie bewusst getroffen hat. Signale:
+- Ort: «auf der Detailseite», «als Startseite», «in einem Dialog», «in einer Liste», «in der Übersicht anzeigen»
+- Weg: «navigiert zu», «gelangt zu», «wechselt zu», «über X», «mittels Y», «via Z»
+- Zeitpunkt und Auslöser: «nach dem Login», «beim Öffnen», «landet auf», «wird weitergeleitet»
 
-Statt (Selbstverständlichkeit + Klammer-Beispiel als Beweis):
-  Der USER sieht die Anzahl in grammatikalisch korrektem Deutsch ("1 Pseudonymisierung" im Singular, "{n} Pseudonymisierungen" ab 2)
-Richtig (funktionaler Kern):
-  Der USER sieht die Anzahl mit dynamischer Einzahl/Mehrzahl-Unterscheidung
+Nenne eine Ansicht nur als Ausgangspunkt («von der Übersicht aus»), nie als Ort der Anzeige, und formuliere mit «anzeigen können», «erreichen» oder «finden».
 
-Statt (Klammer-Aufzählung als Beispielcontainer + überflüssige "nachdem"-Erklärung):
-  Der USER sieht eine aktualisierte Anzahl, nachdem sich der Inhalt der Session im Review-Editor durch eine seiner Aktionen verändert hat (Chip-Entfernung, Quick-Add zur Sperrliste, Batch-Revert, Typ-Wechsel, Undo)
-Richtig (Kern):
-  Der USER sieht jederzeit die aktuelle Anzahl zum Inhalt der Session
+Kontextwissen ist kein Auftrag. Dass die Codebase eine Detailseite hat, die Vorlage «nach dem Login» sagt oder eine vertragliche Abgrenzung den Browserdruck erlaubt, macht diesen Weg nicht zur Anforderung. Eine Vorgabe, die eine Lösung erlaubt oder begrenzt, gehört in Out of Scope. Nur eine ausdrückliche Vorgabe des PO macht einen Weg zur Anforderung.
 
-Statt (explizit aufgezähltes Komplement nach "ausschliesslich"):
-  Der USER sieht die Anzahl ausschliesslich bei Sessions im Status "review", nicht bei Sessions in den Status "recording", "queued", "processing" oder "error"
-Richtig (Komplement implizit):
-  Der USER sieht die Anzahl ausschliesslich bei Sessions im Status "review"
+Statt: Aus der Übersicht gelangen ADMINs zur Detailseite eines Eintrags
+Richtig: Der ADMIN kann von der Übersicht aus zu jedem angezeigten Eintrag Detailinformationen erreichen
 
-Statt (Sonderfall-Implikat — durch allgemeineres AK bereits abgedeckt):
-  AK 4. Der USER sieht die Anzahl nur, wenn sie grösser als 0 ist
-  AK 8. Der USER sieht keine Pseudonymisierungs-Anzahl, wenn die Session 0 Wörter hat
-Richtig (allgemeineres AK behalten, Sonderfall streichen):
-  AK 4. Der USER sieht die Anzahl nur, wenn sie grösser als 0 ist
+### Anti-Pattern-Katalog
 
-Statt (Zwischenüberschriften in AKs — unnötige Gruppierung):
-  Erstellen
-  1. Der USER kann eine Word-Datei hochladen.
-  2. Der USER muss beim Hochladen einen Titel angeben.
-  Anzeigen
-  3. Der USER kann alle Vorlagen einsehen.
-  Löschen
-  4. Der USER kann eine Vorlage löschen.
-Richtig (flache, durchnummerierte Liste):
-  1. Der USER kann eine Word-Datei hochladen.
-  2. Der USER muss beim Hochladen einen Titel angeben.
-  3. Der USER kann alle Vorlagen in einer übersichtlichen Darstellung einsehen.
-  4. Der USER kann eine Vorlage löschen.
-
-Statt (implizites Duplikat — gleiche Aussage, verschiedene Perspektiven):
-  2. Das SYSTEM verarbeitet den Import im Hintergrund — der USER wartet nicht auf den Abschluss
-  3. Der USER kann während der Verarbeitung in der Applikation weiterarbeiten
-Richtig (eine Aussage, die den testbaren Kern trifft):
-  2. Der USER kann während der Verarbeitung in der Applikation weiterarbeiten
-
-WAS-vs-WIE Litmus-Test für jedes AK:
-- "Muss der User/PO das wissen, um die Anforderung zu verstehen?" → Ja = WAS, Nein = WIE
-- "Schränkt das die Entwickler unnötig ein?" → Ja = WIE, raus aus AK
-- "Beobachtbares Verhalten oder interner Mechanismus?" → Mechanismus = WIE
-
-Statt (WIE — Erkennungsmechanismus):
-  3. Das SYSTEM erkennt die Aktion: leere id-Spalte = Create, existierende id = Update, delete-Spalte = true = Delete
-Richtig (WAS — beobachtbares Verhalten):
-  3. Das SYSTEM unterscheidet pro Zeile, ob eine Einrichtung erstellt, aktualisiert oder gelöscht werden soll
-
-Statt (WIE — interne Verarbeitungslogik):
-  4. Das SYSTEM verarbeitet in der Reihenfolge: zuerst Create, dann Update, dann Delete
-Richtig (WAS — beobachtbares Ergebnis, nur falls fachlich relevant):
-  4. Das SYSTEM stellt sicher, dass neu erstellte Einrichtungen im selben Import aktualisiert oder gelöscht werden können
-
-Statt (WIE — Technologie und Architektur):
-  PC1. Erstellte Einrichtungen sind über MessageHub an Downstream-Services (ies-koordination/einsatz) propagiert
-Richtig (WAS — beobachtbarer Zustand):
-  PC1. Erstellte Einrichtungen sind in der Organisation sichtbar
-
-Statt (Formatierung & Referenzen):
-  4. **Create:** Das SYSTEM erstellt eine neue Einrichtung (Feld-Tabelle aus Story 11)
-  7. **Delete:** Das SYSTEM ruft die bestehende Löschlogik auf
-Richtig:
-  4. Das SYSTEM erstellt eine neue Einrichtung unter der angegebenen parent_organisation_id mit den Feldern Name, GeoPosition, Spitalkategorie, Phonenumber, Versorgung
-  7. Das SYSTEM löscht eine Einrichtung NUR WENN keine Leistungen zugeordnet sind
-
-Statt (Q-Referenz als Platzhalter — Detail ungeklärt ins AK geschoben):
-  2. Das SYSTEM erkennt die Aktion pro Zeile — ausser eine explizite Delete-Spalte ist gesetzt (Spaltenname/Format gem. Q-NEU-2)
-  3. Das SYSTEM identifiziert Organisationen anhand des Lookup-Keys (Lookup-Key gem. Q20)
-Richtig (so weit formulieren wie bekannt, Unklares in Offene Fragen):
-  2. Das SYSTEM erkennt die gewünschte Aktion pro Zeile: leerer Lookup-Key bedeutet Create, vorhandener Lookup-Key bedeutet Update, gesetzte Delete-Spalte bedeutet Deaktivierung
-  3. Das SYSTEM identifiziert bestehende Organisationen anhand eines eindeutigen Schlüsselfelds im CSV
-  → Falls unklar welches Feld/welches Format: Offene Frage anlegen, NICHT "gem. Q-xyz" ins AK schreiben
-
-Statt (Ticket-Referenz in AK):
-  7. Der Import-Vorgang ist in der Import-Übersicht nachvollziehbar (IES-17623)
-Richtig (Anforderung selbsterklärend formulieren):
-  7. Der Import-Vorgang ist in der Import-Übersicht nachvollziehbar
+`references/anti-patterns.md` enthält die Checkliste aller Anti-Patterns, geordnet nach den drei Prüfungen, mit Litmus-Tests und Statt/Richtig-Beispielen: Formregeln (kein Bold, keine Zwischenüberschriften, keine Referenzen, kein Gedankenstrich-Halbsatz, kein Gherkin), Redundanz (Duplikate, Implikate, Precondition als Qualifier, Komplement-Aufzählung, Selbstverständlichkeiten) und Lösungstext (Mechanik, UI-Vergleiche, Wertelisten, Klammer-Beispiele, WAS vs. WIE). **Lies die Datei, bevor du AKs und Postconditions schreibst.** Der Regel-Prüfer in Phase 4 arbeitet dieselbe Checkliste ab.
 
 **Abgrenzung: Acceptance Criteria vs. Postconditions**
 - **Acceptance Criteria** beschreiben, was der **USER tut** — seine Aktionen, Auslöser, Bestätigungen. Der USER ist der aktive Akteur. System-Verhalten in AKs nur bei Einschränkungen/Validierungen, die der User nicht steuert.
 - **Postconditions** beschreiben, was das **SYSTEM als Ergebnis** produziert, nachdem der User seine Aktionen abgeschlossen hat. Postconditions verwenden WENN-Bedingungen, um die Abhängigkeit von User-Aktionen auszudrücken.
-- **Faustregel:** "Was tut der USER?" → Acceptance Criterion. "Was resultiert daraus im SYSTEM?" → Postcondition.
+- **Faustregel:** "Was tut der USER?" → Acceptance Criterion. "Was resultiert daraus im SYSTEM?" → Postcondition. Ausnahme: Ein Recht, das diese Story einführt, ist AK 1 und keine Postcondition, weil die übrigen AKs es voraussetzen (siehe Herkunftsregel).
 - **Keine Wiederholung:** Postconditions wiederholen NICHT die AKs als blosse Zustandsumkehrung. AK = "Der USER kann X löschen" (Möglichkeit), PC = "Das SYSTEM löscht X WENN der USER die Löschung bestätigt hat" (Ergebnis mit Bedingung) — das ist KEINE Redundanz, weil "können" noch kein erfolgreiches Gelingen ist. Redundant wäre: AK sagt "Der USER kann X löschen" UND PC sagt nur "X ist gelöscht" ohne Bedingung oder Seiteneffekt — das fügt keinen Informationswert hinzu.
 
 **Postcondition**
@@ -432,7 +351,7 @@ Examples:
 - "Das SYSTEM informiert den USER über das Ergebnis der Verarbeitung"
 
 **Anti-Patterns in Postconditions**
-Postconditions unterliegen DERSELBEN WAS-vs-WIE-Disziplin wie AKs. Sie beschreiben beobachtbare System-Ergebnisse, nicht Implementierungsmechanismen. Lösungstext rutscht hier besonders oft rein, weil "das SYSTEM" als Akteur einlädt, technisch zu denken — bewusst gegensteuern. Alle AK-Antipatterns gelten analog.
+Postconditions unterliegen DERSELBEN WAS-vs-WIE-Disziplin wie AKs. Sie beschreiben beobachtbare System-Ergebnisse, nicht Implementierungsmechanismen. Lösungstext rutscht hier besonders oft rein, weil "das SYSTEM" als Akteur einlädt, technisch zu denken — bewusst gegensteuern. Die drei Prüfungen und der Katalog in `references/anti-patterns.md` gelten analog.
 
 **Out of Scope**
 Out of Scope enthält nur Punkte, die ein Leser beim Lesen der Erfolgskriterien oder AKs fälschlicherweise mit hineininterpretieren könnte und die zu erheblichem Mehraufwand führen würden.
@@ -558,11 +477,11 @@ Richtig (Qualitätsmerkmal):
 ### Perspektivenbasiertes Lesen
 
 > **MANDATORY:** Verwende das **Subagent-Tool** deines Harness (heisst `Agent`, in älteren Versionen `Task`) mit `subagent_type="general-purpose"` und `model="sonnet"`.
-> Spawne alle 6 in **einem einzigen Message-Block** (parallel).
+> Spawne alle 7 in **einem einzigen Message-Block** (parallel).
 > Übergib jedem Agent die fertige Requirements-Dokumentation aus Phase 3 als Kontext.
-> Jeder Agent liefert maximal 5 Findings — priorisiert nach Impact.
+> Die Agenten 1–6 liefern maximal 5 Findings, priorisiert nach Impact. Der Regel-Prüfer (Agent 7) hat keine Obergrenze.
 >
-> **Hausregeln mitgeben:** Hänge an JEDEN der 6 Prompts den Satz an: "Lies zuerst
+> **Hausregeln mitgeben:** Hänge an jeden der Prompts 1–6 den Satz an: "Lies zuerst
 > `references/validation-house-rules.md` und halte dich an die dortigen Regeln — melde
 > nichts, was dort als Nicht-Finding aufgeführt ist, und markiere jedes Finding mit 🔴, 🟡
 > oder 🟢." Ohne diese Regeln melden die Agenten die Konventionen des Skills als Mangel
@@ -576,7 +495,12 @@ Richtig (Qualitätsmerkmal):
 | 3 | Tester | "Prüfe diese Requirements aus Testersicht. Können Testfälle abgeleitet werden? Liefere max. 5 Findings: Welche Requirements sind zu vage zum Testen? Was fehlt für Testbarkeit? Kein Test-Code." |
 | 4 | Business Analyst | "Prüfe diese Requirements aus BA-Sicht. Dein Fokus: Ist das tatsächliche Problem und der Bedarf des Stakeholders klar genug formuliert, damit ein Entwicklungsteam es versteht? Prüfe anhand dieser Leitfragen: (1) Welches Problem versuchen wir zu lösen — ist es benannt oder nur implizit? (2) Wie bringt diese Story der Organisation einen Wert? (3) Wer sind die Endnutzer und was ist ihr konkreter Nutzen? (4) Woran erkennen wir, dass wir fertig sind? Liefere max. 5 Findings. Achte besonders auf: vorzeitige Lösungsvorgaben (UI-Details, technische Vorgaben) die statt des Problems eine Lösung beschreiben, fehlende Problemkontexte, unklare Wertversprechen. Prüfe technische Drift NICHT NUR in AKs, sondern auch in Postconditions und NFRs — typische Drift-Marker dort: Datenquellen/Feldpfade ('transcript.metadata.x'), Dateinamen ('Component.tsx'), Framework-/Library-Namen (Tailwind, Zod, IPC), Architektur-Entscheide ('im Main-Prozess', 'keine DB-Migration'), Format-Mechanik (Locale-Identifier, konkrete Display-Strings, Rundungsdetails). Keine Lösungsvorschläge." |
 | 5 | Fachexperte (Domain Expert) | "Du bist Fachexperte in der Domäne dieser Story. Leite aus dem Kontext ab, welche Fachdomäne betroffen ist (z.B. Pharma, Logistik, Finanzwesen, Gesundheitswesen). Prüfe aus dieser Fachperspektive: (1) Werden Fachbegriffe korrekt und konsistent verwendet? (2) Fehlen domänenspezifische Geschäftsregeln, die ein Fachexperte als selbstverständlich voraussetzen würde, die aber für ein Entwicklungsteam nicht offensichtlich sind? (3) Gibt es fachliche Annahmen, die in dieser Domäne falsch oder unvollständig sind? (4) Fehlen regulatorische oder branchenspezifische Anforderungen? Liefere max. 5 Findings. Keine Lösungsvorschläge." |
-| 6 | UX Designer / UX Architekt | "Prüfe diese Requirements aus UX-Sicht. Zwei Dimensionen, beide gleichgewichtig: (A) **Vollständigkeit** — Habe ich genug prozessuale Information, um ein grobes UX-Konzept zu skizzieren? Achte auf fehlende oder unklare Auslöser/Trigger, Aktionen und Konsequenzen. (B) **Lösungsoffenheit** — Lässt die Anforderung die UX-Gestaltung offen, oder ist sie bereits in Richtung einer konkreten UI-Lösung gekippt? Achte auf vorzeitige UI-Vorgaben: konkrete Komponenten-Namen ('Dropdown', 'Modal', 'Sidebar', 'Stepper'), Layouts ('links die Liste, rechts das Detail'), Reihenfolgen-Vorgaben in der Darstellung, konkrete Wordings/Microcopy in Anführungszeichen, Vergleichsreferenzen zu bestehenden Screens, Mechanik wie 'mit einem Klick', 'als Tooltip', 'beim Hover'. Solche Vorgaben schneiden UX-Optionen ab, bevor das Konzept überhaupt diskutiert ist. Liefere max. 5 Findings — markiere pro Finding ob es (A) Lücke oder (B) Übersteuerung ist. Kein UX-Konzept entwerfen, keine Wireframes, keine Lösungsvorschläge." |
+| 6 | UX Designer / UX Architekt | "Prüfe diese Requirements aus UX-Sicht. Zwei Dimensionen, beide gleichgewichtig: (A) **Vollständigkeit** — Habe ich genug prozessuale Information, um ein grobes UX-Konzept zu skizzieren? Achte auf fehlende oder unklare Auslöser/Trigger, Aktionen und Konsequenzen. (B) **Lösungsoffenheit** — Lässt die Anforderung die UX-Gestaltung offen, oder ist sie bereits in Richtung einer konkreten UI-Lösung gekippt? Achte auf vorzeitige UI-Vorgaben: konkrete Komponenten-Namen ('Dropdown', 'Modal', 'Sidebar', 'Stepper'), Layouts ('links die Liste, rechts das Detail'), Reihenfolgen-Vorgaben in der Darstellung, konkrete Wordings/Microcopy in Anführungszeichen, Vergleichsreferenzen zu bestehenden Screens, Mechanik wie 'mit einem Klick', 'als Tooltip', 'beim Hover', Ortsvorgaben ('auf der Detailseite', 'in der Übersicht anzeigen'), Einstiegs- und Flow-Vorgaben ('nach dem Login', 'als Startseite', 'landet auf', 'wird weitergeleitet'). Solche Vorgaben schneiden UX-Optionen ab, bevor das Konzept überhaupt diskutiert ist. Liefere max. 5 Findings — markiere pro Finding ob es (A) Lücke oder (B) Übersteuerung ist. Kein UX-Konzept entwerfen, keine Wireframes, keine Lösungsvorschläge." |
+| 7 | Regel-Prüfer | "Lies zuerst `references/anti-patterns.md`. Prüfe jeden Satz der Story gegen die Checkliste dort: Preconditions, AKs, Postconditions, Out of Scope, bei Epics die Erfolgskriterien. Wende dabei vor allem die drei Prüfungen an: (1) Notwendigkeit: Geht etwas verloren, wenn der Satz fehlt? Vergleiche über alle Sektionen hinweg, nicht nur AK gegen AK. Eine schwächere Fähigkeit neben einer stärkeren (einsehen neben ändern) gilt als überflüssig. Eine Precondition meldest du nur dann als überflüssig, wenn jede Aktion der AKs ohne sie ausführbar bleibt, einschliesslich des Auffindens des Objekts. (2) Eine Regel, ein Satz: Ist der Satz nur verständlich, wenn man einen anderen daneben liest? (3) Austauschbarkeit: Erfüllen mindestens zwei plausible Lösungen den Satz, ohne dass der Wortlaut eine nahelegt? Melde jeden Verstoss, ohne Obergrenze, als: '[Zitat]' verletzt [Regel], weil [ein Satz Begründung] → Korrektur: [neuer Wortlaut oder streichen]. Gilt eine Vorgabe als vertraglich oder fachlich bedingt, ist das kein Grund, einen Lösungsweg im Anforderungstext zu billigen: Er gehört dann in Out of Scope. Melde nichts, was die Checkliste unter Kein Verstoss aufführt. Keine fachlichen Lücken, die decken die anderen Perspektiven ab." |
+
+**Warum ein eigener Regel-Prüfer:** Die sechs Perspektiven suchen fachliche Lücken. Ob die Story die Regeln dieses Skills einhält, prüft keine von ihnen, und bei fünf Findings nach Impact fallen Redundanz und Lösungstext als Erstes weg. Genau diese Fehler korrigieren User am häufigsten von Hand. Der Regel-Prüfer arbeitet deshalb ohne Obergrenze eine feste Checkliste ab.
+
+**Findings des Regel-Prüfers verarbeiten:** Sie sind Korrekturen, keine Fragen an Stakeholder. Prüfe jede selbst, bevor du sie übernimmst, denn auch der Prüfer kann einen Satz falsch lesen. Übernimm die berechtigten direkt in die Story und weise sie im Output aus (alt → neu). Ändert eine Korrektur den Inhalt, weil der Satz etwas Eigenes trägt, das verloren ginge, frage via AskUserQuestion.
 
 **Output-Format pro Perspektive:**
 
@@ -594,6 +518,8 @@ Richtig (Qualitätsmerkmal):
 Jedes Finding trägt eine Markierung: 🔴 blockierend, 🟡 klärungsbedürftig, 🟢 dokumentierbar.
 
 > **Unabhängigkeits-Filter vor der Aggregation:** Findings der Art "Story erwähnt X nicht" oder "Story sollte auch X anzeigen" gegen das Backlog prüfen: Entsteht X erst durch eine Nachbar-Story, ist es KEINE Lücke dieser Story — die Vollständigkeit einer Story bemisst sich an ihren Preconditions plus dem, was sie selbst einführt. Solche Findings als Platzierungshinweis für die einführende Story ausgeben ("Anzeige von X gehört als AK/Postcondition in Story Y"), NICHT als Anreicherungs-Vorschlag für die geprüfte Story.
+>
+> **Notwendigkeits-Filter vor der Aggregation:** Findings der Art "Verhalten X ist hier nicht explizit" oder "Endzustand nicht prüfbar" nicht reflexartig mit einem neuen AK oder einer neuen Postcondition beantworten. Folgt X schon aus einem AK, einer Precondition, dem Glossar oder der Story, die X einführt, ist das Finding damit beantwortet: Es gibt nichts zu ergänzen. Jeder Satz, den du wegen eines Findings ergänzt, muss die Notwendigkeits-Prüfung bestehen.
 >
 > Ergebnisse aggregieren und dem User vorlegen: 🔴 UND 🟡 Findings werden BEIDE via AskUserQuestion-Modal gefragt (gebündelt, max 4 pro Modal, erst 🔴 dann 🟡). Nicht nur die roten — gelbe sind wichtig genug zum Fragen, sonst landen sie in den offenen Fragen und müssten später wieder rausgelöscht werden wenn der User sie doch beantwortet. 🟢 Findings können direkt dokumentiert werden. Nur Fragen, die der User nicht beantworten kann, bleiben als Offene Fragen.
 
@@ -651,6 +577,7 @@ Konflikte zwischen Requirements (intern/extern)
 
 ## Perspektivenbasiertes Lesen
 🔴 und 🟡 Findings → AskUserQuestion-Modal zur sofortigen Klärung (erst 🔴, dann 🟡, max 4 pro Modal)
+Korrekturen des Regel-Prüfers → übernommen (alt → neu) oder verworfen, jeweils mit Grund in einem Satz
 Verbleibende Findings → Offene Fragen (nummerierte Liste mit @Rolle)
 
 ## 4. Verbleibende Offene Fragen
@@ -689,6 +616,9 @@ Complete guide in `references/User-Role-Modeling-Zusammenfassung.md`:
 
 ### Rückschreiben in den Tracker
 Verbindliche Regelseite in `references/tracker-writeback.md`: Ablauf, Kosmetik-Sperre, Format-Fallen, Normalisierung. Vor jedem Schreibvorgang in Phase 5 lesen.
+
+### Anti-Pattern-Katalog
+Checkliste und Beispiele in `references/anti-patterns.md`, geordnet nach den drei Prüfungen. Vor dem Schreiben von AKs und Postconditions in Phase 3 lesen; der Regel-Prüfer in Phase 4 arbeitet sie ab.
 
 **Usage in Workflow:**
 - Phase 1 (Discovery): Use User Role Modeling to identify stakeholders and personas
