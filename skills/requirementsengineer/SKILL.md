@@ -85,11 +85,27 @@ Sammle NICHT erst 10 Fragen um sie dann als Tabelle auszugeben. Stelle sie laufe
 
 # Feedback zum Skill festhalten
 
-Kennzeichnet der User eine Rückmeldung als Feedback zum Skill («Feedback für den Skill», «merke dir für den RE-Skill», «sammle ich für den Skill»), trägst du sie ins Feedback-Log ein: `feedback/FEEDBACK-LOG.md` im Repository des Skills, also zwei Ebenen über dem aufgelösten Skill-Verzeichnis. Ist das Skill-Verzeichnis ein Symlink (z.B. unter `~/.claude/skills/`), löst du ihn zuerst auf (`readlink`), sonst landest du im falschen Ordner. Format, Bereiche und Felder stehen am Kopf der Datei. Neuer Eintrag zuoberst, fortlaufende Nummer, Status «offen».
+Kennzeichnet der User eine Rückmeldung als Feedback zum Skill («Feedback für den Skill», «merke dir für den RE-Skill», «sammle ich für den Skill»), wird daraus ein GitHub Issue in `adbstyle/requirementsengineer-skill`. Dort sammelt sich das Feedback aller User, damit über viele Einträge hinweg Muster sichtbar werden. Korrekturen am aktuellen Artefakt machst du trotzdem sofort. Den Skill selbst änderst du dabei nicht, die Auswertung geschieht gesammelt.
 
-Halte fest, was der Skill konkret produziert hat und was der User gesagt hat. Das Repository ist öffentlich: Erfasse anonym, ohne Projekt-, Kunden- oder Personennamen, ohne Issue-Nummern und Story-Titel, und ersetze projekttypische Fachbegriffe durch neutrale. Das Beispiel bleibt nur so konkret, dass die Regel nachvollziehbar ist. Den Regel-Vorschlag formulierst du so, dass er als Regel in diesen Skill passen würde. Den Skill selbst änderst du dabei nicht, die Auswertung macht der User gesammelt. Korrekturen am aktuellen Artefakt machst du trotzdem sofort.
+Das Repository des Skills liegt bei einer Plugin-Installation unter `${CLAUDE_PLUGIN_ROOT}`. Claude Code schreibt diesen Pfad beim Laden aus; in der Shell ist die Variable nicht gesetzt. Steht dort noch der Platzhalter, ist der Skill als persönlicher Skill installiert: Dann liegt das Repository zwei Ebenen über dem aufgelösten Skill-Verzeichnis, einen Symlink löst du vorher mit `readlink` auf.
 
-Gibt es die Datei nicht, weil der Skill ohne sein Repository installiert ist, legst du keine an. Gib den Eintrag stattdessen im Chat aus.
+1. **Eintrag formulieren**, mit den Feldern des Issue-Formulars `.github/ISSUE_TEMPLATE/skill-feedback.yml` im Repository des Skills. Massgeblich ist das Formular: Lies Feldnamen, IDs und Bereiche dort. Nur wenn es nicht erreichbar ist, gilt diese Liste:
+   - Bereich (`bereich`): genau einer aus Satzschablone, Preconditions, AK-Formulierung, Postconditions, Out of Scope, Offene Fragen, Story-Schnitt, Phase 2 Kontext, Phase 4 Validierung, Rückfragen, Tracker-Writeback, Output/Format
+   - Artefakt (`artefakt`): die Art des Artefakts (Story, Epic, Doc-Kommentar), ohne Namen oder Nummer
+   - Was der Skill tat (`skill-tat`): das konkrete Ergebnis, das Anlass gab
+   - Feedback (`feedback`): was der User gesagt hat, sinngemäss oder als Zitat, nicht interpretiert
+   - Regel-Vorschlag (`regel`): so formuliert, dass er als Regel in diesen Skill passen würde
+   - Skill-Version (`version`): `version` aus `.claude-plugin/plugin.json` im Repository des Skills, sonst «unbekannt»
+
+   Der Titel beginnt mit «Feedback: », danach folgt der Kern in wenigen Worten.
+2. **Anonymisieren.** Das Repository ist öffentlich. Keine Projekt-, Kunden-, Organisations- oder Personennamen, keine Issue-Nummern und Story-Titel. Ersetze projekttypische Fachbegriffe durch neutrale (Rollen wie USER oder ADMIN, Objekte wie «Eintrag»). Das Beispiel bleibt nur so konkret, dass die Regel nachvollziehbar ist.
+3. **Bestätigen lassen.** Zeig dem User Titel und Text und frag via AskUserQuestion, ob du einreichen darfst. Sag dazu, dass das Issue öffentlich ist und unter seinem GitHub-Konto erscheint. Ohne ausdrückliches Ja reichst du nichts ein.
+4. **Einreichen**, auf dem ersten Weg, der funktioniert:
+   - **`gh` ist für github.com angemeldet** (`gh auth status --hostname github.com`): `gh issue create --repo adbstyle/requirementsengineer-skill --title '…' --body-file -`. Den Body übergibst du per Heredoc mit gequotetem Delimiter (`<<'EOF'`), damit keine Datei entsteht und die Shell nichts im Text ersetzt oder ausführt. Den Titel setzt du in einfache Anführungszeichen und schreibst ein `'` darin als `'\''`. Der Body hat die Abschnitte des Formulars, jeweils als `### <Feldname>` mit dem Inhalt darunter, zuletzt `### Anonymisierung` mit `- [X] ` und dem Text der Checkbox. Ein Label setzt du nicht: Ein Workflow im Repository labelt jedes Issue, dessen Titel mit «Feedback:» beginnt. Gib dem User den Link zum Issue zurück. Endet `gh` mit einem Fehler, prüf zuerst mit `gh issue list --repo adbstyle/requirementsengineer-skill --author @me --state all --search '<Titel> in:title'`, ob das Issue trotzdem angelegt wurde. Nur wenn nicht, nimm den nächsten Weg, sonst entsteht ein Duplikat.
+   - **Sonst** ein vorausgefüllter Link auf das Formular, alle Werte URL-codiert: `https://github.com/adbstyle/requirementsengineer-skill/issues/new?template=skill-feedback.yml&title=…&artefakt=…&skill-tat=…&feedback=…&regel=…&version=…`. Das Dropdown «Bereich» lässt sich per Link nicht vorbelegen: Nenn dem User den Bereich, den er dort wählen soll. Der User prüft und reicht selbst ein. Ist der fertige Link länger als 6000 Zeichen, lehnt GitHub ihn womöglich als zu lang ab: Gib dann den Eintrag im Chat aus und verlinke das leere Formular (`…/issues/new?template=skill-feedback.yml`).
+   - **Ohne GitHub-Zugang** gibst du den Eintrag im Chat aus.
+
+Schreib Feedback nie in eine Datei, weder ins Skill-Verzeichnis noch ins Projekt des Users. Im Skill-Verzeichnis läge sie bei einer Plugin-Installation im Plugin-Cache und ginge beim nächsten Update verloren; im Projekt hat sie nichts zu suchen.
 
 # Workflow: Requirements Engineering Process
 

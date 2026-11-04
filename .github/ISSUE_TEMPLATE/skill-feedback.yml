@@ -1,0 +1,72 @@
+# Feldnamen, IDs und Bereiche liest der Skill aus dieser Datei. Bei Änderungen die
+# Ersatzliste in skills/requirementsengineer/SKILL.md («Feedback zum Skill festhalten») mitziehen.
+name: Feedback zum Skill
+description: Rückmeldung zu einer Story, einem Epic oder einem AK, das der Skill erzeugt hat
+title: "Feedback: "
+labels: ["skill-feedback"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Danke für die Rückmeldung. Aus allen Einträgen zusammen werden Muster sichtbar, und daraus entstehen neue Regeln für den Skill.
+
+        Das Repository ist öffentlich. Bitte keine Projekt-, Kunden-, Organisations- oder Personennamen, keine Issue- oder Story-Nummern und keine Story-Titel. Projekttypische Fachbegriffe durch neutrale ersetzen, etwa Rollen wie USER oder ADMIN und Objekte wie «Eintrag».
+  - type: dropdown
+    id: bereich
+    attributes:
+      label: Bereich
+      description: Wo im Ergebnis des Skills lag das Problem?
+      options:
+        - Satzschablone
+        - Preconditions
+        - AK-Formulierung
+        - Postconditions
+        - Out of Scope
+        - Offene Fragen
+        - Story-Schnitt
+        - Phase 2 Kontext
+        - Phase 4 Validierung
+        - Rückfragen
+        - Tracker-Writeback
+        - Output/Format
+    validations:
+      required: true
+  - type: input
+    id: artefakt
+    attributes:
+      label: Artefakt
+      description: Art des Artefakts, ohne Namen oder Nummer
+      placeholder: Story (Doc-Kommentar)
+    validations:
+      required: true
+  - type: textarea
+    id: skill-tat
+    attributes:
+      label: Was der Skill tat
+      description: Das konkrete Ergebnis, das Anlass zur Rückmeldung gab
+    validations:
+      required: true
+  - type: textarea
+    id: feedback
+    attributes:
+      label: Feedback
+      description: Was du dazu gesagt hast, sinngemäss oder als Zitat
+    validations:
+      required: true
+  - type: textarea
+    id: regel
+    attributes:
+      label: Regel-Vorschlag
+      description: Wie der Skill es künftig machen sollte
+  - type: input
+    id: version
+    attributes:
+      label: Skill-Version
+      placeholder: 0.7.1
+  - type: checkboxes
+    id: anonym
+    attributes:
+      label: Anonymisierung
+      options:
+        - label: Der Eintrag enthält keine Projekt-, Kunden- oder Personennamen und keine Ticket-Nummern
+          required: true

@@ -65,6 +65,7 @@ Als persönlicher Skill heisst der Befehl `/requirementsengineer`.
 - Rückschreiben in den Tracker mit minimalem Diff: Im Änderungsprotokoll erscheinen nur die geänderten Zeilen
 - Unabhängig vom Tracker: Jira, GitHub Issues, Linear, Azure DevOps und andere, über MCP, CLI oder API
 - Natürliche Sprache statt GIVEN-WHEN-THEN, NFRs als nummerierte Sätze
+- Feedback zum Skill als anonymes GitHub Issue, gesammelt über alle User (siehe [Feedback](#feedback))
 
 ## Structure
 
@@ -85,8 +86,11 @@ requirementsengineer-skill/
 │           ├── tracker-writeback.md      # Regeln für das Rückschreiben
 │           ├── INVEST-Prinzip-Zusammenfassung.md
 │           └── User-Role-Modeling-Zusammenfassung.md
-├── feedback/
-│   └── FEEDBACK-LOG.md                   # Gesammeltes Feedback, wird vom Skill nicht geladen
+├── .github/
+│   ├── ISSUE_TEMPLATE/
+│   │   └── skill-feedback.yml            # Formular für Feedback zum Skill
+│   └── workflows/
+│       └── label-feedback.yml            # Labelt Issues mit Titel «Feedback:»
 └── README.md
 ```
 
@@ -104,6 +108,25 @@ Der Skill startet Subagenten über das Subagent-Tool des Harness (`Agent`, in ä
 - Registriert über `plugin.json`. Ohne Plugin-Installation übernimmt ein `general-purpose`-Agent mit derselben Anleitung.
 
 Für den Tracker-Kontext nutzt der Skill, was in der Session verfügbar ist: MCP-Tools, eine CLI wie `gh` oder `jira`, oder die REST-API.
+
+## Feedback
+
+Feedback aus der Nutzung sammelt sich als GitHub Issues mit dem Label [`skill-feedback`](https://github.com/adbstyle/requirementsengineer-skill/issues?q=label%3Askill-feedback). Aus vielen Einträgen werden Muster sichtbar, und daraus entstehen neue Regeln für den Skill.
+
+- **Im Chat:** Sag «Feedback für den Skill: …». Der Skill formuliert einen anonymen Eintrag, zeigt ihn dir und reicht ihn erst nach deinem Ja ein: über `gh`, wenn es angemeldet ist, sonst als vorausgefüllten Link. Ohne GitHub-Zugang gibt er den Eintrag im Chat aus.
+- **Direkt:** [Feedback-Formular öffnen](https://github.com/adbstyle/requirementsengineer-skill/issues/new?template=skill-feedback.yml)
+
+Die Issues sind öffentlich. Bitte keine Projekt-, Kunden- oder Personennamen und keine Ticket-Nummern. Ein Workflow labelt jedes Issue, dessen Titel mit «Feedback:» beginnt, auch wenn es ohne Formular angelegt wurde.
+
+### Auswertung
+
+Offene Rückmeldungen holen: `gh issue list --label skill-feedback --state open --json number,title,body`. Dann nach Bereich gruppieren und fragen:
+
+- Wiederholt sich dasselbe Problem?
+- Widerspricht eine bestehende Regel des Skills dem Feedback?
+- Wo hätte ein Litmus-Test oder ein Prüfpunkt in Phase 4 den Fehler verhindert?
+
+Lieber eine allgemeine Prüfung als eine Einzelregel pro Feedback. Übernommene Rückmeldungen schliesst der Commit, der die Regel einführt, mit «Closes #N».
 
 ## Author
 
