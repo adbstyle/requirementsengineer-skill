@@ -1,0 +1,23 @@
+name: Feedback-Issues labeln
+
+# Feedback zum Skill kommt auch per `gh issue create` von Usern ohne Schreibrecht.
+# GitHub verwirft deren Labels, deshalb labelt dieser Workflow jedes Issue,
+# dessen Titel mit «Feedback:» beginnt.
+
+on:
+  issues:
+    types: [opened, edited]
+
+permissions:
+  issues: write
+
+jobs:
+  label:
+    if: startsWith(github.event.issue.title, 'Feedback:')
+    runs-on: ubuntu-latest
+    steps:
+      - run: gh issue edit "$NUMBER" --repo "$REPO" --add-label skill-feedback
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NUMBER: ${{ github.event.issue.number }}
+          REPO: ${{ github.repository }}

@@ -86,8 +86,10 @@ requirementsengineer-skill/
 │           ├── INVEST-Prinzip-Zusammenfassung.md
 │           └── User-Role-Modeling-Zusammenfassung.md
 ├── .github/
-│   └── ISSUE_TEMPLATE/
-│       └── skill-feedback.yml            # Formular für Feedback zum Skill
+│   ├── ISSUE_TEMPLATE/
+│   │   └── skill-feedback.yml            # Formular für Feedback zum Skill
+│   └── workflows/
+│       └── label-feedback.yml            # Labelt Issues mit Titel «Feedback:»
 └── README.md
 ```
 
@@ -110,12 +112,20 @@ Für den Tracker-Kontext nutzt der Skill, was in der Session verfügbar ist: MCP
 
 Feedback aus der Nutzung sammelt sich als GitHub Issues mit dem Label [`skill-feedback`](https://github.com/adbstyle/requirementsengineer-skill/issues?q=label%3Askill-feedback). Aus vielen Einträgen werden Muster sichtbar, und daraus entstehen neue Regeln für den Skill.
 
-- **Im Chat:** Sag «Feedback für den Skill: …». Der Skill formuliert einen anonymen Eintrag, zeigt ihn dir und reicht ihn erst nach deinem Ja ein: über `gh`, wenn es angemeldet ist, sonst als vorausgefüllten Link.
+- **Im Chat:** Sag «Feedback für den Skill: …». Der Skill formuliert einen anonymen Eintrag, zeigt ihn dir und reicht ihn erst nach deinem Ja ein: über `gh`, wenn es angemeldet ist, sonst als vorausgefüllten Link. Ohne GitHub-Zugang gibt er den Eintrag im Chat aus.
 - **Direkt:** [Feedback-Formular öffnen](https://github.com/adbstyle/requirementsengineer-skill/issues/new?template=skill-feedback.yml)
 
-Die Issues sind öffentlich. Bitte keine Projekt-, Kunden- oder Personennamen und keine Ticket-Nummern.
+Die Issues sind öffentlich. Bitte keine Projekt-, Kunden- oder Personennamen und keine Ticket-Nummern. Ein Workflow labelt jedes Issue, dessen Titel mit «Feedback:» beginnt, auch wenn es ohne Formular angelegt wurde.
 
-Wer über `gh` einreicht und kein Schreibrecht im Repo hat, bekommt das Label nicht, weil GitHub es dann verwirft. Solche Issues sind am Titel «Feedback: » erkennbar.
+### Auswertung
+
+Offene Rückmeldungen holen: `gh issue list --label skill-feedback --state open --json number,title,body`. Dann nach Bereich gruppieren und fragen:
+
+- Wiederholt sich dasselbe Problem?
+- Widerspricht eine bestehende Regel des Skills dem Feedback?
+- Wo hätte ein Litmus-Test oder ein Prüfpunkt in Phase 4 den Fehler verhindert?
+
+Lieber eine allgemeine Prüfung als eine Einzelregel pro Feedback. Übernommene Rückmeldungen schliesst der Commit, der die Regel einführt, mit «Closes #N».
 
 ## Author
 

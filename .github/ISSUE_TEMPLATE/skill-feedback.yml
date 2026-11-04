@@ -1,3 +1,5 @@
+# Feldnamen, IDs und Bereiche liest der Skill aus dieser Datei. Bei Änderungen die
+# Ersatzliste in skills/requirementsengineer/SKILL.md («Feedback zum Skill festhalten») mitziehen.
 name: Feedback zum Skill
 description: Rückmeldung zu einer Story, einem Epic oder einem AK, das der Skill erzeugt hat
 title: "Feedback: "
