@@ -20,6 +20,12 @@ Wording, Komponentenwahl, Platzhalter-Grafiken: alles bewusst ausgeschlossen. Ei
 Anforderung, die offen lässt, wie der USER zur Funktion gelangt, ist nicht unvollständig —
 sie ist lösungsoffen. Melde das nicht als Lücke.
 
+Umgekehrt ist eine *vorhandene* Vorgabe zu Ort, Weg oder Zeitpunkt ein Finding
+(Übersteuerung): «auf der Detailseite», «navigiert zu», «nach dem Login», «als Startseite».
+Das gilt auch, wenn die Vorgabe vertraglich oder fachlich begründet wirkt. Eine Abgrenzung,
+die einen Lösungsweg erlaubt, gehört in Out of Scope, nicht als Weg in die Anforderung.
+Billige einen solchen Weg nicht als «vertraglich bedingt».
+
 **3. Architektur- und Datenmodellfragen**
 Entitäten, Persistenz, Caching, Schnittstellen, Datenherkunft, Kardinalitäten im Schema:
 kein Finding. Steckt eine *fachliche* Unklarheit dahinter, formuliere die fachliche Frage
@@ -44,6 +50,12 @@ schwerwiegender eingestuft als dargestellt — dann sag genau das, in einem Satz
 Entsteht X erst durch eine Nachbar-Story, gehört es dorthin. Formuliere solche Befunde als
 Platzierungshinweis („Anzeige von X gehört in die Story, die X einführt"), nicht als
 Anreicherungs-Vorschlag.
+
+**8. Verhalten, das schon anderswo geregelt ist**
+„X ist hier nicht explizit" oder „Endzustand nicht prüfbar" ist kein Finding, wenn X aus
+einem AK, einer Precondition, dem Glossar oder der Story folgt, die X einführt. Wer so ein
+Finding meldet, verleitet den Requirements Engineer zu einer Postcondition, die nur
+wiederholt, was schon feststeht. Prüfe vorher, ob X nicht bereits gilt.
 
 ## Pflichtprüfung für jeden Agenten
 
