@@ -151,6 +151,8 @@ Die Traversierungsdaten werden NICHT genutzt für:
 > für diese 3 Agenten. Spawne alle 3 in **einem einzigen Message-Block** (parallel).
 > Ziel: Einschränkungen und Konflikte aus Codebase gegenüber Anfoderung identifizieren → daraus Offene Fragen und Out-of-Scope-Punkte ableiten, NICHT Lösungen designen
 > Nutze `model="sonnet"` für standard-tier Analyse.
+>
+> **Ohne Plugin-Agent:** Den Typ `requirementsengineer:code-explorer` gibt es nur, wenn der Skill als Plugin installiert ist. Als persönlicher Skill (etwa unter `~/.claude/skills/`) oder in einem anderen Harness fehlt er. Nimm dann `subagent_type="general-purpose"` mit `model="sonnet"` und stelle jedem der 3 Prompts voran: "Lies zuerst `<absoluter Pfad des Skill-Verzeichnisses>/agents/code-explorer.md` und arbeite nach dieser Anleitung. Du analysierst nur und änderst keine Dateien." Ein fehlender Agent-Typ ist kein Grund, die IST-Analyse zu überspringen.
 
 | # | Fokus | Ziel | Prompt |
 |---|-------|------|--------|

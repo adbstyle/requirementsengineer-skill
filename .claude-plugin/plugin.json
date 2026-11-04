@@ -8,5 +8,6 @@
   },
   "repository": "https://github.com/adbstyle/requirementsengineer-skill",
   "license": "MIT",
-  "keywords": ["requirements", "user-stories", "acceptance-criteria", "ireb"]
+  "keywords": ["requirements", "user-stories", "acceptance-criteria", "ireb"],
+  "agents": ["./skills/requirementsengineer/agents/code-explorer.md"]
 }
