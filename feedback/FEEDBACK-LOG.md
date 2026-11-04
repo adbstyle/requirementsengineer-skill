@@ -24,6 +24,69 @@ Bei der Auswertung Einträge nach Bereich gruppieren und fragen: Wiederholt sich
 
 ---
 
+## #16 Kern-Bereitstellung der Story als Postcondition statt als AK 1
+
+- **Datum / Artefakt:** 04.11.2026 · Story (Doc-Kommentar)
+- **Bereich:** Postconditions
+- **Was der Skill tat:** Eine Enabler-nahe Business-Story verlangte im Kern, dass das SYSTEM eine neue Organisationseinheit in einer bestehenden Hierarchie bereitstellt, neben einer bestehenden Einheit. Die Bereitstellung passiert bei Auslieferung, ohne User-Interaktion. Der Skill schrieb sie als Postcondition 1: «Das SYSTEM stellt die neue Organisationseinheit unter [übergeordneter Einheit] auf derselben Hierarchiestufe wie [bestehende Einheit] bereit». Die AKs beschrieben nur, was der USER danach getrennt überblicken kann und wie das SYSTEM die Einheiten danach behandelt. Phase 4 meldete das nicht.
+- **Feedback:** «Hier auch wieder … das zentrale Element, welches von der Story gefordert wird, kann keine Postcondition sein. Es ist ein AK.» Dazu der Wunsch, den Fall als Log für die Verbesserung des Skills festzuhalten.
+- **Regel-Vorschlag:** Was die Story im Kern fordert, ist AK 1, auch wenn das SYSTEM es ohne User-Aktion herstellt (Bereitstellung bei Auslieferung, Migration, Seed). Postconditions tragen nur Folgen und Nebenwirkungen dieses Kerns, z.B. wie sich Sichtbarkeit, Zuweisung oder Versand danach verhalten. Prüffrage pro Postcondition: «Wäre die Story ohne diesen Satz noch dieselbe Story?» Nein heisst AK. Gleiches Muster wie #13 (Recht als Postcondition), dort für Rechte, hier für jede Art Bereitstellung. Die Ursache liegt vermutlich in der Faustregel «AK = USER handelt, Postcondition = SYSTEM reagiert», die SYSTEM-Bereitstellungen ohne Auslöser in die Postconditions drückt. Für Phase 4: Prüfpunkt «Kern der Story steht in den Postconditions» aufnehmen. Wiederholt sich innerhalb eines Tages, Priorität hoch.
+- **Status:** offen
+
+## #15 Ausnahme als eigene Postcondition statt in die Regel eingebaut
+
+- **Datum / Artefakt:** 04.11.2026 · Story (Doc-Kommentar)
+- **Bereich:** Postconditions
+- **Was der Skill tat:** Die Story legte fest, wer eine Benachrichtigung erhält. Der Skill schrieb dazu zwei Postconditions. Die erste war die positive Regel: «Das SYSTEM versendet die Benachrichtigung an alle User, die sie abonniert haben, WENN ein USER einen Eintrag mit Bemerkung erstellt oder ändert». Die zweite schränkte nur ein: «Das SYSTEM versendet die Benachrichtigung nicht an den USER, der den Eintrag erstellt oder geändert hat». Die zweite Postcondition engt also nur den Empfängerkreis der ersten ein. Phase 4 meldete das nicht.
+- **Feedback:** Der User fragte, ob die zweite eine Einengung der ersten ist. Wenn ja, solle der Skill eine klare Anforderung schreiben und die Regel nicht unnötig aufsplitten, «in sowas wie hinreichende und notwendige Bedingung». Das sei ein häufiges Muster, das vermieden werden soll: «Es ist schwierig zu lesen und stiftet Verwirrung beim Team.»
+- **Regel-Vorschlag:** Eine Regel steht in einem einzigen AK oder einer einzigen Postcondition, inklusive ihrer Ausnahmen. Ein zweiter Satz, der nur sagt, wann die Regel des ersten NICHT gilt («… nicht an …», «… ausser …», «… jedoch nicht, WENN …»), wird in den ersten eingebaut, z.B. «an alle anderen User, die sie abonniert haben, WENN der USER …». Prüffrage: «Ist dieses AK oder diese Postcondition nur dann verständlich, wenn man ein anderes daneben liest?» Ja heisst zusammenführen. Abzugrenzen vom Duplikat-Test: Dort sind zwei Sätze redundant, hier ergänzen sie sich und gehören darum zusammen. Für Phase 4: Prüfpunkt «Einschränkung ohne eigene Regel, als separater Satz zu einer anderen Regel» aufnehmen.
+- **Status:** offen
+
+## #14 Vorschlag des Users ungeprüft übernommen: Precondition gestrichen, ohne die ein Recht nutzlos ist
+
+- **Datum / Artefakt:** 04.11.2026 · Story (Doc-Kommentar, drei Runden)
+- **Bereich:** Preconditions
+- **Was der Skill tat:** Eine Story führte ein Download-Recht für Einträge ein. Die Precondition lautete «Der USER hat das Recht, die Einträge seiner und aller untergeordneten Organisationen anzuzeigen». Der User fragte, ob diese Precondition müssig sei: Ein natürlicher User brauche sie über die Oberfläche, ein technischer User nicht zwingend, und eine Trennung mache es kompliziert. Der Skill stimmte zu («Ich sehe es wie du»), begründete, dass das Download-Recht und die Organisationseinschränkung als System-Constraints jeden Zugriffsweg abdeckten, und strich die Precondition auf ein «ja». Danach schlug der User vor, das Anzeige-Recht als Lösungshinweis festzuhalten, und der Skill legte dafür einen Abschnitt an.
+- **Feedback:** «Wie will aber der technische User herausfinden, welche Datei er downloaden kann, wenn er diese nicht abfragen kann … er ist ja dann blind … Bitte Precondition mit Recht wiederherstellen und diese Anmerkung hier entfernen.» Und: «Warum bist du hier nicht selbst darauf gekommen … ist eigentlich logisch, oder?»
+- **Regel-Vorschlag:** Bevor eine Precondition gestrichen wird, prüfen, ob die AKs ohne sie überhaupt ausführbar sind: Kann der Akteur das Objekt der Aktion finden, auswählen oder identifizieren, ohne die vorausgesetzte Fähigkeit? Ein Recht auf eine Aktion an einem Objekt (herunterladen, ändern, löschen) setzt voraus, dass der Akteur das Objekt sehen oder abfragen kann. Das gilt für jeden Zugriffsweg, auch für technische User. Eine Überlegung des Users zu einer Precondition ist eine Prüffrage, keine Entscheidung: Erst die Ausführbarkeit prüfen, dann zustimmen oder widersprechen. Zustimmung ohne Prüfung ist hier der eigentliche Fehler. Für Phase 4: Prüfpunkt «Ist jede Aktion in den AKs ohne die Preconditions ausführbar, inklusive Auffinden des Objekts?» aufnehmen. Verwandt mit der Herkunftsregel: Sie prüft, woher eine Precondition kommt, aber nicht, ob die Story ohne sie trägt.
+- **Status:** offen
+
+## #13 Neu eingeführtes Recht als Postcondition statt als erstes AK
+
+- **Datum / Artefakt:** 04.11.2026 · Story (Doc-Kommentar)
+- **Bereich:** Postconditions
+- **Was der Skill tat:** Die Story setzte ein Recht als Precondition voraus, das im System nicht existiert. Der Skill erkannte das korrekt und liess die Story das Recht selbst einführen. Er folgte dabei Beispiel 1 im Golden Example: ein Constraint-AK «Das SYSTEM lässt den Download nur für USER zu, denen die Berechtigung dafür zugewiesen ist» am Ende der AK-Liste und eine Postcondition «Das SYSTEM stellt die Berechtigung … in der Rollenverwaltung zur Zuweisung bereit». Die übrigen AKs sprachen vom «USER» ohne Bezug auf das Recht.
+- **Feedback:** «Ich sehe das nicht als Postcondition … dies muss ja als erstes gemacht werden, bevor der berechtigte User dann die Aktionen ausführen kann.» Im selben Durchgang: «Hier würde ich eben dann ‹der berechtigte USER› schreiben.» Dazu der Wunsch, das auch für die Verbesserung des Skills festzuhalten.
+- **Regel-Vorschlag:** Führt eine Story ein Recht ein, steht die Bereitstellung des Rechts als AK 1, nicht als Postcondition: Sie ist Voraussetzung für alle folgenden AKs, kein Ergebnis einer User-Aktion. Die folgenden AKs sprechen vom «berechtigten USER». Ein zusätzliches Constraint-AK «nur für USER mit zugewiesener Berechtigung» entfällt dann als Implikat. Golden Example Beispiel 1 und die Herkunftsregel («Constraint-AK plus Postcondition») widersprechen dem und sind entsprechend anzupassen. Für Phase 4: Prüfpunkt «Recht als Postcondition statt AK 1» aufnehmen.
+- **Status:** offen
+
+## #12 Abgrenzung verweist auf die Story, die es umsetzt
+
+- **Datum / Artefakt:** 04.11.2026 · Story (Doc-Kommentar)
+- **Bereich:** Out of Scope
+- **Was der Skill tat:** Die Abgrenzung enthielt «Das SYSTEM zeigt keine Änderungshistorie der Werte an; das leistet [andere Story]» und «Das SYSTEM prognostiziert keine Werte und stellt sie nicht als Zeitreihe dar; das leistet [andere Story]». Beide Punkte stammten aus einer früheren Fassung. Der Skill hatte sie beim Refinement übernommen, obwohl die Skill-Regel solche Nachbar-Verweise bereits ausschliesst («Dass etwas in einem anderen Epic steckt, ist kein Out-of-Scope-Punkt»). Phase 4 meldete es nicht.
+- **Feedback:** «Ich glaube, das haben wir schon mehrmals besprochen … Ich möchte nicht, dass du auf Storys verweist, die etwas umsetzen, das hier nicht umgesetzt wird … eine andere Story setzt immer etwas um, das diese Story nicht umsetzt, ansonsten werden es nicht zwei Storys. Das verwirrt höchstens oder schlägt Brücken zu anderen Geschichten, die dann Diskussionen hervorbringen, die nicht geführt werden sollen.»
+- **Regel-Vorschlag:** Abgrenzungen nennen nie eine andere Story als Ort der Umsetzung, weder als Ticketnummer noch als «das leistet …», «folgt in …» oder «siehe …». Eine Abgrenzung, deren einziger Inhalt ist, dass eine Nachbar-Story etwas liefert, wird ganz gestrichen, nicht nur ihr Verweis. Die bestehende Regel gilt ausdrücklich auch für Bestand: Beim Refinement einer bestehenden Story die Abgrenzungen aktiv auf solche Verweise durchsuchen und sie entfernen, statt sie zu übernehmen, auch wenn sie im Ticket schon stehen. Für Phase 4: «Abgrenzung verweist auf Nachbar-Story» als festen Prüfpunkt aufnehmen. Das Muster wurde laut User schon mehrfach besprochen und tritt trotz Regel wieder auf, Priorität hoch.
+- **Status:** offen
+
+## #11 Einsehen-AK neben einem Ändern-AK für dieselben Akteure
+
+- **Datum / Artefakt:** 04.11.2026 · Story (Doc-Kommentar, unmittelbar nach #10)
+- **Bereich:** AK-Formulierung
+- **Was der Skill tat:** In derselben Story stand nach dem Streichen aus #10 weiterhin das AK «Der USER der Prüfstelle kann die Werte samt Typ in der Detailansicht einsehen». Ein anderes AK sagte bereits: «Das SYSTEM lässt das Ändern der Werte für alle USER zu, mit deren Organisation der Eintrag geteilt ist». Der Eintrag ist immer mit der Prüfstelle geteilt, und die Precondition nennt die Detailansicht. Wer ändern darf, sieht die Werte zwangsläufig. Phase 4 meldete das nicht, und der Skill übersah es beim Korrigieren von #10, obwohl derselbe Kommentar-Durchgang lief.
+- **Feedback:** «Auch dieses AK ist eigentlich schon im oberen AK enthalten … wenn er gemäss Precondition die Detailansicht anzeigt und es gemäss dem anderen AK ändern kann, und zwar alle Organisationen, mit denen der Eintrag geteilt ist, besagt das nichts anderes … unnötige Doppelung … Das müssen wir unbedingt verbessern.»
+- **Regel-Vorschlag:** Berechtigungs-AKs implizieren die schwächeren Fähigkeiten: Wer ändern darf, kann einsehen; wer löschen darf, kann den Eintrag finden. Ein separates «kann einsehen»-AK für einen Akteur, den ein «darf ändern»-AK schon einschliesst (direkt oder über «alle, mit denen geteilt ist»), ist ein Implikat und wird gestrichen. Vor dem Streichen prüfen, ob das Einsehen-AK etwas Eigenes trägt (hier «samt Typ»), und dieses Eigene, falls nötig, in ein bestehendes AK verlagern statt ein Duplikat zu behalten. Wenn ein User ein Duplikat meldet, die ganze AK-Liste sofort auf weitere Fälle desselben Musters prüfen, nicht nur die markierte Stelle. Für Phase 4: Implikationstest «Berechtigung schliesst Anzeige ein» als festen Prüfpunkt aufnehmen. Folgt auf #10.
+- **Status:** offen
+
+## #10 AK wiederholt Precondition und ein anderes AK
+
+- **Datum / Artefakt:** 04.11.2026 · Story (Doc-Kommentar)
+- **Bereich:** AK-Formulierung
+- **Was der Skill tat:** Die Story hatte als Precondition «Der USER erfasst einen Eintrag oder zeigt einen bestehenden Eintrag im Detail an». Ein AK sagte schon, dass der USER vorbelegte Werte übernehmen oder ändern kann. Trotzdem stand als weiteres AK «Der USER kann die Werte in der Detailansicht des Eintrags anzeigen und ändern». Das AK war aus der Vorgänger-Fassung übernommen. Phase 4 hat es nicht als Duplikat gemeldet.
+- **Feedback:** «Hier steht eigentlich schon in der Precondition, dass der User die Detailansicht anzeigen muss. Und es steht auch in den AKs, dass er die Werte ändern kann. Warum also ein erneutes AK, das die Precondition und das vorherige AK wieder aufnimmt? Das neue hat gar keinen Mehrwert.»
+- **Regel-Vorschlag:** Vor dem Ausgeben jedes AK gegen die Preconditions UND die übrigen AKs prüfen, nicht nur AK gegen AK. Ein AK, dessen Ort aus einer Precondition folgt («in der Detailansicht», wenn die Precondition die Detailansicht nennt) und dessen Fähigkeit schon ein anderes AK trägt («ändern»), ist redundant und wird gestrichen. Gilt besonders für AKs, die aus einer früheren Fassung übernommen werden: Bei jeder Überarbeitung den Duplikat- und Implikations-Litmus erneut über die ganze Liste laufen lassen. Für Phase 4: Den Tester- und Architekten-Prüfauftrag um «AK wiederholt Precondition plus anderes AK» ergänzen. Verwandt mit der bestehenden Regel «keine Wiederholung einer Precondition als Qualifier im AK».
+- **Status:** offen
+
 ## #9 Lösungsmechanik trotz bekanntem Feedback, und ein Ortsbezug als Rest
 
 - **Datum / Artefakt:** 03.11.2026 · Story (Doc-Kommentar, zwei Runden)
