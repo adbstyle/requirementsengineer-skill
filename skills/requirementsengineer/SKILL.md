@@ -85,7 +85,37 @@ Sammle NICHT erst 10 Fragen um sie dann als Tabelle auszugeben. Stelle sie laufe
 
 # Feedback zum Skill festhalten
 
-Kennzeichnet der User eine Rückmeldung als Feedback zum Skill («Feedback für den Skill», «merke dir für den RE-Skill», «sammle ich für den Skill»), wird daraus ein GitHub Issue in `adbstyle/requirementsengineer-skill`. Dort sammelt sich das Feedback aller User, damit über viele Einträge hinweg Muster sichtbar werden. Korrekturen am aktuellen Artefakt machst du trotzdem sofort. Den Skill selbst änderst du dabei nicht, die Auswertung geschieht gesammelt.
+Feedback zum Skill wird ein GitHub Issue in `adbstyle/requirementsengineer-skill`. Dort sammelt sich das Feedback aller User, damit über viele Einträge hinweg Muster sichtbar werden. Korrekturen am aktuellen Artefakt machst du trotzdem sofort. Den Skill selbst änderst du dabei nicht, die Auswertung geschieht gesammelt.
+
+Zwei Wege führen zum Issue:
+- **Der User kennzeichnet es selbst** («Feedback für den Skill», «merke dir für den RE-Skill», «sammle ich für den Skill»). Weiter mit Schritt 1 unten.
+- **Du bietest es an**, weil der User deine Vorschläge wiederholt aus demselben Grund verwirft. Die meisten User melden so etwas nicht von sich aus; sie korrigieren und arbeiten weiter. Genau diese Korrekturen zeigen aber, wo dem Skill eine Regel fehlt oder eine falsch greift.
+
+## Feedback anbieten, wenn der User wiederholt korrigiert
+
+**Was zählt:** Der User widerspricht einem Vorschlag von dir klar oder muss ihn grösser umbauen, und der Grund liegt in der Arbeitsweise des Skills: Formulierung, Struktur, Ebene, Schnitt, Anwendung einer Regel. Beispiele: Er streicht Lösungsdetails aus einem AK, schreibt eine Precondition um, weil sie fremden Scope trägt, oder verwirft deinen Story-Schnitt.
+
+**Was nicht zählt:** Fachwissen, das du nicht haben konntest (Rollenname, Geschäftsregel, Entscheid des PO), Antworten auf deine Rückfragen, kleine Umformulierungen und neue Wünsche des Users an die Anforderung selbst. Das ist normales Arbeiten, kein Fehler des Skills.
+
+**Schwelle: zwei Korrekturen mit demselben Muster.** Ein Muster ist der gemeinsame Grund, nicht die Stelle: Lösungsdetails in zwei verschiedenen AKs sind ein Muster. Eine einzelne Korrektur kann Zufall oder Geschmack sein, die zweite aus demselben Grund spricht für eine Lücke, die auch andere User trifft. Führ die Korrekturen still mit, ohne dem User davon zu erzählen.
+
+**Zuerst die Story.** Ein erkanntes Muster hilft zuerst der Story, an der ihr gerade arbeitet: Setz die Korrektur so um, wie der User sie meint, nicht nur wörtlich, und prüf die übrigen Sätze der Story auf dasselbe Muster. Was du dabei findest, fragst du via AskUserQuestion nach, statt es still zu ändern oder zu übergehen. Das Feedback-Angebot ist der zweite Schritt und darf die Arbeit an der Story nicht ersetzen.
+
+**Zeitpunkt: die nächste Pause.** Arbeite die Korrektur und die Rückfragen aus der Musterprüfung zuerst ein. Biete das Feedback an, sobald keine andere Rückfrage offen ist, etwa nachdem du eine Antwortrunde eingearbeitet oder eine Phase abgeschlossen hast. Laufende Fragerunden und Agenten-Phasen unterbrichst du dafür nicht, aber spätestens vor der abschliessenden Ausgabe kommt das Angebot.
+
+**Häufigkeit:** Jedes Muster bietest du höchstens einmal an, ein Muster, das der User schon selbst als Feedback gemeldet hat, gar nicht. Wählt der User «Nicht mehr fragen», bietest du in dieser Session nichts mehr an.
+
+**Angebot und Einordnung in einem Modal.** Du schlägst die Einordnung vor, der User bestätigt oder korrigiert sie. Frag via AskUserQuestion und nenn im Fragetext:
+- was dir aufgefallen ist, konkret und ohne Vorwurf: «Du hast zweimal Lösungsdetails aus AKs gestrichen (Sortierung nach Datum, Export als CSV).»
+- den Bereich aus dem Issue-Formular
+- den Regel-Vorschlag, allgemein gefasst, nicht nur für diesen Fall: «Ein AK nennt das beobachtbare Ergebnis, nicht Format oder Reihenfolge, solange der User sie nicht verlangt.»
+- dass das Issue öffentlich wäre und du es vor dem Einreichen noch einmal zeigst
+
+Optionen: «Ja, so einordnen», «Anders einordnen», «Nein, dieses nicht», «Nicht mehr fragen». Bei «Anders einordnen» oder einer freien Antwort übernimmst du die Sicht des User: Er weiss besser als du, was ihn gestört hat. Frag nach, wenn daraus Bereich oder Regel nicht klar werden.
+
+Danach Schritte 1 bis 4. Ins Feld «Feedback» kommen die Korrekturen des Users, sinngemäss oder als Zitat, ins Feld «Was der Skill tat» deine ursprünglichen Vorschläge. Die Bestätigung in Schritt 3 bleibt nötig, denn erst dort sieht der User den vollständigen, anonymisierten Text.
+
+## Issue erstellen
 
 Das Repository des Skills liegt bei einer Plugin-Installation unter `${CLAUDE_PLUGIN_ROOT}`. Claude Code schreibt diesen Pfad beim Laden aus; in der Shell ist die Variable nicht gesetzt. Steht dort noch der Platzhalter, ist der Skill als persönlicher Skill installiert: Dann liegt das Repository zwei Ebenen über dem aufgelösten Skill-Verzeichnis, einen Symlink löst du vorher mit `readlink` auf.
 
