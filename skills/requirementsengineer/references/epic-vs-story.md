@@ -323,7 +323,7 @@ Erfolgskriterien
 
 Out of Scope
 1. Das MHP-Domänenmodell wird nur als Zieldatenformat dokumentiert, nicht als lauffähiger Code umgesetzt
-2. Der EMDN-Code ist kein Pendant zum ATC-Code für Austauschbarkeit — zwei Produkte mit identischem EMDN-Code können klinisch nicht austauschbar sein
+2. Der EMDN-Code ist kein Pendant zum ATC-Code für Austauschbarkeit
 3. Die funktionale Spezifikation der Alternativensuche ist nicht Teil der Analyse, jedoch wird die Datenbasis dafür bewertet
 
 Offene Fragen

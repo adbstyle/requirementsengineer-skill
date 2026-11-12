@@ -57,6 +57,12 @@ einem AK, einer Precondition, dem Glossar oder der Story folgt, die X einführt.
 Finding meldet, verleitet den Requirements Engineer zu einer Postcondition, die nur
 wiederholt, was schon feststeht. Prüfe vorher, ob X nicht bereits gilt.
 
+**9. Die Precondition «Der USER zeigt X im Detail an»**
+Sie beschreibt die Ausgangslage, ab der die Interaktion beginnt, und ist die
+vorgeschriebene Form dafür. Sie ist keine Ortsvorgabe im Sinn von Punkt 2: Ein Ort ist
+erst dann übersteuert, wenn ein AK oder eine Postcondition ihn als Ort einer Funktion
+oder Anzeige festlegt («in der Detailansicht ändern», «auf der Detailseite anzeigen»).
+
 ## Pflichtprüfung für jeden Agenten
 
 Frage für jede Precondition: Wer führt das ein, was sie voraussetzt? Zwei Antworten sind
