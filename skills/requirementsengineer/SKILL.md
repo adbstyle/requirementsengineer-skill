@@ -42,15 +42,6 @@ Items streichen nur mit expliziter Begründung (z.B. "keine Codebase").
 
 **Tool-Verfügbarkeit:** Die Freigaben in der Frontmatter gelten nur für den Turn, der den Skill startet, und verfallen mit der nächsten User-Nachricht. Permission-Prompts mitten im Lauf sind normal. Weder ein Prompt noch ein fehlendes Tool ist ein Grund, eine Pflicht-Phase zu überspringen oder abzukürzen — nimm den nächstbesten Weg (anderer Toolname, Fallback oben) und mach weiter.
 
-# Leitprinzipien
-1. **Nutzerzentriert** — Anforderungen beginnen mit echten Nutzerbedürfnissen
-2. **Testbar** — Jede Anforderung muss verifizierbar sein
-3. **Eindeutig** — Nur eine Interpretation möglich
-4. **Vollständig** — Keine fehlenden Randfälle oder Szenarien
-5. **Umsetzbar** — Technisch und wirtschaftlich machbar
-6. **Nachvollziehbar** — Vom Geschäftsziel bis zur Umsetzung rückverfolgbar
-
-
 # Ebene und Typ erkennen
 
 Bevor du schreibst, kläre zwei Dimensionen:
@@ -164,12 +155,12 @@ Schreib Feedback nie in eine Datei, weder ins Skill-Verzeichnis noch ins Projekt
 
 **Abrufweg:** Nutze den Zugang, der in dieser Session tatsächlich verfügbar ist — MCP-Tools des Trackers, eine Issue-CLI (`twg`, `jira`, `gh`, `glab`, `az boards`) oder die REST-API. Prüfe in dieser Reihenfolge, statt eine Variante anzunehmen. Der Skill setzt keinen bestimmten Tracker und keine bestimmte CLI voraus; die Freigabe dafür gehört in die Permission-Regeln des Users, nicht in diesen Skill.
 
-| # | tier | description | prompt |
-|---|------|-------------|--------|
-| 1 | fast | "Fetch main issue (alle Felder)" | "Hole das Issue und gib die VOLLSTÄNDIGE Ausgabe zurück — kürze oder fasse NICHTS zusammen. Metadaten, Inhalt, Scope, Description, Linked Issues mit Beziehungstypen und Comments. Gib ALLES zurück, Zeile für Zeile." |
-| 2 | fast | "Fetch parent issue" | "Hole Parent issue Extrahiere: Ziel, Scope, Budget, Abhängigkeiten." |
-| 3 | fast | "Fetch linked issues (2 Ebenen)" | "Hole alle Issues aus dem issuelinks-Array von [Issue-Key] (1. Ebene). Für jedes verlinkte Issue: Key, Summary, Description - sprich den Inhalt bzw. Scope, Beziehungstyp, Status. Dann für jedes Issue der 1. Ebene: hole auch dessen issuelinks (2. Ebene) — nur Key, Summary, Beziehungstyp. Ziel: Nachbar-Epics und deren Abhängigkeiten verstehen, um echte Scope-Creep-Risiken von Nachbar-Story-Verweisen unterscheiden zu können." |
-| 4 | fast | "Fetch doc context" | "Lies [Pfad] vollständig. Extrahiere für Story [N]: (1) Offene Fragen (Q-Nummern) die diese Story betreffen, (2) Verwandte Stories mit denselben Konzepten/Feldern, (3) Querschnittliche Einschränkungen aus Header oder übergreifenden Abschnitten. Verlinkte Dokumente (Decision Records, Tech Specs, UX Specs) ebenfalls lesen." |
+| # | model | description | prompt |
+|---|-------|-------------|--------|
+| 1 | haiku | "Fetch main issue (alle Felder)" | "Hole das Issue und gib die Ausgabe vollständig und wörtlich zurück, ohne zu kürzen oder zusammenzufassen: Metadaten, Inhalt, Scope, Description, Linked Issues mit Beziehungstypen und Comments. Der Hauptagent prüft AKs und Preconditions am Wortlaut." |
+| 2 | haiku | "Fetch parent issue" | "Hole Parent issue Extrahiere: Ziel, Scope, Budget, Abhängigkeiten." |
+| 3 | haiku | "Fetch linked issues (2 Ebenen)" | "Hole alle Issues aus dem issuelinks-Array von [Issue-Key] (1. Ebene). Für jedes verlinkte Issue: Key, Summary, Description - sprich den Inhalt bzw. Scope, Beziehungstyp, Status. Dann für jedes Issue der 1. Ebene: hole auch dessen issuelinks (2. Ebene) — nur Key, Summary, Beziehungstyp. Ziel: Nachbar-Epics und deren Abhängigkeiten verstehen, um echte Scope-Creep-Risiken von Nachbar-Story-Verweisen unterscheiden zu können." |
+| 4 | haiku | "Fetch doc context" | "Lies [Pfad] vollständig. Extrahiere für Story [N]: (1) Offene Fragen (Q-Nummern) die diese Story betreffen, (2) Verwandte Stories mit denselben Konzepten/Feldern, (3) Querschnittliche Einschränkungen aus Header oder übergreifenden Abschnitten. Verlinkte Dokumente (Decision Records, Tech Specs, UX Specs) ebenfalls lesen." |
 
 **Selbst-Check:** Erst wenn alle Agenten zurückgekehrt sind -> weiter zu Analyse.
 
@@ -196,7 +187,7 @@ Die Traversierungsdaten werden NICHT genutzt für:
 
 ---
 
-**STOP — SOLL-Kontext allein reicht nicht.** Wenn eine Codebase vorhanden ist, ist die IST-Analyse (nächster Abschnitt) zwingend. Rationalisierungen wie "Issue-Kontext reicht" oder "ist eh nur ein Epic" sind das Signal, sie JETZT zu machen.
+**SOLL-Kontext allein reicht nicht.** Wenn eine Codebase vorhanden ist, gehört die IST-Analyse (nächster Abschnitt) dazu, auch bei einem Epic oder wenn der Issue-Kontext vollständig wirkt: Erst der IST-Zustand zeigt die Einschränkungen, aus denen Offene Fragen und Out of Scope entstehen.
 
 ### Sammle Ist-Zustand für Requirements-Lücken-Analyse
 **MANDATORY:** Verwende das **Subagent-Tool** deines Harness (heisst `Agent`, in älteren Versionen `Task`) mit `subagent_type="requirementsengineer:code-explorer"`
@@ -219,10 +210,6 @@ Die Traversierungsdaten werden NICHT genutzt für:
 - Erst wenn der User eine Frage nicht beantworten kann → in Offene-Fragen-Tabelle aufnehmen.
 
 WARNUNG: Die Codebase-Analyse liefert technische Details (Spaltennamen, Algorithmen, Service-Namen, Technologien). Diese gehören NICHT in die Story-Dokumentation. Technische Einschränkungen werden ausschliesslich genutzt um (1) Offene Fragen zu formulieren und (2) Out-of-Scope-Punkte abzuleiten. Vor dem Schreiben von AKs: Technische Erkenntnisse bewusst filtern — sie fliessen in Fragen ein, nicht in Anforderungen.
-
-- Categorize and organize requirements
-- Dependency map
-- Risk assessment
 
 ## Phase 3: Documentation
 - Write detailed requirements
@@ -339,8 +326,6 @@ Examples:
 - "Der USER kann zu jeder angezeigten ähnlichen Meldung Detailinformationen erreichen"
 - "Der USER muss die Ausführung der Löschaktion bestätigen"
 - "Das SYSTEM kann nur User entfernen, die in Organisationen liegen, auf die der ausführende USER Zugriff hat" (Einschränkung — SYSTEM als Akteur erlaubt)
-
-IMPORTANT: Write acceptance criteria in natural, readable language using simple numbered lists.
 
 Jeder AK-Satz beginnt mit einem Akteur und ist aktiv formuliert. Kein Passiv, kein akteurloser Satz. Wenn kein Akteur offensichtlich ist, stimmt die Formulierung nicht — umformulieren bis der Akteur klar ist. Typischer Fehler: "Die Einträge sind sortiert" → richtig: "Das SYSTEM sortiert die Einträge nach Datum".
 
@@ -470,26 +455,8 @@ Richtig (Information verteilen, keine eigene Sektion):
 1. [Lösungsidee aus Ticket/Kommentaren - NICHT deine Empfehlung, nur Dokumentation]
 2. [Alternative aus Diskussion - als Kontext für Requirements-Validierung]
 
-### Requirements Quality Checklist (INVEST + SMART)
-
-## User Stories (INVEST):
-| Criteria | Question |
-|----------|----------|
-| **I**ndependent | Can it be developed separately? |
-| **N**egotiable | Is there room for discussion? |
-| **V**aluable | Does it deliver user/business value? |
-| **E**stimable | Can the team estimate effort? |
-| **S**mall | Can it be completed in one sprint? |
-| **T**estable | Can we verify it's done? |
-
-## Acceptance Criteria (SMART):
-| Criteria | Question |
-|----------|----------|
-| **S**pecific | Is it clear and detailed? |
-| **M**easurable | Can we objectively verify it? |
-| **A**chievable | Is it technically possible? |
-| **R**elevant | Does it support the user story? |
-| **T**ime-bound | Is scope limited appropriately? |
+### Requirements Quality Checklist
+Prüfe jede Story gegen INVEST (`references/INVEST-Prinzip-Zusammenfassung.md`).
 
 ### Non-Functional Requirements Format:
 Einfache nummerierte Liste mit natürlichen Sätzen — keine Tabelle, keine IDs. Jede NFR ist ein vollständiger Satz, der die Anforderung und das Ziel in einem ausdrückt.
@@ -525,7 +492,7 @@ Richtig (Qualitätsmerkmal):
 
 ---
 
-**STOP — Dokumentation ist NICHT fertig.** Phase 4 ist jetzt zwingend, bevor du ausgibst. Rationalisierungen wie "offene Fragen decken's ab" oder "Epic ist klar genug" sind das Signal, Phase 4 gerade JETZT durchzuführen — du kannst nicht validieren was du selbst geschrieben hast.
+**Die Dokumentation ist erst nach Phase 4 fertig.** Führe die Validierung vor der Ausgabe durch, auch wenn die Offenen Fragen vieles abzudecken scheinen oder das Epic klar wirkt: Eigene Texte prüfst du schlecht selbst, dafür sind die Perspektiven da.
 
 ## Phase 4: Validation
 ### Perspektivenbasiertes Lesen
@@ -547,7 +514,7 @@ Richtig (Qualitätsmerkmal):
 | 1 | Kunde/Nutzer | "Prüfe diese Requirements aus Kundensicht. Welche WAS-Fragen kann ein User/PO nicht beantworten? Liefere max. 5 Findings als: Requirement sagt '[Zitat]', aber unklar: [konkrete Frage]. Keine Lösungsvorschläge." |
 | 2 | Softwarearchitekt / Software Engineer | "Prüfe diese Requirements aus Architekten- bzw. Engineer-Sicht. Zwei Dimensionen, beide gleichgewichtig: (A) **Vollständigkeit** — Habe ich genug Info für einen Architekturentwurf? Achte auf fehlende Einschränkungen, Konflikte zwischen Requirements, fehlende NFRs, ungeklärte Abhängigkeiten. (B) **Lösungsoffenheit** — Kann ich auf Basis dieser Anforderung eine pragmatische, effiziente, für das System konsistente und nachhaltige Lösung implementieren, ohne durch unnötige Vorgaben eingeengt zu werden? Übersteuerung kostet Optionalität; jede vorzeitige Vorgabe schliesst eine bessere Lösung aus. Achte auf vorzeitige Lösungsvorgaben in AKs, Postconditions und NFRs: Datenquellen/Feldpfade, Dateinamen, Framework-/Library-Namen, Architektur-Entscheide ('im Main-Prozess', 'via IPC', 'keine DB-Migration'), Format-Mechanik (Locale-Identifier, Display-Strings, Rundungsdetails), UI-Vergleichsreferenzen, Berechnungsformeln. Liefere max. 5 Findings — markiere pro Finding ob es (A) Lücke oder (B) Übersteuerung ist. Kein Architektur-Design, keine Lösungsvorschläge." |
 | 3 | Tester | "Prüfe diese Requirements aus Testersicht. Können Testfälle abgeleitet werden? Liefere max. 5 Findings: Welche Requirements sind zu vage zum Testen? Was fehlt für Testbarkeit? Kein Test-Code." |
-| 4 | Business Analyst | "Prüfe diese Requirements aus BA-Sicht. Dein Fokus: Ist das tatsächliche Problem und der Bedarf des Stakeholders klar genug formuliert, damit ein Entwicklungsteam es versteht? Prüfe anhand dieser Leitfragen: (1) Welches Problem versuchen wir zu lösen — ist es benannt oder nur implizit? (2) Wie bringt diese Story der Organisation einen Wert? (3) Wer sind die Endnutzer und was ist ihr konkreter Nutzen? (4) Woran erkennen wir, dass wir fertig sind? Liefere max. 5 Findings. Achte besonders auf: vorzeitige Lösungsvorgaben (UI-Details, technische Vorgaben) die statt des Problems eine Lösung beschreiben, fehlende Problemkontexte, unklare Wertversprechen. Prüfe technische Drift NICHT NUR in AKs, sondern auch in Postconditions und NFRs — typische Drift-Marker dort: Datenquellen/Feldpfade ('transcript.metadata.x'), Dateinamen ('Component.tsx'), Framework-/Library-Namen (Tailwind, Zod, IPC), Architektur-Entscheide ('im Main-Prozess', 'keine DB-Migration'), Format-Mechanik (Locale-Identifier, konkrete Display-Strings, Rundungsdetails). Keine Lösungsvorschläge." |
+| 4 | Business Analyst | "Prüfe diese Requirements aus BA-Sicht. Dein Fokus: Ist das tatsächliche Problem und der Bedarf des Stakeholders klar genug formuliert, damit ein Entwicklungsteam es versteht? Prüfe anhand dieser Leitfragen: (1) Welches Problem versuchen wir zu lösen — ist es benannt oder nur implizit? (2) Wie bringt diese Story der Organisation einen Wert? (3) Wer sind die Endnutzer und was ist ihr konkreter Nutzen? (4) Woran erkennen wir, dass wir fertig sind? Liefere max. 5 Findings. Achte besonders auf fehlende Problemkontexte und unklare Wertversprechen, auch dort, wo eine Lösungsvorgabe das Problem verdeckt. Lösungstext Satz für Satz prüfen der Architekt und der Regel-Prüfer. Keine Lösungsvorschläge." |
 | 5 | Fachexperte (Domain Expert) | "Du bist Fachexperte in der Domäne dieser Story. Leite aus dem Kontext ab, welche Fachdomäne betroffen ist (z.B. Pharma, Logistik, Finanzwesen, Gesundheitswesen). Prüfe aus dieser Fachperspektive: (1) Werden Fachbegriffe korrekt und konsistent verwendet? (2) Fehlen domänenspezifische Geschäftsregeln, die ein Fachexperte als selbstverständlich voraussetzen würde, die aber für ein Entwicklungsteam nicht offensichtlich sind? (3) Gibt es fachliche Annahmen, die in dieser Domäne falsch oder unvollständig sind? (4) Fehlen regulatorische oder branchenspezifische Anforderungen? Liefere max. 5 Findings. Keine Lösungsvorschläge." |
 | 6 | UX Designer / UX Architekt | "Prüfe diese Requirements aus UX-Sicht. Zwei Dimensionen, beide gleichgewichtig: (A) **Vollständigkeit** — Habe ich genug prozessuale Information, um ein grobes UX-Konzept zu skizzieren? Achte auf fehlende oder unklare Auslöser/Trigger, Aktionen und Konsequenzen. (B) **Lösungsoffenheit** — Lässt die Anforderung die UX-Gestaltung offen, oder ist sie bereits in Richtung einer konkreten UI-Lösung gekippt? Achte auf vorzeitige UI-Vorgaben: konkrete Komponenten-Namen ('Dropdown', 'Modal', 'Sidebar', 'Stepper'), Layouts ('links die Liste, rechts das Detail'), Reihenfolgen-Vorgaben in der Darstellung, konkrete Wordings/Microcopy in Anführungszeichen, Vergleichsreferenzen zu bestehenden Screens, Mechanik wie 'mit einem Klick', 'als Tooltip', 'beim Hover', Ortsvorgaben ('auf der Detailseite', 'in der Übersicht anzeigen'), Einstiegs- und Flow-Vorgaben ('nach dem Login', 'als Startseite', 'landet auf', 'wird weitergeleitet'). Solche Vorgaben schneiden UX-Optionen ab, bevor das Konzept überhaupt diskutiert ist. Liefere max. 5 Findings — markiere pro Finding ob es (A) Lücke oder (B) Übersteuerung ist. Kein UX-Konzept entwerfen, keine Wireframes, keine Lösungsvorschläge." |
 | 7 | Regel-Prüfer | "Lies zuerst `references/anti-patterns.md`. Prüfe jeden Satz der Story gegen die Checkliste dort: Preconditions, AKs, Postconditions, Out of Scope, bei Epics die Erfolgskriterien. Wende dabei vor allem die drei Prüfungen an: (1) Notwendigkeit: Geht etwas verloren, wenn der Satz fehlt? Vergleiche über alle Sektionen hinweg, nicht nur AK gegen AK. Eine schwächere Fähigkeit neben einer stärkeren (einsehen neben ändern) gilt als überflüssig. Eine Precondition meldest du nur dann als überflüssig, wenn jede Aktion der AKs ohne sie ausführbar bleibt, einschliesslich des Auffindens des Objekts. (2) Eine Regel, ein Satz: Ist der Satz nur verständlich, wenn man einen anderen daneben liest? (3) Austauschbarkeit: Erfüllen mindestens zwei plausible Lösungen den Satz, ohne dass der Wortlaut eine nahelegt? Melde jeden Verstoss, ohne Obergrenze, als: '[Zitat]' verletzt [Regel], weil [ein Satz Begründung] → Korrektur: [neuer Wortlaut oder streichen]. Gilt eine Vorgabe als vertraglich oder fachlich bedingt, ist das kein Grund, einen Lösungsweg im Anforderungstext zu billigen: Er gehört dann in Out of Scope. Melde nichts, was die Checkliste unter Kein Verstoss aufführt. Keine fachlichen Lücken, die decken die anderen Perspektiven ab." |
@@ -620,14 +587,8 @@ Organized by:
 - **User Stories** (with acceptance criteria)
 - **Non-Functional Requirements**
 
-## 3. Requirements-Analyse: Lücken & Konflikte
-
-### WAS-Lücken
-Funktionale/Datenformat/Interaktions/Qualitäts-Lücken
-→ Format: `[Lücke] → Frage: "[konkret]"`
-
-### Konflikte
-Konflikte zwischen Requirements (intern/extern)
+## 3. Requirements-Analyse: Konflikte
+Konflikte zwischen Requirements (intern/extern), die nach den Rückfragen bestehen bleiben. Erkannte Lücken hast du bereits via AskUserQuestion gestellt; was offen bleibt, steht unter 4.
 
 ## Perspektivenbasiertes Lesen
 🔴 und 🟡 Findings → AskUserQuestion-Modal zur sofortigen Klärung (erst 🔴, dann 🟡, max 4 pro Modal)
@@ -646,16 +607,6 @@ Bewertung: Geschäftswert, Vollständigkeit, NFRs, Testbarkeit, Konflikte
 
 ## 7. Tracker-Update (nur wenn in den Tracker geschrieben wurde)
 Ziel-Issue und Feld, danach der Diff — nur die geänderten Hunks, nicht das ganze Feld. Bei einer Normalisierung Strukturänderung und inhaltliche Änderungen getrennt ausweisen. Zum Schluss das Ergebnis der Nachkontrolle (Feld entspricht dem Geschriebenen — oder wo der Tracker umformatiert hat).
-
-# Example Prompts I Handle Well
-- "Help me write user stories for a user authentication system"
-- "What NFRs should I consider for an e-commerce checkout?"
-- "Create acceptance criteria for a file upload feature"
-- "Review these requirements for completeness"
-- "Create a process flow for order fulfillment"
-- "What questions should I ask stakeholders about this feature?"
-
----
 
 # References & Resources
 ## Reference Documentation
@@ -676,5 +627,5 @@ Checkliste und Beispiele in `references/anti-patterns.md`, geordnet nach den dre
 
 **Usage in Workflow:**
 - Phase 1 (Discovery): Use User Role Modeling to identify stakeholders and personas
-- Phase 4 (Documentation): Apply INVEST principles when writing user stories
+- Phase 3 (Documentation): Apply INVEST principles when writing user stories
 - Phase 4 (Validation): Verify stories against INVEST criteria

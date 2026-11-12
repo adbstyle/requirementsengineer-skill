@@ -42,7 +42,7 @@ Postconditions
 3. Das SYSTEM verändert keine bereits erstellten Bescheide, die auf einer gelöschten Vorlage basieren
 
 Out of Scope
-1. Das SYSTEM unterstützt keine Versionierung von Vorlagen — eine neue Version wird als separate Vorlage hochgeladen
+1. Das SYSTEM versioniert Vorlagen nicht
 2. Der USER kann den Inhalt einer Vorlage nicht in der Applikation ansehen
 3. Der USER kann den Inhalt einer Vorlage nicht in der Applikation bearbeiten
 
@@ -61,7 +61,7 @@ möchte ich die Importschnittstelle für swissdamed-Daten technisch spezifiziere
 damit die Implementierung des Datenimports auf einer abgestimmten Schnittstellendefinition aufbauen kann
 
 Preconditions
-1. Das MHP-Zieldatenformat ist als Analysedokument freigegeben (Enabler Epic abgeschlossen)
+1. Das MHP-Zieldatenformat ist als Analysedokument freigegeben
 2. Der XML-Export von swissdamed ist als Testdatensatz verfügbar
 
 Acceptance Criteria
@@ -75,7 +75,7 @@ Postconditions
 2. Das TEAM hat offene Transformationsfragen dokumentiert, die erst bei der Implementierung klärbar sind
 
 Out of Scope
-1. Das TEAM implementiert den Datenimport nicht — nur die Spezifikation wird erstellt
+1. Das TEAM implementiert den Datenimport nicht
 2. Das SYSTEM führt keine produktiven Datenimporte durch
 
 Offene Fragen
@@ -105,7 +105,7 @@ Postconditions
 2. Das SYSTEM protokolliert jeden Statusübergang mit Zeitpunkt, ausführendem User und vorherigem Status
 
 Out of Scope
-1. Der USER kann die Prozessschritte nicht selbst konfigurieren — die Schritte sind fest definiert
+1. Der USER kann die Prozessschritte nicht selbst konfigurieren
 2. Das SYSTEM versendet keine automatischen Benachrichtigungen bei Statusänderungen
 
 Offene Fragen
