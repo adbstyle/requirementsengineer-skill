@@ -29,7 +29,7 @@ Preconditions
 1. Das SYSTEM verfügt über eine Rollenverwaltung, in der Berechtigungen Rollen zugewiesen werden
 
 Acceptance Criteria
-1. Das SYSTEM stellt die Berechtigung zur Verwaltung von Dokumentvorlagen in der Rollenverwaltung zur Zuweisung bereit
+1. Das SYSTEM stellt die Berechtigung zur Verwaltung von Dokumentvorlagen zur Zuweisung bereit
 2. Der berechtigte USER kann nur Word-Dateien im Format .docx bis 10 MB als Vorlage hochladen
 3. Der berechtigte USER muss beim Hochladen einen Titel angeben, den keine andere Vorlage trägt
 4. Der berechtigte USER kann alle verfügbaren Vorlagen anzeigen
