@@ -9,7 +9,7 @@ Dieses Beispiel zeigt den erwarteten Stil und die Form einer fertigen User Story
 - Kein Bold, keine Zwischenüberschriften, keine Referenzen in AKs
 - **User Stories (Business):** AKs aus User-Sicht: Der USER ist der aktive Akteur ("Der USER kann...", "Der USER muss..."). Das SYSTEM in AKs nur bei Einschränkungen/Validierungen, die der User nicht steuert, und für ein Recht, das die Story einführt.
 - **Enabler Stories:** AKs mit TEAM oder SYSTEM als Akteur ("Das TEAM hat...", "Das SYSTEM validiert..."). Kein USER als Akteur, weil der Endnutzer nicht direkt betroffen ist.
-- Preconditions: nur nicht-offensichtliche Voraussetzungen ("User ist angemeldet" ist implizit). Nie etwas, das die Story selbst einführt: In Beispiel 1 wird die Rollenverwaltung vorausgesetzt (Precondition), die Berechtigung zur Vorlagenverwaltung dagegen eingeführt. Ihre Bereitstellung ist AK 1, weil alle weiteren AKs sie voraussetzen. Die folgenden AKs sprechen vom «berechtigten USER», ein zusätzliches Constraint-AK «nur für USER mit Berechtigung» entfällt.
+- Preconditions: nur nicht-offensichtliche Voraussetzungen. Implizit sind zum Beispiel "User ist angemeldet" und dass sich Berechtigungen zuweisen lassen. Nie etwas, das die Story selbst einführt: Beispiel 1 führt die Berechtigung zur Vorlagenverwaltung ein. Ihre Bereitstellung ist deshalb AK 1 und keine Precondition, weil alle weiteren AKs sie voraussetzen. Bleibt keine Voraussetzung übrig, steht unter Preconditions «Keine». Die folgenden AKs sprechen vom «berechtigten USER», ein zusätzliches Constraint-AK «nur für USER mit Berechtigung» entfällt.
 - Eine Regel, ein Satz: Die Grenze einer Regel steht im selben AK («nur … bis 10 MB»), nicht in einem zweiten, verneinten AK
 - Lösungsoffen: kein Ort und kein Weg («in einer Liste», «aus der Liste»), nur was der USER können muss
 - Postconditions: System-Ergebnisse mit WENN-Bedingungen, keine Wiederholung der AKs
@@ -26,7 +26,7 @@ möchte ich Word-Vorlagen für Bescheide hochladen, einsehen und entfernen könn
 damit ich die Korrespondenz mit aktuellen Dokumentvorlagen führen kann
 
 Preconditions
-1. Das SYSTEM verfügt über eine Rollenverwaltung, in der Berechtigungen Rollen zugewiesen werden
+Keine
 
 Acceptance Criteria
 1. Das SYSTEM stellt die Berechtigung zur Verwaltung von Dokumentvorlagen zur Zuweisung bereit
